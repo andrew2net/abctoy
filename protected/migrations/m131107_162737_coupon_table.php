@@ -4,6 +4,9 @@ class m131107_162737_coupon_table extends CDbMigration
 {
 	public function up()
 	{
+    $this->createTable('store_coupon', array(
+      'id'=>'int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY'
+    ));
 	}
 
 	public function down()
