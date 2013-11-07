@@ -60,13 +60,13 @@ return array(
       'layoutPath' => 'protected/modules/admin/views/layouts',
       'layout' => 'main',
     ),
-    'gii' => array(
-      'generatorPaths' => array('bootstrap.gii',),
-      'class' => 'system.gii.GiiModule',
-      'password' => 'proba',
+//    'gii' => array(
+//      'generatorPaths' => array('bootstrap.gii',),
+//      'class' => 'system.gii.GiiModule',
+//      'password' => 'proba',
 // If removed, Gii defaults to localhost only. Edit carefully to taste.
-      'ipFilters' => array('127.0.0.1', '::1'),
-    ),
+//      'ipFilters' => array('127.0.0.1', '::1'),
+//    ),
   ),
   // application components
   'components' => array(
@@ -101,7 +101,6 @@ return array(
         'admin/<_m:(catalog|discount)>/<_c:\w+>/<_a:\w+>'=>'<_m>/<_c>/<_a>',
         'admin/user' => 'user/user',
         'admin/user/<_a:(update|create|delete)>' => 'user/admin/<_a>',
-        'admin/user/<_a:(view)>' => 'user/admin/<_a>',
         'admin/user/<_a:\w+>' => 'user/user/<_a>',
         'admin/auth' => 'auth',
         'admin/auth/<_c:\w+>' => 'auth/<_c>',
@@ -122,10 +121,10 @@ return array(
     /*
      */
     'db' => array(
-      'connectionString' => 'mysql:host=localhost;dbname=toys',
+      'connectionString' => 'mysql:host=baze.zenon.net;port=64000;dbname=vh43309',
       'emulatePrepare' => true,
-      'username' => 'root',
-      'password' => 'passdb',
+      'username' => 'vh43309',
+      'password' => 'bortMwVdK6',
       'charset' => 'utf8',
       'tablePrefix' => 'tbl_',
     ),
