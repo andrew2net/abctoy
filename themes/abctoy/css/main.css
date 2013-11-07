@@ -1,0 +1,345 @@
+body
+{
+  margin: 0;
+  padding: 0;
+  color: #555;
+  font: normal 10pt Arial,Helvetica,sans-serif;
+}
+
+#page
+{
+  margin-top: 50px;
+  margin-bottom: 5px;
+  background: white;
+}
+
+#header
+{
+  margin: 0;
+  padding: 0;
+  border-top: 3px solid #C9E0ED;
+}
+
+#content
+{
+  padding: 20px;
+}
+
+#sidebar
+{
+  padding: 20px 20px 20px 0;
+}
+
+#footer
+{
+  padding: 10px;
+  background: whitesmoke;
+}
+
+#logo
+{
+  padding: 10px 20px;
+  font-size: 200%;
+}
+
+#topmenu
+{
+  background: black;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+#topmenu ul li a:hover
+{
+  color: black;
+  background: white;
+}
+
+#mainmenu ul
+{
+  background: #3399cc;
+}
+
+#mainmenu{
+  background: #66ccff;
+  height: 2.8em;
+}
+
+#mainmenu ul, #topmenu ul
+{
+  padding:5px 0px 5px;
+  margin:0px;
+}
+
+#mainmenu ul li, #topmenu ul li
+{
+  display: inline;
+}
+
+#mainmenu ul li a, #topmenu ul li a
+{
+  color:#ffffff;
+  background-color:transparent;
+  font-size:12px;
+  font-weight:bold;
+  text-decoration:none;
+  padding: 10px;
+  line-height: 2;
+}
+
+#mainmenu ul li a:hover, #mainmenu ul li.active a
+{
+  color: #6399cd;
+  background-color:#EFF4FA;
+  text-decoration:none;
+}
+
+div.flash-error, div.flash-notice, div.flash-success
+{
+  padding:.8em;
+  margin-bottom:1em;
+  border:2px solid #ddd;
+}
+
+div.flash-error
+{
+  background:#FBE3E4;
+  color:#8a1f11;
+  border-color:#FBC2C4;
+}
+
+div.flash-notice
+{
+  background:#FFF6BF;
+  color:#514721;
+  border-color:#FFD324;
+}
+
+div.flash-success
+{
+  background:#E6EFC2;
+  color:#264409;
+  border-color:#C6D880;
+}
+
+div.flash-error a
+{
+  color:#8a1f11;
+}
+
+div.flash-notice a
+{
+  color:#514721;
+}
+
+div.flash-success a
+{
+  color:#264409;
+}
+
+div.form .rememberMe label
+{
+  display: inline;
+}
+
+div.view
+{
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #C9E0ED;
+}
+
+div.breadcrumbs
+{
+  font-size: 0.9em;
+  padding: 5px 20px;
+}
+
+div.breadcrumbs span
+{
+  font-weight: bold;
+}
+
+div.search-form
+{
+  padding: 10px;
+  margin: 10px 0;
+  background: #eee;
+}
+
+.align-right
+{
+  float: right;
+  position: relative;
+  /*text-align: right;*/
+}
+
+.inline
+{
+  display: inline;
+}
+
+.operations
+{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.operations li
+{
+  padding-bottom: 2px;
+}
+
+.operations li a
+{
+  font: bold 12px Arial;
+  color: #0066A4;
+  display: block;
+  padding: 2px 0 2px 8px;
+  line-height: 15px;
+  text-decoration: none;
+}
+
+.operations li a:visited
+{
+  color: #0066A4;
+}
+
+.operations li a:hover
+{
+  background: #80CFFF;
+}
+
+.table{
+  display: table;
+  width: 100%;
+}
+
+.table-cell{
+  display: table-cell;
+}
+
+.footer-menu div{
+  height: 2em;
+}
+
+.icon-sklad{
+  background: url(/themes/abctoy/css/icons.png) no-repeat;
+  background-position: -95px 0px;
+  width: 95px;
+  height: 95px;
+  margin: 0 auto;
+}
+
+.icon-cart{
+  background: url(/themes/abctoy/css/elements.png) no-repeat;
+  background-position: -18px -20px;
+  background-position-x: -35px; 
+  background-size: 50%;
+  width: 120px;
+  height: 26px;
+}
+
+.icon-cart a{
+  margin: 0 0 0 60px;
+  padding: 10px 0 !important;
+}
+
+.valign-middle{
+  vertical-align: middle;
+}
+
+.uderline-dashed{
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  -moz-text-decoration-line: underline;
+  -moz-text-decoration-style: dashed;
+}
+
+.cufon{
+
+}
+
+.lager{
+  font-size: larger;
+}
+
+.x-lage{
+  font-size: x-large;
+}
+
+.blue{
+  color: #3399cc;
+}
+
+.gray{
+  color: #666666;
+}
+
+.bold{
+  font-weight: bolder;
+}
+.red{
+  color: #cc3333;
+}
+
+.green{
+  color: #99cc33;
+}
+
+.yellow{
+  color: #ff9933;
+}
+
+.items{
+  display: block;
+  width: 960px;
+  margin: 0 auto;
+}
+
+.item{
+  padding: 8px;
+  display: inline-block;
+}
+.item > div{
+  width: 175px;
+  height: 270px;
+  border-radius: 5px;
+  box-shadow: 0 5px 3px -1px #666666;
+  /*text-align: center;*/
+}
+.item div img{
+  display: block;
+  margin: 0 auto;
+  padding: 15px;
+}
+
+.item-name{
+  padding: 0 5px;
+  height: 2.5em;
+  text-align: center
+}
+.item-rest{
+  text-align: center;
+  font-style: italic;
+  font-weight: bolder;
+  color: #99cc33;  
+}
+.item-disc{
+  height: 2em;
+}
+.item-name a{
+  font-style: italic;
+  font-weight: normal;
+  color: #cc3333;
+}
+
+.item-price{
+  text-align: center;
+  font-size: xx-large;
+  font-weight: bold;
+  color: #cc3333;
+}

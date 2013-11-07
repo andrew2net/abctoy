@@ -1,0 +1,88 @@
+<?php /* @var $this Controller */ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="language" content="en" />
+
+    <!-- blueprint CSS framework -->
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/screen.css" media="screen, projection" />
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/print.css" media="print" />
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/ie.css" media="screen, projection" />
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
+    <?php Yii::app()->bootstrap->register(); ?>
+
+    <title><?php echo CHtml::encode($this->pageTitle); ?></title>
+  </head>
+  <body>
+
+    <div id="topmenu">
+      <?php
+      $this->widget('bootstrap.widgets.TbNav', array(
+        'type' => TbHtml::NAV_TYPE_TABS,
+        'items' => array(
+          array(
+            'label' => 'Каталог',
+            'url' => '/admin/catalog',
+            'active' => $this->module instanceof CatalogModule,
+            'visible' => Yii::app()->user->checkAccess('catalog.*') ||
+            Yii::app()->user->checkAccess('catalog.product.*') ||
+            Yii::app()->user->checkAccess('catalog.top10.*') ||
+            Yii::app()->user->checkAccess('catalog.category.*') ||
+            Yii::app()->user->checkAccess('catalog.brand.*')
+          ),
+          array('label' => 'Скидки',
+            'url' => '/admin/discount',
+            'active' => $this->module instanceof DiscountModule,
+            'visible' => Yii::app()->user->checkAccess('discount.*') ||
+            Yii::app()->user->checkAccess('discount.discount.*') ||
+            Yii::app()->user->checkAccess('discount.coupon.*')
+          ),
+          array(
+            'label' => 'Пользователи',
+            'url' => '/admin/user',
+            'active' => $this->module instanceof UserModule,
+            'visible' => Yii::app()->user->checkAccess('user.*')
+          ),
+          array(
+            'label' => 'Права',
+            'url' => '/admin/auth',
+            'active' => $this->module instanceof AuthModule,
+            'visible' => Yii::app()->user->checkAccess('auth.*')
+          ),
+          array(
+            'label' => 'Страницы',
+            'url' => '/admin/page',
+            'active' => $this instanceof PageController,
+            'visible' => Yii::app()->user->checkAccess('admin.page.*')
+          ),
+          array(
+            'label' => 'Выход',
+            'url' => '/admin/logout',
+            'visible' => !Yii::app()->user->isGuest,
+            'htmlOptions' => array('class' => 'pull-right'),
+          ),
+        )
+          )
+      );
+      ?>
+    </div>
+
+    <div style="width: 95%; margin: 0 auto">
+      <?php if (isset($this->breadcrumbs)): ?>
+        <?php
+        $this->widget('bootstrap.widgets.TbBreadcrumb', array(
+          'homeUrl' => array('/admin'),
+          'links' => $this->breadcrumbs,
+        ));
+        ?><!-- breadcrumbs -->
+      <?php endif ?>
+      <?php echo $content; ?>
+    </div>
+
+  </body>
+</html>
