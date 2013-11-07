@@ -16,10 +16,10 @@ return array(
       // uncomment the following to use a MySQL database
      */
     'db' => array(
-      'connectionString' => 'mysql:host=localhost;dbname=toys',
+      'connectionString' => 'mysql:host=baze.zenon.net;port=64000;dbname=vh43309',
       'emulatePrepare' => true,
-      'username' => 'root',
-      'password' => 'passdb',
+      'username' => 'vh43309',
+      'password' => 'bortMwVdK6',
       'charset' => 'utf8',
       'tablePrefix' => 'tbl_',
     ),
