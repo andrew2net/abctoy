@@ -172,11 +172,19 @@ class Coupon extends CActiveRecord {
 
     $date = date('Y-m-d', strtotime('-' . self::DAYS_BEFORE_REUSE_CODE . ' day'));
 
-    $command = Yii::app()->db->createCommand();
-    $command->select('code')
-        ->from($this->tableName())
-        ->where('used_id<>2 OR (used_id=2 AND time_used<:date)'
-            , array(':date' => $date));
+    $sql = array(
+      'select' => array('code'),
+      'from' => $this->tableName(),
+    );
+    if ($this->isNewRecord) {
+      $sql['where'] = 'used_id<>2 OR (used_id=2 AND time_used<:date)';
+      $sql['params'] = array(':date' => $date);
+    }
+    else {
+      $sql['where'] = '(used_id<>2 OR (used_id=2 AND time_used<:date)) and id<>:id';
+      $sql['params'] = array(':date' => $date, ':id' => $this->id);
+    }
+    $command = Yii::app()->db->createCommand($sql);
     $result = $command->queryAll();
     if (is_array($result))
       $exclude_codes = array_map('formatArray', $result);
