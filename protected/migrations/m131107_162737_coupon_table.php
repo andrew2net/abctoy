@@ -5,8 +5,14 @@ class m131107_162737_coupon_table extends CDbMigration {
   public function up() {
     $this->createTable('store_coupon', array(
       'id' => 'int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY',
-      'code' => 'varchar(8)',
+      'code' => 'varchar(8) NOT NULL',
+      'type_id' => 'tinyint UNSIGNED NOT NULL',  //0-summa, 1-percent
+      'value'=> 'int(5) UNSIGNED NOT NULL',
+      'used_id' => 'tinyint UNSIGNED NOT NULL',  //0-unused, 1-permanent, 2-used
+      'time_issue' => 'timestamp',   //time of issue
+      'time_used' => 'TIMESTAMP',
     ));
+    $this->createIndex('coupon_code_used', 'store_coupon', 'used_id, time_used, code');
   }
 
   public function down() {

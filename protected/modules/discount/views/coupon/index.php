@@ -1,15 +1,50 @@
 <?php
 /* @var $this CouponController */
+/* @var $model Coupon */
+?>
 
+<?php
 $this->breadcrumbs=array(
 	'Купоны',
 );
 ?>
+
 <?php $this->beginContent('/discount/menu'); ?>
 <h3>Купоны</h3>
 
-<p>
-	You may change the content of this page by modifying
-	the file <tt><?php echo __FILE__; ?></tt>.
-</p>
+<div class="btn-toolbar">
+  <?php
+  echo TbHtml::linkButton(
+      'Добавить купон', array(
+    'color' => TbHtml::BUTTON_COLOR_PRIMARY,
+    'url' => array('/admin/discount/coupon/create'),
+      )
+  );
+  ?>
+</div>
+
+  <?php $this->widget('ext.bootstrap.widgets.TbGridView',array(
+	'dataProvider'=>$model->search(),
+  'filter' => $model,
+	'columns'=>array(
+    'code',
+    array(
+      'name' => 'used_id',
+      'value' => '$data->used',
+      'filter' => $model->usedValues,
+    ),
+    'value',
+    array(
+      'name' => 'type_id',
+      'value' => '$data->type',
+      'filter' => $model->types,
+    ),
+    'time_issue',
+    'time_used',
+    array(
+      'class' => 'bootstrap.widgets.TbButtonColumn',
+      'template'=>'{update}{delete}',
+    ),
+  ),
+)); ?>
 <?php $this->endContent(); ?>
