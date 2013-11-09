@@ -188,7 +188,11 @@ class Coupon extends CActiveRecord {
   public function afterFind() {
     $date = Yii::app()->dateFormatter->formatDateTime($this->time_issue);
     $this->time_issue = $date;
-    $date = Yii::app()->dateFormatter->formatDateTime($this->time_used);
+
+    if ($this->time_used == '0000-00-00 00:00:00')
+      $date = '';
+    else
+      $date = Yii::app()->dateFormatter->formatDateTime($this->time_used);
     $this->time_used = $date;
 
     parent::afterFind();
@@ -198,8 +202,11 @@ class Coupon extends CActiveRecord {
   public function beforeSave() {
     $date = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm:ss', $this->time_issue);
     $this->time_issue = $date;
-    $date = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm:ss', $this->time_used);
-    $this->time_used = $date;
+
+    if (!empty($this->time_used)) {
+      $date = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm:ss', $this->time_used);
+      $this->time_used = $date;
+    }
 
     parent::beforeSave();
     return TRUE;
