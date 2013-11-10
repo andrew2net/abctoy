@@ -8,12 +8,14 @@ $this->widget('ext.bootstrap.widgets.TbNav', array(
     array('label' => 'Виды доставки',
       'url' => '/admin/delivery/delivery',
       'active' => $this instanceof DeliveryController,
-      'visible' => Yii::app()->user->checkAccess('delivery.delivery.*')
+      'visible' => Yii::app()->user->checkAccess('delivery.delivery.*') ||
+    Yii::app()->user->checkAccess('delivery.*')
     ),
     array('label' => 'Города',
       'url' => '/admin/delivery/city',
       'active' => $this instanceof CityController,
-      'visible' => Yii::app()->user->checkAccess('delivery.city.*')
+      'visible' => Yii::app()->user->checkAccess('delivery.city.*') ||
+    Yii::app()->user->checkAccess('delivery.*')
     ),
   )
 ));
