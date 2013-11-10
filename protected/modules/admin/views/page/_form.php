@@ -43,7 +43,11 @@
 
   <div class="form-actions">
     <?php
-    echo TbHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array(
+    echo TbHtml::linkButton('Закрыть', array(
+      'url' => '/admin/page'));
+    ?>
+    <?php
+    echo TbHtml::submitButton('Сохранить', array(
       'color' => TbHtml::BUTTON_COLOR_PRIMARY,
       'size' => TbHtml::BUTTON_SIZE_SMALL,
     ));

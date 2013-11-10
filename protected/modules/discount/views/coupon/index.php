@@ -43,7 +43,7 @@ $this->breadcrumbs=array(
     'time_used',
     array(
       'class' => 'bootstrap.widgets.TbButtonColumn',
-      'template'=>'{update}{delete}',
+      'template' => '{update}{delete}',
     ),
   ),
 )); ?>

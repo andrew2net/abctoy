@@ -1,8 +1,6 @@
 <?php
 
-class PageController extends Controller {
-
-  public $defaultAction = 'admin';
+class CityController extends Controller {
 
   /**
    * @return array action filters
@@ -15,29 +13,20 @@ class PageController extends Controller {
   }
 
   /**
-   * Displays a particular model.
-   * @param integer $id the ID of the model to be displayed
-   */
-  public function actionView($id) {
-    $this->render('view', array(
-      'model' => $this->loadModel($id),
-    ));
-  }
-
-  /**
    * Creates a new model.
    * If creation is successful, the browser will be redirected to the 'view' page.
    */
   public function actionCreate() {
-    $model = new Page;
+    $model = new City;
 
     // Uncomment the following line if AJAX validation is needed
     // $this->performAjaxValidation($model);
 
-    if (isset($_POST['Page'])) {
-      $model->attributes = $_POST['Page'];
+    if (isset($_POST['City'])) {
+      $model->attributes = $_POST['City'];
       if ($model->save()) {
-        $this->redirect(array('admin')); //, 'id' => $model->id));
+        $this->saveCityDelivery($model);
+        $this->redirect(array('index'));
       }
     }
 
@@ -57,16 +46,30 @@ class PageController extends Controller {
     // Uncomment the following line if AJAX validation is needed
     // $this->performAjaxValidation($model);
 
-    if (isset($_POST['Page'])) {
-      $model->attributes = $_POST['Page'];
+    if (isset($_POST['City'])) {
+      $model->attributes = $_POST['City'];
       if ($model->save()) {
-        $this->redirect(array('admin')); //, 'id' => $model->id));
+        $this->saveCityDelivery($model);
+        $this->redirect(array('index'));
       }
     }
 
     $this->render('update', array(
       'model' => $model,
     ));
+  }
+
+  private function saveCityDelivery($model) {
+    Yii::app()->db->createCommand()
+        ->delete('store_city_delivery', 'city_id=:id', array(':id' => $model->id));
+    if (isset($_POST['delivery']) && is_array($_POST['delivery']))
+      foreach ($_POST['delivery'] as $key => $value) {
+        $cityDelivery = new CityDelivery;
+        $cityDelivery->city_id = $model->id;
+        $cityDelivery->delivery_id = $key;
+        $cityDelivery->price = $_POST['price'][$key];
+        $cityDelivery->save();
+      }
   }
 
   /**
@@ -90,13 +93,23 @@ class PageController extends Controller {
   }
 
   /**
+   * Lists all models.
+   */
+  public function actionIndex() {
+    $dataProvider = new CActiveDataProvider('City');
+    $this->render('index', array(
+      'dataProvider' => $dataProvider,
+    ));
+  }
+
+  /**
    * Manages all models.
    */
   public function actionAdmin() {
-    $model = new Page('search');
+    $model = new City('search');
     $model->unsetAttributes();  // clear any default values
-    if (isset($_GET['Page'])) {
-      $model->attributes = $_GET['Page'];
+    if (isset($_GET['City'])) {
+      $model->attributes = $_GET['City'];
     }
 
     $this->render('admin', array(
@@ -108,11 +121,11 @@ class PageController extends Controller {
    * Returns the data model based on the primary key given in the GET variable.
    * If the data model is not found, an HTTP exception will be raised.
    * @param integer $id the ID of the model to be loaded
-   * @return Page the loaded model
+   * @return City the loaded model
    * @throws CHttpException
    */
   public function loadModel($id) {
-    $model = Page::model()->findByPk($id);
+    $model = City::model()->findByPk($id);
     if ($model === null) {
       throw new CHttpException(404, 'The requested page does not exist.');
     }
@@ -121,13 +134,33 @@ class PageController extends Controller {
 
   /**
    * Performs the AJAX validation.
-   * @param Page $model the model to be validated
+   * @param City $model the model to be validated
    */
   protected function performAjaxValidation($model) {
-    if (isset($_POST['ajax']) && $_POST['ajax'] === 'page-form') {
+    if (isset($_POST['ajax']) && $_POST['ajax'] === 'city-form') {
       echo CActiveForm::validate($model);
       Yii::app()->end();
     }
+  }
+
+  public function actionSuggestCity($term) {
+
+    function formatArray($element) {
+      return $element['name_ru'];
+    }
+
+    $city = Yii::app()->db->createCommand()
+        ->select('name_ru')->from('net_city')
+        ->where('name_ru LIKE :data', array(':data' => '%' . $term . '%'))->limit(20)
+        ->group('name_ru')
+        ->queryAll();
+    if (is_array($city))
+      $suggest = array_map('formatArray', $city);
+    else
+      $suggest = array();
+
+    echo CJSON::encode($suggest);
+    Yii::app()->end();
   }
 
 }

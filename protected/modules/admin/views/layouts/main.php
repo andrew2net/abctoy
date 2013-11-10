@@ -42,6 +42,13 @@
             Yii::app()->user->checkAccess('discount.discount.*') ||
             Yii::app()->user->checkAccess('discount.coupon.*')
           ),
+          array('label' => 'Доставка',
+            'url' => '/admin/delivery',
+            'active' => $this->module instanceof DeliveryModule,
+            'visible' => Yii::app()->user->checkAccess('delivery.*') ||
+            Yii::app()->user->checkAccess('delivery.delivery.*') ||
+            Yii::app()->user->checkAccess('delivery.city.*')
+          ),
           array(
             'label' => 'Пользователи',
             'url' => '/admin/user',
