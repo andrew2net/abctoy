@@ -13,10 +13,11 @@ class m131109_141056_delivery_table extends CDbMigration {
       'name' => 'varchar(100)',
     ));
     $this->createTable('store_city_delivery', array(
-      'city_id' => 'int(11) UNSIGNED NOT NULL PRIMARY KEY',
-      'delivery_id' => 'int(11) UNSIGNED NOT NULL PRIMARY KEY',
+      'city_id' => 'int(11) UNSIGNED NOT NULL',
+      'delivery_id' => 'int(11) UNSIGNED NOT NULL',
       'price' => 'decimal(10,2) UNSIGNED',
     ));
+    $this->addPrimaryKey('PRIMARY', 'store_city_delivery', 'city_id, delivery_id');
     $this->addForeignKey('city_delivery', 'store_city_delivery', 'city_id'
         , 'store_city', 'id', 'CASCADE');
     $this->addForeignKey('delivery_city', 'store_city_delivery', 'delivery_id'
