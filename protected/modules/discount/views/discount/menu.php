@@ -8,12 +8,14 @@ $this->widget('ext.bootstrap.widgets.TbNav', array(
     array('label' => 'Скидки',
       'url' => '/admin/discount/discount',
       'active' => $this instanceof DiscountController,
-      'visible' => Yii::app()->user->checkAccess('discount.discount.*')
+      'visible' => Yii::app()->user->checkAccess('discount.discount.*') ||
+      Yii::app()->user->checkAccess('discount.*')
     ),
     array('label' => 'Купоны',
       'url' => '/admin/discount/coupon',
       'active' => $this instanceof CouponController,
-      'visible' => Yii::app()->user->checkAccess('discount.coupon.*')
+      'visible' => Yii::app()->user->checkAccess('discount.coupon.*') ||
+      Yii::app()->user->checkAccess('discount.*')
     ),
   )
 ));
