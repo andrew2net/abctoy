@@ -17,6 +17,12 @@ $this->widget('ext.bootstrap.widgets.TbNav', array(
       'visible' => Yii::app()->user->checkAccess('discount.coupon.*') ||
       Yii::app()->user->checkAccess('discount.*')
     ),
+    array('label' => 'Акции',
+      'url' => '/admin/discount/action',
+      'active' => $this instanceof ActionController,
+      'visible' => Yii::app()->user->checkAccess('discount.action.*') ||
+      Yii::app()->user->checkAccess('discount.*')
+    ),
   )
 ));
 ?>
