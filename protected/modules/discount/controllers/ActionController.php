@@ -53,7 +53,7 @@ class ActionController extends Controller {
     // $this->performAjaxValidation($model);
 
     if (isset($_POST['Action'])) {
-      $this->redirect(array('view', 'id' => $model->id));
+      $this->saveAction($model);
     }
 
     $this->render('update', array(
@@ -101,7 +101,7 @@ class ActionController extends Controller {
 
       // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
       if (!isset($_GET['ajax'])) {
-        $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+        $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
       }
     }
     else {
