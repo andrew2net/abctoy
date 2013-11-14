@@ -56,8 +56,8 @@ class ProductController extends Controller {
 
     $model->attributes = $_POST['Product'];
 
-    $this->moveImg(&$model, 'img');
-    $this->moveImg(&$model, 'small_img');
+    $this->moveImg($model, 'img');
+    $this->moveImg($model, 'small_img');
 
     if ($model->save()) {
       $command = Yii::app()->db->createCommand();
@@ -245,7 +245,7 @@ class ProductController extends Controller {
         $imageUrl = $data->val($index, 'D', 1);
         $ext = substr($imageUrl, strrpos($imageUrl, '.', -1));
         $productData['img'] = '/productimages/' . $product->id . $ext;
-        copy($imageUrl, $productImagePath . $product->id . $ext);
+        file_put_contents($productImagePath . $product->id . $ext, file_get_contents($imageUrl));
 
         $smallImgUrl = $data->val($index, 'E', 1);
         $small_ext = substr($smallImgUrl, strrpos($smallImgUrl, '.', -1));
@@ -254,6 +254,8 @@ class ProductController extends Controller {
         copy($smallImgUrl, $productImagePath . $product->id . 's' . $small_ext);
 
         $product->attributes = $productData;
+        $product->img = $productData['img'];
+        $product->small_img=$productData['small_img'];
         $product->save(FALSE);
       }
     }
