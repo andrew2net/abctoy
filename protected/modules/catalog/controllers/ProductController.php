@@ -245,17 +245,29 @@ class ProductController extends Controller {
         $imageUrl = $data->val($index, 'D', 1);
         $ext = substr($imageUrl, strrpos($imageUrl, '.', -1));
         $productData['img'] = '/productimages/' . $product->id . $ext;
-        file_put_contents($productImagePath . $product->id . $ext, file_get_contents($imageUrl));
+        $ch = curl_init($imageUrl);
+        $fp = fopen($productImagePath . $product->id . $ext, 'w+');
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_exec($ch);
+        fclose($fp);
+//        file_put_contents($productImagePath . $product->id . $ext, file_get_contents($imageUrl));
 
         $smallImgUrl = $data->val($index, 'E', 1);
         $small_ext = substr($smallImgUrl, strrpos($smallImgUrl, '.', -1));
         $productData['small_img'] = '/productimages/'
             . $product->id . 's' . $small_ext;
-        copy($smallImgUrl, $productImagePath . $product->id . 's' . $small_ext);
+        $sfp = fopen($productImagePath . $product->id . 's' . $small_ext, 'w+');
+        curl_setopt($ch, CURLOPT_URL, $smallImgUrl);
+        curl_setopt($ch, CURLOPT_FILE, $sfp);
+        curl_exec($ch);
+        curl_close($ch);
+        fclose($sfp);
+//        copy($smallImgUrl, $productImagePath . $product->id . 's' . $small_ext);
 
         $product->attributes = $productData;
         $product->img = $productData['img'];
-        $product->small_img=$productData['small_img'];
+        $product->small_img = $productData['small_img'];
         $product->save(FALSE);
       }
     }
