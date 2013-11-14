@@ -312,9 +312,16 @@ div.search-form
   /*text-align: center;*/
 }
 .item div img{
-  display: block;
-  margin: 0 auto;
-  padding: 15px;
+  /*display: block;*/
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /*padding: 15px;*/
+  max-height: 120px;
+  max-width: 140px;
 }
 
 .item-name{

@@ -7,6 +7,7 @@
  * @property string $id
  * @property string $name
  * @property string $img
+ * @property string $small_img
  * @property string $article
  * @property integer $brand_id
  * @property integer $age
@@ -51,11 +52,12 @@ class Product extends CActiveRecord {
       array('age, gender_id, remainder', 'numerical', 'integerOnly' => true),
       array('name, article, brand_id, price', 'required'),
       array('name', 'length', 'max' => 30),
-      array('img', 'length', 'max' => 255),
+      array('img, small_img', 'length', 'max' => 255),
       array('article', 'length', 'max' => 25),
       array('brand_id', 'length', 'max' => 11),
       array('price', 'length', 'max' => 12),
       array('description, show_me', 'safe'),
+      array('img, small_img', 'unsafe'),
       array('article', 'unique'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
@@ -87,6 +89,7 @@ class Product extends CActiveRecord {
       'id' => 'ID',
       'name' => 'Наименование',
       'img' => 'Изображение',
+      'small_img' => 'Миниатюра',
       'article' => 'Артикул',
       'brand_id' => 'Бренд',
       'age' => 'Возраст',
@@ -212,6 +215,20 @@ class Product extends CActiveRecord {
     }
 
     return $tree;
+  }
+
+  protected function afterDelete() {
+    if (strlen($this->img) > 0) {
+      $file = Yii::getPathOfAlias('webroot') . $this->img;
+      if (file_exists($file))
+        unlink($file);
+    }
+    if (strlen($this->small_img) > 0) {
+      $file = Yii::getPathOfAlias('webroot') . $this->small_img;
+      if (file_exists($file))
+        unlink($file);
+    }
+    parent::afterDelete();
   }
 
 }

@@ -83,6 +83,14 @@ body
 #img1{
   max-height: 450px;
   max-width: 450px;
+}
+
+#img2{
+  max-height: 200px;
+  max-width: 200px;
+}
+
+#img1, #img2{
   text-align: center;
 }
 

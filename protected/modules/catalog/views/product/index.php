@@ -21,6 +21,23 @@ $this->breadcrumbs = array(
       )
   );
   ?>
+  <?php
+  echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_INLINE
+      , '/admin/catalog/product/productUpload', 'post', array(
+    'class' => 'pull-right',
+    'enctype' => 'multipart/form-data',
+  ));
+  ?>
+  <?php
+  echo TbHtml::activeFileField($importData, 'productFile'
+      , array('accept' => 'application/vnd.ms-excel'));
+  ?>
+  <?php
+  echo TbHtml::submitButton('Загрузить');
+  ?>
+  <?php
+  echo TbHtml::endForm();
+  ?>
 </div>
 
 <?php
@@ -45,13 +62,13 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'remainder',
     'price',
     array(
-      'name'=>'show_me',
-      'value'=>'$data->show_me ? "Да" : "Нет"',
-      'filter'=>array(0=>'Нет', 1=>'Да'),
-      ),
+      'name' => 'show_me',
+      'value' => '$data->show_me ? "Да" : "Нет"',
+      'filter' => array(0 => 'Нет', 1 => 'Да'),
+    ),
     array(
       'class' => 'bootstrap.widgets.TbButtonColumn',
-      'template'=>'{update}{delete}',
+      'template' => '{update}{delete}',
     ),
   )
     )

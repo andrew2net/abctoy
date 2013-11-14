@@ -16,22 +16,31 @@
 </div>
 <input id="Product_img" name="Product[img]" type="text" value="<?php echo $model->img ?>" style="display: none">
 
+<div id="upload-container2" style="float: right; margin: 0 10px">
+  <div id="upload2"
+       style="width: 200px; height: 200px; line-height: 200px; border: 1px solid; position: relative"
+       class="noimg">
+    <img id="img2" alt="Миниатюра" class="img" src="<?php echo $model->small_img ?>">
+  </div>
+</div>
+<input id="Product_small_img" name="Product[small_img]" type="text" value="<?php echo $model->small_img ?>" style="display: none">
+
 <div>
   <?php echo $form->textFieldControlGroup($model, 'name', array('span' => 4, 'maxlength' => 30,)); ?>
 </div>
 
-<div class="inline-blocks">
-  <div>
-    <?php echo $form->textFieldControlGroup($model, 'article', array('span' => 3, 'maxlength' => 25)); ?>
-  </div>
-
-  <div>
-    <?php
-    echo $form->dropDownListControlGroup($model, 'brand_id'
-        , $model->getBrandOptions(), array('span' => 3, 'empty' => 'Выберите бренд'));
-    ?>
-  </div>
+<!--<div class="inline-blocks">-->
+<div>
+  <?php echo $form->textFieldControlGroup($model, 'article', array('span' => 3, 'maxlength' => 25)); ?>
 </div>
+
+<div>
+  <?php
+  echo $form->dropDownListControlGroup($model, 'brand_id'
+      , $model->getBrandOptions(), array('span' => 3, 'empty' => 'Выберите бренд'));
+  ?>
+</div>
+<!--</div>-->
 
 <div class="inline-blocks">
   <div>
@@ -68,5 +77,15 @@ echo TbHtml::button('Удалить изображение', array(
   'size' => TbHtml::BUTTON_SIZE_SMALL,
   'id' => 'delImg',
   'class' => 'pull-right',
+));
+?>
+
+<?php
+echo TbHtml::button('Удалить миниатюру', array(
+  'color' => TbHtml::BUTTON_COLOR_DEFAULT,
+  'size' => TbHtml::BUTTON_SIZE_SMALL,
+  'id' => 'delImg2',
+  'class' => 'pull-right',
+  'style' => 'margin-right: 10px',
 ));
 ?>

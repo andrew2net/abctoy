@@ -79,7 +79,7 @@
       width: element.outerWidth() + 'px',
       overflow: 'hidden',
       cursor: 'pointer',
-      margin: 0,
+//      margin: 0,
       padding: 0,
     });
 

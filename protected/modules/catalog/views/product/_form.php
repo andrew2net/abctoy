@@ -74,9 +74,30 @@
       $('#Product_img').prop('value', data);
     }
   });
+  $('#upload2').upload({
+    name: 'fileMini',
+    container: '#upload-container2',
+    method: 'post',
+    enctype: 'multipart/form-data',
+    action: '/admin/catalog/product/upload',
+    onSubmit: function() {
+      $('#img2').hide();
+      $('#upload2').removeClass('noimg').addClass('loading');
+    },
+    onComplete: function(data) {
+      $('#upload2').removeClass('loading');
+      $('#img2').prop('src', data).show();
+      $('#Product_small_img').prop('value', data);
+    }
+  });
   $('#delImg').on('click', function() {
     $('#upload1').addClass('noimg');
     $('#img1').prop('src', '');
     $('#Product_img').prop('value', '');
+  });
+  $('#delImg2').on('click', function() {
+    $('#upload2').addClass('noimg');
+    $('#img2').prop('src', '');
+    $('#Product_small_img').prop('value', '');
   });
 </script>

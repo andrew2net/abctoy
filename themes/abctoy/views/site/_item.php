@@ -1,6 +1,6 @@
 <div class="item">
   <div>
-    <div style="height: 150px"><img height="120" src="<?php echo $data->img; ?>"></div>
+    <div style="height: 150px; position: relative"><img src="<?php echo $data->small_img; ?>"></div>
     <div class="item-name"><?php echo CHtml::link($data->name); ?></div>
     <div class="item-rest">В наличии</div>
     <div class="item-disc"></div>
