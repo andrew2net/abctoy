@@ -26,7 +26,7 @@ class SiteController extends Controller {
     $model = $page->findByAttributes(array('url' => $url));
     if (!$model)
       throw new CHttpException(404, "Страница {$url} не найдена");
-      $this->setPageTitle(Yii::app()->name.' - '.$model->title);
+    $this->setPageTitle(Yii::app()->name . ' - ' . $model->title);
     $this->render('page', array(
       'model' => $model
         )
@@ -38,9 +38,8 @@ class SiteController extends Controller {
    * when an action is not explicitly requested by users.
    */
   public function actionIndex() {
-    // renders the view file 'protected/views/site/index.php'
-    // using the default layout 'protected/views/layouts/main.php'
-    $this->render('index');
+    $searc = new Search;
+    $this->render('index', array('search' => $searc));
   }
 
   /**

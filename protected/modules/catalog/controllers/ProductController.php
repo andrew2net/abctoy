@@ -251,7 +251,6 @@ class ProductController extends Controller {
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_exec($ch);
         fclose($fp);
-//        file_put_contents($productImagePath . $product->id . $ext, file_get_contents($imageUrl));
 
         $smallImgUrl = $data->val($index, 'E', 1);
         $small_ext = substr($smallImgUrl, strrpos($smallImgUrl, '.', -1));
@@ -263,7 +262,6 @@ class ProductController extends Controller {
         curl_exec($ch);
         curl_close($ch);
         fclose($sfp);
-//        copy($smallImgUrl, $productImagePath . $product->id . 's' . $small_ext);
 
         $product->attributes = $productData;
         $product->img = $productData['img'];
