@@ -4,6 +4,7 @@ class m131117_131132_avert_primary_key extends CDbMigration
 {
 	public function up()
 	{
+    $this->dropPrimaryKey('PRIMARY', 'store_product_action');
     $this->addPrimaryKey('PRIMARY', 'store_product_action', 'action_id');
 	}
 
