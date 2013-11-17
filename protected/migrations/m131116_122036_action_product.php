@@ -11,7 +11,7 @@ class m131116_122036_action_product extends CDbMigration {
     
     $this->createTable('store_product_action', array(
       'product_id' => 'int(11) UNSIGNED',
-      'action_id' => 'int(11) UNSIGNED',
+      'action_id' => 'int(11) UNSIGNED NOT NULL PRIMARY KEY',
       'text' => 'text',
       'date' => 'date',
     ));
