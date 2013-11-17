@@ -39,7 +39,7 @@
     ?>
     <?php echo $form->textFieldControlGroup($model, 'name', array('span' => 4, 'maxlength' => 30)); ?>
   </div>
-  <div id="action-data" style="display: <?php $model->type_id ? 'inherit' : 'none'; ?>">
+  <div id="action-data" style="display: <?php echo $model->type_id ? 'inherit' : 'none'; ?>">
     <?php echo $form->textAreaControlGroup($advert, 'text', array('rows' => 6, 'span' => 5)); ?>
 
     <?php echo TbHtml::activeLabelEx($advert, 'date'); ?>
@@ -52,21 +52,25 @@
     ));
     ?>
     <!--<div>-->
-      <?php
-      Yii::import('application.modules.catalog.models.Product');
-      $product = Product::model()->findByPk($advert->product_id);
-      ?>
-      <?php echo TbHtml::activeLabelEx($advert, 'product_id'); ?>
-      <?php
-      $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
-        'name' => 'product',
-        'value' => $product->article . ', ' . $product->name,
-        'sourceUrl' => '/admin/discount/action/suggestproduct',
-        'htmlOptions' => array('class' => 'span5'),
-      ));
-      ?>
+    <?php
+    Yii::import('application.modules.catalog.models.Product');
+    $product = Product::model()->findByPk($advert->product_id);
+    if (is_null($product))
+      $value = '';
+    else
+      $value = $product->article . ', ' . $product->name;
+    ?>
+    <?php echo TbHtml::activeLabelEx($advert, 'product_id'); ?>
+    <?php
+    $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+      'name' => 'product',
+      'value' => $value,
+      'sourceUrl' => '/admin/discount/action/suggestproduct',
+      'htmlOptions' => array('class' => 'span5'),
+    ));
+    ?>
     <!--</div>-->
-    <?php // echo $form->textFieldControlGroup($advert, 'product_id', array('span' => 5, 'maxlength' => 11));  ?>
+    <?php // echo $form->textFieldControlGroup($advert, 'product_id', array('span' => 5, 'maxlength' => 11));   ?>
   </div>
   <?php echo $form->checkBoxControlGroup($model, 'show') ?>
   <div class="form-actions">
