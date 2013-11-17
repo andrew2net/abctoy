@@ -20,6 +20,7 @@
       ?>
     </div>
     <div style="float: right; margin: 5px 20px;">
+      <?php echo CHtml::beginForm('#', 'post'); ?>
       <?php
       echo CHtml::activeTextField($search, 'text', array(
         'style' => 'border-radius: 4px 0 0 4px; border: none; width: 10em; height: 23px; padding-left: 10px',
@@ -33,6 +34,7 @@
       ));
       ;
       ?>
+      <?php echo CHtml::endForm(); ?>
     </div>
   </div>
 </div>

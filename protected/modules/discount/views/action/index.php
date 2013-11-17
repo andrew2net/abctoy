@@ -4,6 +4,7 @@
 ?>
 
 <?php
+Yii::import('application.modules.catalog.models.Product');
 $this->breadcrumbs = array(
   'Акции',
 );
@@ -27,12 +28,18 @@ $this->widget('ext.bootstrap.widgets.TbGridView', array(
   'dataProvider' => $dataProvider,
   'columns' => array(
     array(
-      'name'=>'type_id',
-      'value'=>'$data->type',
-      ),
+      'name' => 'type_id',
+      'value' => '$data->type',
+    ),
     'name',
-    'date',
-    'product_id',
+    'advert.date',
+    array(
+      'name' => 'advert.product_id',
+      'value' => 'is_null($data->product) ? "" : $data->product->name'),
+    array(
+      'name'=>'show',
+      'value'=>'$data->show ? "Да" : "Нет"'
+      ),
     array(
       'class' => 'bootstrap.widgets.TbButtonColumn',
       'template' => '{update}{delete}',

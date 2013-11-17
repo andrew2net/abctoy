@@ -1,38 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "store_action".
+ * This is the model class for table "store_product_action".
  *
- * The followings are the available columns in table 'store_action':
- * @property string $id
- * @property integer $type_id
- * @property string $name
- * @property string $img
- * @property boolean $show
+ * The followings are the available columns in table 'store_product_action':
+ * @property string $product_id
+ * @property string $action_id
+ * @property string $text
+ * @property string $date
  *
  * The followings are the available model relations:
  * @property Product $product
- * @property Advert $advert
- * @property int $type 
- * @property Int[] $types 
+ * @property Action $action
  */
-class Action extends CActiveRecord {
-
-  private $types = array(0 => 'Новость', 1 => 'Акция');
-
-  public function getTypes() {
-    return $this->types;
-  }
-
-  public function getType() {
-    return $this->types[$this->type_id];
-  }
+class Advert extends CActiveRecord {
 
   /**
    * @return string the associated database table name
    */
   public function tableName() {
-    return 'store_action';
+    return 'store_product_action';
   }
 
   /**
@@ -42,15 +29,13 @@ class Action extends CActiveRecord {
     // NOTE: you should only define rules for those attributes that
     // will receive user inputs.
     return array(
-//      array('type_id', 'required'),
-      array('type_id', 'numerical', 'integerOnly' => true),
-      array('name', 'length', 'max' => 30),
-      array('img', 'length', 'max' => 255),
-      array('show', 'safe'),
-      array('img', 'unsafe'),
+      array('product_id, action_id', 'length', 'max' => 11),
+      array('product_id, text, date', 'required'),
+      array('text, date', 'safe'),
+      array('product_id', 'unsafe'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
-      array('id, type_id, name, img', 'safe', 'on' => 'search'),
+      array('product_id, action_id, text, date', 'safe', 'on' => 'search'),
     );
   }
 
@@ -61,9 +46,8 @@ class Action extends CActiveRecord {
     // NOTE: you may need to adjust the relation name and the related
     // class name for the relations automatically generated below.
     return array(
-      'advert' => array(self::HAS_ONE, 'Advert', 'action_id'),
-      'product' => array(self::HAS_ONE, 'Product'
-        , array('product_id' => 'id'), 'through' => 'advert'),
+      'product' => array(self::BELONGS_TO, 'Product', 'product_id'),
+      'action' => array(self::BELONGS_TO, 'Action', 'action_id'),
     );
   }
 
@@ -72,11 +56,10 @@ class Action extends CActiveRecord {
    */
   public function attributeLabels() {
     return array(
-      'id' => 'ID',
-      'type_id' => 'Вид',
-      'name' => 'Наименование',
-      'img' => 'Изображение',
-      'show' => 'Показывать'
+      'product_id' => 'Товар',
+      'action_id' => 'Акция',
+      'text' => 'Текст',
+      'date' => 'Дата',
     );
   }
 
@@ -97,10 +80,10 @@ class Action extends CActiveRecord {
 
     $criteria = new CDbCriteria;
 
-    $criteria->compare('id', $this->id, true);
-    $criteria->compare('type_id', $this->type_id);
-    $criteria->compare('name', $this->name, true);
-    $criteria->compare('img', $this->img, true);
+    $criteria->compare('product_id', $this->product_id, true);
+    $criteria->compare('action_id', $this->action_id, true);
+    $criteria->compare('text', $this->text, true);
+    $criteria->compare('date', $this->date, true);
 
     return new CActiveDataProvider($this, array(
       'criteria' => $criteria,
@@ -111,19 +94,33 @@ class Action extends CActiveRecord {
    * Returns the static model of the specified AR class.
    * Please note that you should have this exact method in all your CActiveRecord descendants!
    * @param string $className active record class name.
-   * @return Action the static model class
+   * @return Advert the static model class
    */
   public static function model($className = __CLASS__) {
     return parent::model($className);
   }
 
-  protected function afterDelete() {
-    if (strlen($this->img) > 0) {
-      $file = Yii::getPathOfAlias('webroot') . $this->img;
-      if (file_exists($file))
-        unlink($file);
+  public function beforeSave() {
+
+    if (!empty($this->date)) {
+      $date = Yii::app()->dateFormatter->format('yyyy-MM-dd', $this->date);
+      $this->date = $date;
     }
-    parent::afterDelete();
+
+    parent::beforeSave();
+    return TRUE;
+  }
+
+  public function afterFind() {
+
+    if ($this->date == '0000-00-00')
+      $date = '';
+    else
+      $date = Yii::app()->dateFormatter->format('dd.MM.yyyy', $this->date);
+    $this->date = $date;
+
+    parent::afterFind();
+    return TRUE;
   }
 
 }

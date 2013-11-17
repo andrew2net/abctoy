@@ -2,6 +2,9 @@
 /* @var $search Search */
 ?>
 <?php
+$cs = Yii::app()->getClientScript();
+$cs->registerScriptFile(Yii::getPathOfAlias('webroot.js') .
+    DIRECTORY_SEPARATOR . 'jquery.jcarousel.js', CClientScript::POS_END);
 
 $this->renderPartial('_topmenu');
 ?>

@@ -1,6 +1,7 @@
 <?php
 /* @var $this ActionController */
 /* @var $model Action */
+/* @var $advert Advert */
 /* @var $form TbActiveForm */
 ?>
 
@@ -26,8 +27,8 @@
   <div id="upload-container" style="float: right">
     <div id="upload1" 
          style="width: 700px; height: 200px; line-height: 200px; border: 1px solid" class="noimg">
-      <img id="img" alt="Изображение" height="200px" width="700px" class="img"
-           style="text-align: center" src="<?php echo $model->img ?>">
+      <img id="img" alt="Изображение" class="img"
+           style="text-align: center; max-height: 200px; max-width: 700px; margin: auto 1px" src="<?php echo $model->img ?>">
     </div>
   </div>
 
@@ -36,24 +37,38 @@
     echo $form->dropDownListControlGroup($model, 'type_id'
         , $model->types, array('span' => 2));
     ?>
-
     <?php echo $form->textFieldControlGroup($model, 'name', array('span' => 4, 'maxlength' => 30)); ?>
-  </div>Новое
-  <div id="action-data" style="display: none">
-    <?php echo $form->textAreaControlGroup($model, 'text', array('rows' => 6, 'span' => 5)); ?>
+  </div>
+  <div id="action-data" style="display: <?php $model->type_id ? 'inherit' : 'none'; ?>">
+    <?php echo $form->textAreaControlGroup($advert, 'text', array('rows' => 6, 'span' => 5)); ?>
 
-    <?php echo TbHtml::label('Дата окончания', 'Action_date'); ?>
+    <?php echo TbHtml::activeLabelEx($advert, 'date'); ?>
     <?php
     $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-      'model' => $model,
+      'model' => $advert,
       'attribute' => 'date',
       'language' => 'ru',
+      'htmlOptions' => array('class' => 'span'),
     ));
     ?>
-
-    <?php echo $form->textFieldControlGroup($model, 'product_id', array('span' => 5, 'maxlength' => 11)); ?>
+    <!--<div>-->
+      <?php
+      Yii::import('application.modules.catalog.models.Product');
+      $product = Product::model()->findByPk($advert->product_id);
+      ?>
+      <?php echo TbHtml::activeLabelEx($advert, 'product_id'); ?>
+      <?php
+      $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+        'name' => 'product',
+        'value' => $product->article . ', ' . $product->name,
+        'sourceUrl' => '/admin/discount/action/suggestproduct',
+        'htmlOptions' => array('class' => 'span5'),
+      ));
+      ?>
+    <!--</div>-->
+    <?php // echo $form->textFieldControlGroup($advert, 'product_id', array('span' => 5, 'maxlength' => 11));  ?>
   </div>
-
+  <?php echo $form->checkBoxControlGroup($model, 'show') ?>
   <div class="form-actions">
     <?php
     echo TbHtml::linkButton('Закрыть', array(

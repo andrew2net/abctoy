@@ -28,16 +28,17 @@ class ActionController extends Controller {
    */
   public function actionCreate() {
     $model = new Action;
-
+    $advert = new Advert;
     // Uncomment the following line if AJAX validation is needed
     // $this->performAjaxValidation($model);
 
     if (isset($_POST['Action'])) {
-      $this->saveAction($model);
+      $this->saveAction($model, $advert);
     }
 
     $this->render('create', array(
       'model' => $model,
+      'advert' => $advert,
     ));
   }
 
@@ -48,20 +49,24 @@ class ActionController extends Controller {
    */
   public function actionUpdate($id) {
     $model = $this->loadModel($id);
+    $advert = Advert::model()->findByPk($model->id);
+    if (is_null($advert))
+      $advert = new Advert;
 
     // Uncomment the following line if AJAX validation is needed
     // $this->performAjaxValidation($model);
 
     if (isset($_POST['Action'])) {
-      $this->saveAction($model);
+      $this->saveAction($model, $advert);
     }
 
     $this->render('update', array(
       'model' => $model,
+      'advert' => $advert,
     ));
   }
 
-  private function saveAction(Action &$model) {
+  private function saveAction(Action &$model, Advert $advert) {
 
     $model->name = $_POST['Action']['name'];
     $old_file = Yii::getPathOfAlias('webroot') . $model->img;
@@ -83,10 +88,20 @@ class ActionController extends Controller {
       else
         $model->img = '';
     }
-    else
-      $model->attributes = $_POST['Action'];
-    if ($model->save())
+    $model->attributes = $_POST['Action'];
+    if ($model->save()) {
+      if ($model->type_id == 1) {
+        Yii::import('application.modules.catalog.models.Product');
+        $article = substr($_POST['product'], 0
+            , strripos($_POST['product'], ','));
+        $product = Product::model()->findByAttributes(array('article' => $article));
+        $advert->attributes = $_POST['Advert'];
+        $advert->action_id = $model->id;
+        $advert->product_id = $product->id;
+        $advert->save();
+      }
       $this->redirect(array('index'));
+    }
   }
 
   /**
@@ -170,6 +185,26 @@ class ActionController extends Controller {
     else {
       echo "Possible file upload attack!\n";
     }
+  }
+
+  public function actionSuggestProduct($term) {
+
+    function formatArray($element) {
+      return $element['article'] . ', ' . $element['name'];
+    }
+
+    $city = Yii::app()->db->createCommand()
+        ->select('name, article')->from('store_product')
+        ->where('name LIKE :data OR article LIKE :data'
+            , array(':data' => '%' . $term . '%'))->limit(20)
+        ->queryAll();
+    if (is_array($city))
+      $suggest = array_map('formatArray', $city);
+    else
+      $suggest = array();
+
+    echo CJSON::encode($suggest);
+    Yii::app()->end();
   }
 
 }
