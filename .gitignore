@@ -3,4 +3,5 @@
 /images/action/*
 /productimages/*
 /protected/yiic
+/protected/yiic.php
 !.gitignore
