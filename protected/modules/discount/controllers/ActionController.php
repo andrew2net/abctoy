@@ -68,39 +68,60 @@ class ActionController extends Controller {
 
   private function saveAction(Action &$model, Advert $advert) {
 
-    $model->name = $_POST['Action']['name'];
-    $old_file = Yii::getPathOfAlias('webroot') . $model->img;
-    if ($_POST['Action']['img'] != $model->img) {
-      if (strlen($_POST['Action']['img']) > 0) {
-        $uploaded_file = Yii::getPathOfAlias('webroot') . $_POST['Action']['img'];
-        if (file_exists($uploaded_file)) {
-          if ($model->isNewRecord)
-            $model->save();
-          $ext = substr($_POST['Action']['img'], strrpos($_POST['Action']['img'], '.'));
-          $file_name = Yii::getPathOfAlias('webroot') . '/images/action/' . $model->id . $ext;
-          rename(Yii::getPathOfAlias('webroot') . $_POST['Action']['img'], $file_name);
+    $tr = $model->dbConnection->beginTransaction();
+    try {
+      $model->name = $_POST['Action']['name'];
+      $old_file = Yii::getPathOfAlias('webroot') . $model->img;
+      if ($_POST['Action']['img'] != $model->img) {
+        if (strlen($_POST['Action']['img']) > 0) {
+          $uploaded_file = Yii::getPathOfAlias('webroot') . $_POST['Action']['img'];
+          if (file_exists($uploaded_file)) {
+            if ($model->isNewRecord)
+              $model->save();
+            $ext = substr($_POST['Action']['img'], strrpos($_POST['Action']['img'], '.'));
+            $file_name = Yii::getPathOfAlias('webroot') . '/images/action/' . $model->id . $ext;
+            rename(Yii::getPathOfAlias('webroot') . $_POST['Action']['img'], $file_name);
+          }
+        }
+        if (strlen($model->img) > 0 && file_exists($old_file))
+          unlink($old_file);
+        if (isset($file_name))
+          $model->img = '/images/action/' . basename($file_name);
+        else
+          $model->img = '';
+      }
+      $model->attributes = $_POST['Action'];
+      if ($model->save()) {
+        if ($model->type_id == 1) {
+          Yii::import('application.modules.catalog.models.Product');
+          $pos = strripos($_POST['product'], ',');
+          if ($pos)
+            $article = substr($_POST['product'], 0, $pos);
+          else
+            $article = $_POST['product'];
+          $product = Product::model()->findByAttributes(array('article' => $article));
+          if ($product) {
+            $advert->attributes = $_POST['Advert'];
+            $advert->action_id = $model->id;
+            $advert->product_id = $product->id;
+            if ($advert->save()) {
+              $tr->commit();
+              $this->redirect(array('index'));
+            }
+            else
+              $tr->rollback();
+          }
+        }
+        else {
+          $tr->commit();
+          $this->redirect(array('index'));
         }
       }
-      if (strlen($model->img) > 0 && file_exists($old_file))
-        unlink($old_file);
-      if (isset($file_name))
-        $model->img = '/images/action/' . basename($file_name);
       else
-        $model->img = '';
-    }
-    $model->attributes = $_POST['Action'];
-    if ($model->save()) {
-      if ($model->type_id == 1) {
-        Yii::import('application.modules.catalog.models.Product');
-        $article = substr($_POST['product'], 0
-            , strripos($_POST['product'], ','));
-        $product = Product::model()->findByAttributes(array('article' => $article));
-        $advert->attributes = $_POST['Advert'];
-        $advert->action_id = $model->id;
-        $advert->product_id = $product->id;
-        $advert->save();
-      }
-      $this->redirect(array('index'));
+        $tr->rollback();
+    } catch (Exception $e) {
+      $tr->rollback();
+      throw $e;
     }
   }
 

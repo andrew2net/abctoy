@@ -8,6 +8,7 @@
  * @property string $action_id
  * @property string $text
  * @property string $date
+ * @property float $price 
  *
  * The followings are the available model relations:
  * @property Product $product
@@ -30,7 +31,8 @@ class Advert extends CActiveRecord {
     // will receive user inputs.
     return array(
       array('product_id, action_id', 'length', 'max' => 11),
-      array('product_id, text, date', 'required'),
+      array('price', 'numerical'),
+      array('product_id, text, date, price', 'required'),
       array('text, date', 'safe'),
       array('product_id', 'unsafe'),
       // The following rule is used by search().
@@ -60,6 +62,7 @@ class Advert extends CActiveRecord {
       'action_id' => 'Акция',
       'text' => 'Текст',
       'date' => 'Дата',
+      'price' => 'Цена',
     );
   }
 

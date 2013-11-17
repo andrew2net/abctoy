@@ -20,7 +20,7 @@
 
   <p class="help-block"><span class="required">*</span> Обязательные поля.</p>
 
-  <?php echo $form->errorSummary($model); ?>
+  <?php echo $form->errorSummary(array($model, $advert)); ?>
 
   <input id="Action_img" name="Action[img]" type="text" value="<?php echo $model->img ?>" style="display: none">
 
@@ -37,42 +37,49 @@
     echo $form->dropDownListControlGroup($model, 'type_id'
         , $model->types, array('span' => 2));
     ?>
-    <?php echo $form->textFieldControlGroup($model, 'name', array('span' => 4, 'maxlength' => 30)); ?>
+    <?php echo $form->textFieldControlGroup($model, 'name', array('span' => 4
+      , 'maxlength' => 30));
+    ?>
   </div>
   <div id="action-data" style="display: <?php echo $model->type_id ? 'inherit' : 'none'; ?>">
-    <?php echo $form->textAreaControlGroup($advert, 'text', array('rows' => 6, 'span' => 5)); ?>
-
-    <?php echo TbHtml::activeLabelEx($advert, 'date'); ?>
-    <?php
-    $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-      'model' => $advert,
-      'attribute' => 'date',
-      'language' => 'ru',
-      'htmlOptions' => array('class' => 'span'),
-    ));
-    ?>
-    <!--<div>-->
-    <?php
-    Yii::import('application.modules.catalog.models.Product');
-    $product = Product::model()->findByPk($advert->product_id);
-    if (is_null($product))
-      $value = '';
-    else
-      $value = $product->article . ', ' . $product->name;
-    ?>
-    <?php echo TbHtml::activeLabelEx($advert, 'product_id'); ?>
-    <?php
-    $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
-      'name' => 'product',
-      'value' => $value,
-      'sourceUrl' => '/admin/discount/action/suggestproduct',
-      'htmlOptions' => array('class' => 'span5'),
-    ));
-    ?>
-    <!--</div>-->
-    <?php // echo $form->textFieldControlGroup($advert, 'product_id', array('span' => 5, 'maxlength' => 11));   ?>
+<?php echo $form->textAreaControlGroup($advert, 'text', array('rows' => 6, 'span' => 5)); ?>
+    <div class="inline-blocks">
+      <div>
+        <?php
+        Yii::import('application.modules.catalog.models.Product');
+        $product = Product::model()->findByPk($advert->product_id);
+        if (is_null($product))
+          $value = '';
+        else
+          $value = $product->article . ', ' . $product->name;
+        ?>
+        <?php echo $form->labelEx($advert, 'product_id'); ?>
+        <?php
+        $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+          'name' => 'product',
+          'value' => $value,
+          'sourceUrl' => '/admin/discount/action/suggestproduct',
+          'htmlOptions' => array('class' => 'span5'),
+        ));
+        ?>
+      </div>
+      <div>
+<?php echo $form->numberFieldControlGroup($advert, 'price'); ?>
+      </div>
+      <div>
+        <?php echo $form->labelEx($advert, 'date'); ?>
+        <?php
+        $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+          'model' => $advert,
+          'attribute' => 'date',
+          'language' => 'ru',
+          'htmlOptions' => array('class' => 'span'),
+        ));
+        ?>
+      </div>
+    </div>
   </div>
-  <?php echo $form->checkBoxControlGroup($model, 'show') ?>
+    <?php echo $form->checkBoxControlGroup($model, 'show') ?>
   <div class="form-actions">
     <?php
     echo TbHtml::linkButton('Закрыть', array(
@@ -94,7 +101,7 @@
     ?>
   </div>
 
-  <?php $this->endWidget(); ?>
+<?php $this->endWidget(); ?>
 
 </div><!-- form -->
 
