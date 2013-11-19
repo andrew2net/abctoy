@@ -83,7 +83,8 @@ class ActionController extends Controller {
             rename(Yii::getPathOfAlias('webroot') . $_POST['Action']['img'], $file_name);
           }
         }
-        if (strlen($model->img) > 0 && file_exists($old_file))
+        if (strlen($model->img) > 0 &&
+            basename($file_name) != basename($model->img) && file_exists($old_file))
           unlink($old_file);
         if (isset($file_name))
           $model->img = '/images/action/' . basename($file_name);

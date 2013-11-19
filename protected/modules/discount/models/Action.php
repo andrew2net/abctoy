@@ -126,4 +126,12 @@ class Action extends CActiveRecord {
     parent::afterDelete();
   }
 
+  public function scopes() {
+    return array_merge(
+        array(
+      'published' => array('condition' => 't.show=1')
+        ), parent::scopes()
+    );
+  }
+
 }

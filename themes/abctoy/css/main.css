@@ -362,3 +362,63 @@ div.search-form
 .inline-blocks > div{
   display: inline-block;
 }
+
+.jcarousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.jcarousel ul {
+  width: 20000em;
+  position: relative;
+
+  /* Optional, required in this case since it's a <ul> element */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.jcarousel li {
+  /* Required only for block elements like <li>'s */
+  float: left;
+}
+.strike{
+  background:url(/images/gray1x2.png) repeat-x 0 11px;
+}
+
+.redbutton{
+  height: 33px;
+  width: 168px;
+  color: white;
+}
+.redbutton .center{
+  line-height: 33px;
+  background: url(/images/buttons.png) repeat-x;
+  background-position: 0 -33px;
+  padding: 0 40px;
+  height: 33px;
+}
+
+.redbutton .left{
+  background: url(/images/buttons.png) no-repeat;
+  /*background-position: 0 -33px;*/
+  /*background-position-x: 0px;*/ 
+  width: 8px;
+  height: 33px;
+}
+.redbutton .right{
+  background: url(/images/buttons.png) no-repeat;
+  background-position: 0 -66px;
+  /*background-position-x: 0px;*/ 
+  width: 8px;
+  height: 33px;
+}
+.redbutton:hover .left{
+  background-position: 0 -99px;
+}
+.redbutton:hover .center{
+  background-position: 0 -132px;
+}
+.redbutton:hover .right{
+  background-position: 0 -165px;
+}
