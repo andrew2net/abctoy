@@ -129,7 +129,14 @@ class Action extends CActiveRecord {
   public function scopes() {
     return array_merge(
         array(
-      'published' => array('condition' => 't.show=1')
+      'published' => array(
+        'condition' => 't.show=1',
+        'with' => array(
+          'advert' => array(
+            'condition' => "(date IS NULL OR date >='" . date('Y-m-d') . "')",
+          ),
+        ),
+      ),
         ), parent::scopes()
     );
   }

@@ -21,6 +21,7 @@ class SiteController extends Controller {
   }
 
   public function actionPage($url) {
+    $searc = new Search;
     Yii::import('application.modules.admin.models.Page');
     $page = new Page();
     $model = $page->findByAttributes(array('url' => $url));
@@ -28,7 +29,8 @@ class SiteController extends Controller {
       throw new CHttpException(404, "Страница {$url} не найдена");
     $this->setPageTitle(Yii::app()->name . ' - ' . $model->title);
     $this->render('page', array(
-      'model' => $model
+      'model' => $model,
+      'search' => $searc,
         )
     );
   }

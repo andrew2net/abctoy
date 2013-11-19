@@ -14,6 +14,7 @@ $this->renderPartial('_topmenu');
   <?php $this->renderPartial('_topblock'); ?>
   <?php $this->renderPartial('_mainmenu', array('search' => $search)); ?>
   <?php $this->renderPartial('_slider'); ?>
+  <?php $this->renderPartial('_advantage'); ?>
   <?php $this->renderPartial('_recommended'); ?>
 
 </div><!-- page -->
