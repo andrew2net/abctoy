@@ -53,8 +53,7 @@ body
 
 #topmenu ul li a:hover
 {
-  color: black;
-  background: white;
+  text-decoration: underline;
 }
 
 #mainmenu ul
@@ -83,7 +82,6 @@ body
   color:#ffffff;
   background-color:transparent;
   font-size:12px;
-  font-weight:bold;
   text-decoration:none;
   padding: 10px;
   line-height: 2;
@@ -316,7 +314,7 @@ div.search-form
   width: 175px;
   height: 270px;
   border-radius: 5px;
-  box-shadow: 0 5px 3px -1px #666666;
+  box-shadow: 0 2px 3px -1px #666666;
   /*text-align: center;*/
 }
 .item div img{
@@ -340,7 +338,6 @@ div.search-form
 .item-rest{
   text-align: center;
   font-style: italic;
-  font-weight: bolder;
   color: #99cc33;  
 }
 .item-disc{
