@@ -530,6 +530,7 @@ input[type=checkbox]:checked + label:before
   display: inline-block;
   position: absolute;
   left: 0;
+  top: 0;
   background:url(/themes/abctoy/css/elements.png) no-repeat;
   background-position: 0 -42px;
   width: 20px;
