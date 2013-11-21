@@ -31,8 +31,8 @@ class Category extends CActiveRecord {
       array('name', 'required'),
 //      array('left_key, right_key, level', 'numerical', 'integerOnly' => true),
       array('name', 'length', 'max' => 30),
-        // The following rule is used by search().
-        // @todo Please remove those attributes that should not be searched.
+      // The following rule is used by search().
+      // @todo Please remove those attributes that should not be searched.
       array('name, url', 'safe'),
     );
   }
@@ -44,6 +44,8 @@ class Category extends CActiveRecord {
     // NOTE: you may need to adjust the relation name and the related
     // class name for the relations automatically generated below.
     return array(
+      'product' => array(self::MANY_MANY, 'Product'
+        , 'store_product_category(product_id, category_id)')
     );
   }
 
@@ -76,7 +78,7 @@ class Category extends CActiveRecord {
     $criteria = new CDbCriteria;
 
     $criteria->compare('name', $this->name, true);
-    $criteria->compare('url', $this->level,true);
+    $criteria->compare('url', $this->level, true);
 
     return new CActiveDataProvider($this, array(
       'criteria' => $criteria,

@@ -211,4 +211,21 @@ class Discount extends CActiveRecord {
     return TRUE;
   }
 
+  public function scopes() {
+    $date = date('Y-m-d');
+    return array_merge(parent::scopes(), array(
+      'week' => array(
+        'condition' => "actual=1 AND (begin_date<='" . $date .
+        "' OR begin_date='0000-00-00') AND (end_date>='" . $date .
+        "' OR end_date='0000-00-00')",
+        'with' => array('product'),
+        'with' => array(
+          'category' => array(
+            'with' => 'product',
+          ),
+        ),
+      ),
+    ));
+  }
+
 }

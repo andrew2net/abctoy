@@ -27,6 +27,7 @@ $this->renderPartial('_topmenu');
     'groups' => $groups,
   ));
   ?>
+  <?php $this->renderPartial('_weekDiscount'); ?>
   <?php $this->renderPartial('_recommended'); ?>
 
 </div><!-- page -->

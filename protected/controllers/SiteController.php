@@ -25,12 +25,15 @@ class SiteController extends Controller {
     Yii::import('application.modules.admin.models.Page');
     $page = new Page();
     $model = $page->findByAttributes(array('url' => $url));
+    Yii::import('application.modules.catalog.models.Category');
+    $groups = Category::model()->findAll('level=1');
     if (!$model)
       throw new CHttpException(404, "Страница {$url} не найдена");
     $this->setPageTitle(Yii::app()->name . ' - ' . $model->title);
     $this->render('page', array(
       'model' => $model,
       'search' => $searc,
+      'groups' => $groups,
         )
     );
   }
