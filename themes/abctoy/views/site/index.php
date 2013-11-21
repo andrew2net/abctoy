@@ -6,9 +6,10 @@
 <?php
 $cs = Yii::app()->getClientScript();
 $cs->registerScriptFile('/js/jquery.jcarousel.js', CClientScript::POS_HEAD);
-$cs->registerScriptFile('/js/jcarousel.skeleton.js', CClientScript::POS_HEAD);
-$cs->registerScriptFile('/js/countdown.clock.js', CClientScript::POS_HEAD);
+$cs->registerScriptFile('/js/jcarousel.skeleton.js', CClientScript::POS_END);
+$cs->registerScriptFile('/js/countdown.clock.js', CClientScript::POS_END);
 $cs->registerScriptFile('/js/moment.min.js', CClientScript::POS_HEAD);
+$cs->registerScriptFile('/js/slider.tooltip.js', CClientScript::POS_HEAD);
 
 $this->renderPartial('_topmenu');
 ?>

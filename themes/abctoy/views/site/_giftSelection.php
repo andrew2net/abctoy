@@ -35,34 +35,87 @@
       foreach ($groups as $value) {
         $items[$value->id] = $value->name;
       }
-      echo CHtml::activeDropDownList($giftSelection, 'category', $items);
+      echo CHtml::activeDropDownList($giftSelection, 'category', $items
+          , array('prompt' => 'Все категории'));
       ?>
       <div class="icon-dropdown inline"></div>
     </div>
   </div>
-  <div style="margin-top: 20px; position: absolute">
+  <div style="margin-top: 20px; position: relative; height: 150px">
     <?php
     echo $form->label($giftSelection, 'ageFrom', array(
       'class' => 'bold',
       'style' => 'font-size: 12pt; line-height: 2.5'
     ));
     ?><br>
-    <div style="background: whitesmoke; padding: 10px 20px; border-radius: 15px; box-shadow: 0px 0px 3px 0px #999999 inset">
-    <?php $this->widget('zii.widgets.jui.CJuiSliderInput', array(
-      'model' => $giftSelection,
-      'attribute' => 'ageFrom',
-      'maxAttribute' => 'ageTo',
-      'options' => array(
-        'range' => TRUE,
-        'min' => 0,
-        'max' => 5,
-      ),
-    )); ?>
+    <div style="
+         /*background: whitesmoke; border-radius: 15px; box-shadow: 0px 0px 3px 0px #999999 inset;*/ 
+         padding: 10px 10px;">
+         <?php
+         echo CHtml::activeHiddenField($giftSelection, 'ageFrom');
+         echo CHtml::activeHiddenField($giftSelection, 'ageTo');
+         ?>
+         <?php
+         $this->widget('zii.widgets.jui.CJuiSlider', array(
+           'id' => 'age_slider',
+           'options' => array(
+             'animate' => 'slow',
+             'range' => TRUE,
+             'min' => 0,
+             'max' => 5,
+             'values' => "js:[{$giftSelection->ageFrom}, {$giftSelection->ageTo}]",
+             'create' => 'js:function(event, ui){sliderIniTooltip(this);}',
+             'slide' => 'js:function(event, ui){sliderMoveTooltip(ui); $("#GiftSelection_ageFrom").val(ui.values[0]); $("#GiftSelection_ageTo").val(ui.values[1]);}',
+           ),
+         ));
+         ?>
     </div>
     <?php echo CHtml::activeCheckBox($giftSelection, 'availableOnly'); ?>
-    <?php echo CHtml::activeLabel($giftSelection, 'availableOnly', array(
-      'style'=>'line-height: 9'
-    )); ?>
+    <?php
+    echo CHtml::activeLabel($giftSelection, 'availableOnly', array(
+      'style' => 'line-height: 9'
+    ));
+    ?>
+  </div>
+  <div style="margin: 20px 0 0 50px; position: absolute; height: 150px">
+    <?php
+    echo $form->label($giftSelection, 'priceFrom', array(
+      'class' => 'bold',
+      'style' => 'font-size: 12pt; line-height: 2.5; display: block'
+    ));
+    ?>
+    <div style="
+         /*background: whitesmoke; border-radius: 15px; box-shadow: 0px 0px 3px 0px #999999 inset;*/ 
+         padding: 10px 10px;">
+         <?php
+         echo CHtml::activeHiddenField($giftSelection, 'priceFrom');
+         echo CHtml::activeHiddenField($giftSelection, 'priceTo');
+         ?>
+         <?php
+         $this->widget('zii.widgets.jui.CJuiSlider', array(
+           'id' => 'price_slider',
+           'options' => array(
+             'animate' => 'slow',
+             'range' => TRUE,
+             'min' => 0,
+             'max' => 5000,
+             'step' => 50,
+             'values' => "js:[{$giftSelection->priceFrom}, {$giftSelection->priceTo}]",
+             'create' => 'js:function(event, ui){sliderIniTooltip(this);}',
+             'slide' => 'js:function(event, ui){sliderMoveTooltip(ui); $("#GiftSelection_priceFrom").val(ui.values[0]); $("#GiftSelection_priceTo").val(ui.values[1]);}',
+           ),
+         ));
+         ?>
+    </div>
+    <div style="position: relative; top: 42px; right: -130px">
+      <a href="#">
+        <div class="greenbutton inline-blocks">
+          <div class="left"></div>
+          <div class="center">ПОДОБРАТЬ</div>
+          <div class="right"></div>
+        </div>
+      </a>
+    </div>
   </div>
 </div>
 <?php $this->endWidget(); ?>

@@ -441,6 +441,43 @@ div.search-form
 .redbutton:hover .right{
   background-position: 0 -165px;
 }
+
+.greenbutton{
+  height: 33px;
+  width: 168px;
+  color: white;
+}
+.greenbutton .center{
+  line-height: 33px;
+  background: url(/themes/abctoy/css/buttons.png) repeat-x;
+  background-position: 0 -231px;
+  padding: 0 40px;
+  height: 33px;
+  width: 72px;
+}
+
+.greenbutton .left{
+  background: url(/themes/abctoy/css/buttons.png) no-repeat;
+  background-position: 0 -198px;
+  width: 8px;
+  height: 33px;
+}
+.greenbutton .right{
+  background: url(/themes/abctoy/css/buttons.png) no-repeat;
+  background-position: 0 -264px;
+  width: 8px;
+  height: 33px;
+}
+.greenbutton:hover .left{
+  background-position: 0 -297px;
+}
+.greenbutton:hover .center{
+  background-position: 0 -330px;
+}
+.greenbutton:hover .right{
+  background-position: 0 -363px;
+}
+
 input[type=radio] +label, input[type=checkbox] + label
 {
   padding:2px 7px 2px 25px;
@@ -518,10 +555,6 @@ select{
   width: 20px;
   height: 20px;
 }
-select:focus, select:active{
-  border: 0 !important;
-  outline: 0 !important;
-}
 
 .ui-slider{
   width: 250px;
@@ -537,4 +570,44 @@ select:focus, select:active{
   background:url(/themes/abctoy/css/elements.png) no-repeat -1px -89px !important;
   border: 0 !important;
   height: 20px !important;
+}
+#age_slider:before{
+  content: "0";
+  position: absolute;
+  left: -18px;
+  top: -3px;
+  font-size: 7.5pt;
+}
+#age_slider:after{
+  content: "5";
+  position: absolute;
+  right: -17px;
+  top: -3px;
+  font-size: 7.5pt;
+}
+#price_slider:before{
+  content: "0";
+  position: absolute;
+  left: -18px;
+  top: -3px;
+  font-size: 7.5pt;
+}
+#price_slider:after{
+  content: "5000+";
+  position: absolute;
+  right: -43px;
+  top: -3px;
+  font-size: 7.5pt;
+}
+
+.slider-tooltip{
+  background:url(/themes/abctoy/css/sltt.png) no-repeat;
+  width: 30px;
+  height: 21px;
+  text-align: center;
+  position: absolute;
+  top: 25px;
+  left: -7px;
+  font-size: 7.5pt;
+  line-height: 2.6;
 }

@@ -21,6 +21,8 @@ class GiftSelection extends CFormModel {
     $this->ageFrom = 1;
     $this->ageTo = 4;
     $this->availableOnly = 1;
+    $this->priceFrom = 1000;
+    $this->priceTo = 4000;
   }
 
   public function attributeLabels() {
@@ -29,6 +31,7 @@ class GiftSelection extends CFormModel {
       'category' => 'Категория товара',
       'ageFrom' => 'Возраст ребенка',
       'availableOnly' => 'Только в наличии',
+      'priceFrom' => 'Цена товара',
     );
   }
 
