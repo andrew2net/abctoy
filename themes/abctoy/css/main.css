@@ -441,3 +441,100 @@ div.search-form
 .redbutton:hover .right{
   background-position: 0 -165px;
 }
+input[type=radio] +label, input[type=checkbox] + label
+{
+  padding:2px 7px 2px 25px;
+  cursor: pointer;
+  position: relative;
+}
+
+input[type=radio], input[type=checkbox]
+{
+  display:none;
+}
+
+input[type=radio] + label:before
+{
+  content: '';
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  background:url(/themes/abctoy/css/elements.png) no-repeat;
+  background-position: 0 -20px;
+  width: 20px;
+  height: 20px;
+}
+
+input[type=radio]:checked + label:before
+{
+  content: '';
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  background:url(/themes/abctoy/css/elements.png) no-repeat;
+  background-position: 0 2px;
+  width: 20px;
+  height: 20px;
+}
+input[type=checkbox] + label:before
+{
+  content: '';
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  background:url(/themes/abctoy/css/elements.png) no-repeat;
+  background-position: 0 -64px;
+  width: 20px;
+  height: 20px;
+}
+input[type=checkbox]:checked + label:before
+{
+  content: '';
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  background:url(/themes/abctoy/css/elements.png) no-repeat;
+  background-position: 0 -42px;
+  width: 20px;
+  height: 20px;
+}
+
+select{
+  border: 0 !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 6px;
+  width: 200px;
+  border-radius: 6px;
+  text-indent: 0.01px;
+  text-overflow: "";
+  box-shadow: 0 0 1px 0;
+}
+.icon-dropdown{
+  position: absolute;
+  left: 175px;
+  top: 6px;
+  background:url(/themes/abctoy/css/elements.png) no-repeat -32px 1px;
+  width: 20px;
+  height: 20px;
+}
+select:focus, select:active{
+  border: 0 !important;
+  outline: 0 !important;
+}
+
+.ui-slider{
+  width: 250px;
+  border: 0 !important;
+  background: lightgray !important;
+  box-shadow: 0px 1px 1px 1px #999999 inset;
+  height: 9px !important;
+}
+.ui-slider .ui-slider-range{
+  background:url(/themes/abctoy/css/slider_select.png) repeat-x;
+}
+.ui-slider-handle{
+  background:url(/themes/abctoy/css/elements.png) no-repeat -1px -89px !important;
+  border: 0 !important;
+  height: 20px !important;
+}

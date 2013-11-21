@@ -1,12 +1,11 @@
 <?php
 /* @var $search Search  */
+/* @var $groups array */
 ?>
 <div id="mainmenu">
   <div class="inline-blocks" style="background: none repeat scroll 0% 0% rgb(51, 153, 204)">
     <div>
       <?php
-      Yii::import('application.modules.catalog.models.Category');
-      $groups = Category::model()->findAll('level=1');
       $items = array();
       foreach ($groups as $group) {
         $items[] = array(

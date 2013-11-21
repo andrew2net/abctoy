@@ -22,6 +22,7 @@
  * @property Category[] $category 
  * @property Discount[] $discount
  * @property Top10 $top10 
+ * @property-read array $genders
  */
 class Product extends CActiveRecord {
 

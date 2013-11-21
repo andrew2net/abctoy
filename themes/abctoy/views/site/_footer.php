@@ -1,3 +1,6 @@
+<?php
+/* @var $groups array */
+?>
 <div id="footer">
   <div class="container">
     <div class="table">
@@ -26,8 +29,6 @@
             <div class="table-cell footer-menu">
               <div class="bold">Товар</div>
               <?php
-              Yii::import('application.modules.catalog.models.Category');
-              $groups = Category::model()->findAll('level=1');
               foreach ($groups as $group) {
                 ?>
                 <div><?php echo CHtml::link($group->name, '#'); ?></div>

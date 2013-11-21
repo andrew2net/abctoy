@@ -11,6 +11,6 @@
     <div style="position: relative; top: -50px; font-size: 14pt; width: 200px">Гарантия на товар в течении года</div>
   </div>
 </div>
-<div style="text-align: right; position: relative; height: 2em; line-height: 2">
+<div style="text-align: right; position: relative; height: 2em; line-height: 2; margin-bottom: 10px">
   <a class="green" style="font-size: 11pt; position: absolute; right: 0" href="#">Все преимущества</a>
 </div>
