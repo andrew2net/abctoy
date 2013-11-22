@@ -15,7 +15,7 @@ foreach ($week as $value) {
     foreach ($value->product as $product)
       $products[$product->id] = $product;
 }
-$end_date = date_format(max($end_dates), 'd-m-Y');
+$end_date = date_format(min($end_dates), 'd-m-Y');
 ?>
 
 <div class="inline-blocks" style="margin: 20px 0">
