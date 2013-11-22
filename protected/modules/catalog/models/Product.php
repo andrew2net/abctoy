@@ -232,5 +232,32 @@ class Product extends CActiveRecord {
     parent::afterDelete();
   }
 
-}
+  public function getActualDiscount() {
+    $categories = Yii::app()->db->createCommand()
+            ->select('category_id')->from('store_product_category')
+            ->where("product_id={$this->id}")->text;
 
+    $discount_category = Yii::app()->db->createCommand()
+            ->select('discount_id')->from('store_discount_category')
+            ->where("category_id in ({$categories})")->text;
+
+    $discount_id = Yii::app()->db->createCommand()
+            ->select('discount_id')->from('store_discount_product')
+            ->where("product_id={$this->id}")
+            ->union($discount_category)->text;
+
+    $percenr = Yii::app()->db->createCommand()
+        ->select('MAX(percent) discount')->from('store_discount')
+        ->where("id in ({$discount_id}) AND (begin_date<=:date OR begin_date='0000-00-00')" .
+            " AND (end_date>=:date OR end_date='0000-00-00')"
+            , array(':date' => date('Y-m-d')))
+        ->queryRow();
+
+    if (!is_null($percenr['discount'])) {
+      $new_price = round($this->price * (1 - $percenr['discount'] / 100));
+      return array('discount' => $percenr['discount'], 'price' => $new_price);
+    }
+    return NULL;
+  }
+
+}

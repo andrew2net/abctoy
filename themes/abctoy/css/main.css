@@ -231,7 +231,12 @@ div.search-form
   height: 95px;
   margin: 0 auto;
 }
-
+.icon-dicount{
+  background: url(/themes/abctoy/css/icons_small.png) no-repeat;
+  background-position: -108px -55px;
+  width: 55px;
+  height: 55px;
+}
 .icon-cart{
   background: url(/themes/abctoy/css/elements.png) no-repeat;
   background-position: -18px -28px;
@@ -329,41 +334,65 @@ div.search-form
 }
 
 .item{
-  padding: 8px;
+  position: relative;
   display: inline-block;
+  vertical-align: middle;
+  width: 187px;
+  height: 300px;
 }
-.item > div{
-  width: 175px;
+.item a{
+  text-decoration: none;
+}
+.item > a > div{
+  width: 165px;
   height: 270px;
   border-radius: 5px;
   box-shadow: 0 2px 3px -1px #666666;
-  /*text-align: center;*/
+  position: relative;
+  left: 7px;
+  top: 10px;
+  border: 4px solid white;
+}
+a:hover > .red-item{
+  border: 3px solid #cc3333;
+}
+a:hover > .green-item{
+  border: 3px solid #99cc33;
 }
 .item div img{
-  /*display: block;*/
   margin: auto;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  /*padding: 15px;*/
   max-height: 120px;
   max-width: 140px;
 }
-
+.item-img{
+  position: relative;
+  height: 150px;
+}
 .item-name{
   padding: 0 5px;
   height: 2.5em;
-  text-align: center
+  text-align: center;
+  text-decoration: underline;
+  font-style: italic;
+  color: #cc3333;
 }
 .item-rest{
   text-align: center;
   font-style: italic;
-  color: #99cc33;  
+  height: 1.5em;
 }
 .item-disc{
-  height: 2em;
+  height: 1em;
+  margin: 8px 30px 0 30px;
+  position: relative;
+  color: #666666;
+  text-decoration: line-through;
+  font-size: 12pt;
 }
 .item-name a{
   font-style: italic;
@@ -382,12 +411,12 @@ div.search-form
   display: inline-block;
 }
 
-.jcarousel {
+.jcarousel, .weekcarousel {
   position: relative;
   overflow: hidden;
 }
 
-.jcarousel ul {
+.jcarousel ul, .weekcarousel ul {
   width: 20000em;
   position: relative;
 
@@ -397,7 +426,7 @@ div.search-form
   padding: 0;
 }
 
-.jcarousel li {
+.jcarousel li, .weekcarousel li {
   /* Required only for block elements like <li>'s */
   float: left;
 }
@@ -405,76 +434,73 @@ div.search-form
   background:url(/themes/abctoy/css/gray1x2.png) repeat-x 0 11px;
 }
 
-.redbutton{
+.redbutton, .greenbutton, .red-item-bt, .green-item-bt{
   height: 33px;
-  width: 168px;
   color: white;
 }
-.redbutton .center{
+.redbutton, .greenbutton{
+  width: 168px;
+}
+.red-item-bt, .green-item-bt{
+  width: 130px;
+  position: relative;
+  margin: 20px auto;
+  display: none;
+}
+.redbutton .center, .greenbutton .center, .red-item-bt .center,
+.green-item-bt .center{
   line-height: 33px;
-  background: url(/themes/abctoy/css/buttons.png) repeat-x;
-  background-position: 0 -33px;
-  padding: 0 40px;
+  text-align: center;
   height: 33px;
 }
-
-.redbutton .left{
-  background: url(/themes/abctoy/css/buttons.png) no-repeat;
-  /*background-position: 0 -33px;*/
-  /*background-position-x: 0px;*/ 
+.redbutton .center, .greenbutton .center{
+  width: 152px;
+}
+.red-item-bt .center, .green-item-bt .center{
+  width: 114px;
+}
+.redbutton .center, .red-item-bt .center{
+  background: url(/themes/abctoy/css/buttons.png) repeat-x 0 -33px;
+}
+.redbutton .left, .redbutton .right, .greenbutton .left,
+.greenbutton .right, .red-item-bt .left, .red-item-bt .right,
+.green-item-bt .left, .green-item-bt .right{
   width: 8px;
   height: 33px;
 }
-.redbutton .right{
+.redbutton .left, .red-item-bt .left{
   background: url(/themes/abctoy/css/buttons.png) no-repeat;
-  background-position: 0 -66px;
-  /*background-position-x: 0px;*/ 
-  width: 8px;
-  height: 33px;
 }
-.redbutton:hover .left{
+.redbutton .right, .red-item-bt .right{
+  background: url(/themes/abctoy/css/buttons.png) no-repeat 0 -66px;
+}
+.redbutton:hover .left, .red-item-bt:hover .left{
   background-position: 0 -99px;
 }
-.redbutton:hover .center{
+.redbutton:hover .center, .red-item-bt:hover .center{
   background-position: 0 -132px;
 }
-.redbutton:hover .right{
+.redbutton:hover .right, .red-item-bt:hover .right{
   background-position: 0 -165px;
 }
 
-.greenbutton{
-  height: 33px;
-  width: 168px;
-  color: white;
-}
-.greenbutton .center{
-  line-height: 33px;
-  background: url(/themes/abctoy/css/buttons.png) repeat-x;
-  background-position: 0 -231px;
-  padding: 0 40px;
-  height: 33px;
-  width: 72px;
+.greenbutton .center, .green-item-bt .center{
+  background: url(/themes/abctoy/css/buttons.png) repeat-x 0 -231px;
 }
 
-.greenbutton .left{
-  background: url(/themes/abctoy/css/buttons.png) no-repeat;
-  background-position: 0 -198px;
-  width: 8px;
-  height: 33px;
+.greenbutton .left, .green-item-bt .left{
+  background: url(/themes/abctoy/css/buttons.png) no-repeat 0 -198px;
 }
-.greenbutton .right{
-  background: url(/themes/abctoy/css/buttons.png) no-repeat;
-  background-position: 0 -264px;
-  width: 8px;
-  height: 33px;
+.greenbutton .right, .green-item-bt .right{
+  background: url(/themes/abctoy/css/buttons.png) no-repeat 0 -264px;
 }
-.greenbutton:hover .left{
+.greenbutton:hover .left, .green-item-bt:hover .left{
   background-position: 0 -297px;
 }
-.greenbutton:hover .center{
+.greenbutton:hover .center, .green-item-bt:hover .center{
   background-position: 0 -330px;
 }
-.greenbutton:hover .right{
+.greenbutton:hover .right, .green-item-bt:hover .right{
   background-position: 0 -363px;
 }
 
@@ -538,23 +564,26 @@ input[type=checkbox]:checked + label:before
 }
 
 select{
+  background: transparent;
   border: 0 !important;
   -webkit-appearance: none;
   -moz-appearance: none;
   padding: 6px;
   width: 200px;
-  border-radius: 6px;
+  /*border-radius: 6px;*/
   text-indent: 0.01px;
   text-overflow: "";
-  box-shadow: 0 0 1px 0;
 }
-.icon-dropdown{
-  position: absolute;
-  left: 175px;
-  top: 6px;
-  background:url(/themes/abctoy/css/elements.png) no-repeat -32px 1px;
-  width: 20px;
-  height: 20px;
+.styled-select{
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  /*left: 175px;*/
+  /*top: 6px;*/
+  background:url(/themes/abctoy/css/select.png) no-repeat 180px whitesmoke;
+  width: 200px;
+  height: 31px;
+  box-shadow: 0 0 1px 0;
 }
 
 .ui-slider{
@@ -611,4 +640,64 @@ select{
   left: -7px;
   font-size: 7.5pt;
   line-height: 2.6;
+}
+
+.weekcarousel-prev{
+  left: 120px;
+  background:url(/themes/abctoy/css/elements.png) no-repeat -33px -64px;
+}
+.weekcarousel-next{
+  right: 115px;
+  background:url(/themes/abctoy/css/elements.png) no-repeat -33px -103px;
+}
+.weekcarousel-prev, .weekcarousel-next{
+  position: absolute;
+  top: 1130px;
+  width: 35px;
+  height: 35px;
+}
+
+.discount-label{
+  position: absolute;
+  background: #cc3333;
+  color: white;
+  font-weight: bold;
+  font-size: 10pt;
+  width: 40px;
+  height: 40px;
+  top: -13px;
+  left: -15px;
+  z-index: 1;
+  text-align: center;
+  line-height: 3;
+  border-radius: 20px;
+}
+.green-glass{
+  background:url(/themes/abctoy/css/elements.png) no-repeat -1px -160px;
+}
+.red-glass{
+  background:url(/themes/abctoy/css/elements.png) no-repeat -1px -220px;
+}
+.green-glass, .red-glass{
+  position: absolute;
+  display: none;
+  right: -9px;
+  top: 19px;
+  width: 67px;
+  height: 60px;
+  z-index: 1;
+}
+a:hover .red-glass, a:hover .green-glass, a:hover .green-item-bt,
+a:hover .red-item-bt{
+  display: inherit;
+}
+a:hover .item-disc, a:hover .item-price{
+  display: none;
+}
+
+.helper{
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  width: 0;
 }

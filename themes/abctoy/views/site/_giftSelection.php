@@ -29,7 +29,7 @@
       'style' => 'font-size: 12pt; line-height: 2.5; display: block; margin-top: 10px'
     ));
     ?>
-    <div style="position: relative">
+    <div class="styled-select">
       <?php
       $items = array();
       foreach ($groups as $value) {
@@ -38,10 +38,9 @@
       echo CHtml::activeDropDownList($giftSelection, 'category', $items
           , array('prompt' => 'Все категории'));
       ?>
-      <div class="icon-dropdown inline"></div>
     </div>
   </div>
-  <div style="margin-top: 20px; position: relative; height: 150px">
+  <div style="top: -10px; position: relative; height: 150px">
     <?php
     echo $form->label($giftSelection, 'ageFrom', array(
       'class' => 'bold',

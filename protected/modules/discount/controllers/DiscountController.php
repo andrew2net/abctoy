@@ -70,37 +70,33 @@ class DiscountController extends Controller {
     $discount->attributes = $_POST['Discount'];
     if ($discount->save()) {
       $db_command = Yii::app()->db->createCommand();
+      $db_command->delete('store_discount_category', 'discount_id=:id'
+          , array(':id' => $discount->id));
+      $db_command->reset();
+      $db_command->delete('store_discount_product', 'discount_id=:id'
+          , array(':id' => $discount->id));
       switch ($_POST['Discount']['product_id']) {
-        case 0:
-          $db_command->delete('store_discount_category', 'discount_id=:id'
-              , array(':id' => $discount->id));
-          $db_command->reset();
-          $db_command->delete('store_discount_product', 'discount_id=:id'
-              , array(':id' => $discount->id));
-          break;
 
         case 1:
-          $db_command->delete('store_discount_product', 'discount_id=:id'
-              , array(':id' => $discount->id));
           if (isset($_POST['Categories']))
-            foreach ($_POST['Categories'] as $key => $category)
+            foreach ($_POST['Categories'] as $key => $category) {
               $db_command->reset();
               $db_command->insert('store_discount_category', array(
                 'discount_id' => $discount->id,
                 'category_id' => $key,
               ));
+            }
           break;
 
         case 2:
-          $db_command->delete('store_discount_category', 'discount_id=:id'
-              , array(':id' => $discount->id));
           if (isset($_SESSION['discount_product']))
-            foreach ($_SESSION['discount_product'] as $product)
+            foreach ($_SESSION['discount_product'] as $product) {
               $db_command->reset();
               $db_command->insert('store_discount_product', array(
                 'discount_id' => $discount->id,
                 'product_id' => $product,
               ));
+            }
           break;
       }
       unset($_SESSION['discount_product']);
@@ -133,6 +129,7 @@ class DiscountController extends Controller {
     if ($key !== FALSE)
       unset($_SESSION['discount_product'][$key]);
   }
+
   /**
    * Performs the AJAX validation.
    * @param Product $model the model to be validated

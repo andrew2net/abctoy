@@ -210,18 +210,18 @@ class ActionController extends Controller {
   }
 
   public function actionSuggestProduct($term) {
-
+    $product = strtr($term, array('%'=>'\%', '_'=>'\_'));
     function formatArray($element) {
       return $element['article'] . ', ' . $element['name'];
     }
 
-    $city = Yii::app()->db->createCommand()
+    $suggest_products = Yii::app()->db->createCommand()
         ->select('name, article')->from('store_product')
         ->where('name LIKE :data OR article LIKE :data'
-            , array(':data' => '%' . $term . '%'))->limit(20)
+            , array(':data' => '%' . $product . '%'))->limit(20)
         ->queryAll();
-    if (is_array($city))
-      $suggest = array_map('formatArray', $city);
+    if (is_array($suggest_products))
+      $suggest = array_map('formatArray', $suggest_products);
     else
       $suggest = array();
 

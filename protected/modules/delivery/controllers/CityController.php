@@ -148,14 +148,14 @@ class CityController extends Controller {
     function formatArray($element) {
       return $element['name_ru'];
     }
-
-    $city = Yii::app()->db->createCommand()
+    $city = strtr($term, array('%'=>'\%', '_'=>'\_'));
+    $suggest_cities = Yii::app()->db->createCommand()
         ->select('name_ru')->from('net_city')
         ->where('name_ru LIKE :data', array(':data' => '%' . $term . '%'))->limit(20)
         ->group('name_ru')
         ->queryAll();
-    if (is_array($city))
-      $suggest = array_map('formatArray', $city);
+    if (is_array($suggest_cities))
+      $suggest = array_map('formatArray', $suggest_cities);
     else
       $suggest = array();
 
