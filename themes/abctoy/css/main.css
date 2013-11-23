@@ -237,6 +237,13 @@ div.search-form
   width: 55px;
   height: 55px;
 }
+.icon-top10{
+  background: url(/themes/abctoy/css/icons_small.png) no-repeat;
+  background-position: -108px -114px;
+  width: 55px;
+  height: 55px;
+}
+
 .icon-cart{
   background: url(/themes/abctoy/css/elements.png) no-repeat;
   background-position: -18px -28px;
@@ -411,12 +418,12 @@ a:hover > .green-item{
   display: inline-block;
 }
 
-.jcarousel, .weekcarousel {
+.jcarousel, .weekcarousel, .top10carousel {
   position: relative;
   overflow: hidden;
 }
 
-.jcarousel ul, .weekcarousel ul {
+.jcarousel ul, .weekcarousel ul, .top10carousel ul {
   width: 20000em;
   position: relative;
 
@@ -426,7 +433,7 @@ a:hover > .green-item{
   padding: 0;
 }
 
-.jcarousel li, .weekcarousel li {
+.jcarousel li, .weekcarousel li, .top10carousel li{
   /* Required only for block elements like <li>'s */
   float: left;
 }
@@ -642,19 +649,25 @@ select{
   line-height: 2.6;
 }
 
-.weekcarousel-prev{
+.weekcarousel-prev, .top10carousel-prev{
   left: 120px;
   background:url(/themes/abctoy/css/elements.png) no-repeat -33px -64px;
 }
-.weekcarousel-next{
+.weekcarousel-next, .top10carousel-next{
   right: 115px;
   background:url(/themes/abctoy/css/elements.png) no-repeat -33px -103px;
 }
-.weekcarousel-prev, .weekcarousel-next{
+.weekcarousel-prev, .weekcarousel-next,
+.top10carousel-prev, .top10carousel-next{
   position: absolute;
-  top: 1130px;
   width: 35px;
   height: 35px;
+}
+.weekcarousel-prev, .weekcarousel-next{
+  top: 1130px;
+}
+.top10carousel-prev, .top10carousel-next{
+  top: 1530px;
 }
 
 .discount-label{

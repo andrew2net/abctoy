@@ -2,10 +2,10 @@
 Yii::import('application.modules.discount.models.Discount');
 Yii::import('application.modules.catalog.models.Category');
 Yii::import('application.modules.catalog.models.Product');
-$week = Discount::model()->week()->findAll();
+$top10 = Discount::model()->week()->findAll();
 $products = array();
 $end_dates = array();
-foreach ($week as $value) {
+foreach ($top10 as $value) {
   $end_dates[] = DateTime::createFromFormat('d.m.Y', $value->end_date);
   if ($value->product_id == 1)
     foreach ($value->category as $category)
@@ -36,3 +36,4 @@ $end_date = date_format(min($end_dates), 'd-m-Y');
   <a class="weekcarousel-prev" href="#"></a>
   <a class="weekcarousel-next" href="#"></a>
 </div>
+<div style="text-align: right; line-height: 3"><a class="red" href="#">Все товары со скидкой</a></div>

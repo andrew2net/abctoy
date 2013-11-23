@@ -260,4 +260,14 @@ class Product extends CActiveRecord {
     return NULL;
   }
 
+  public function scopes() {
+    return array_merge(parent::scopes(), array(
+      'top10' => array(
+        'with' => array(
+          'top10',
+//          'joinType' => 'INNER JOIN',
+        ))
+    ));
+  }
+
 }

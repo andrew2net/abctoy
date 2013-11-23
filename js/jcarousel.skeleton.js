@@ -35,3 +35,26 @@ $(function() {
     target: '+=4'
   });
 });
+
+$(function() {
+  $('.top10carousel')
+          .jcarousel({
+    wrap: 'circular'
+  }).jcarouselAutoscroll({
+    target: '+=1',
+    interval: 7000,
+    create: $('.top10carousel').hover(function() {
+      $(this).jcarouselAutoscroll('stop');
+    },
+            function() {
+              $(this).jcarouselAutoscroll('start');
+            })
+  });
+  $('.top10carousel-prev').jcarouselControl({
+    target: '-=4'
+  });
+
+  $('.top10carousel-next').jcarouselControl({
+    target: '+=4'
+  });
+});

@@ -28,6 +28,7 @@ $this->renderPartial('_topmenu');
   ));
   ?>
   <?php $this->renderPartial('_weekDiscount'); ?>
+  <?php $this->renderPartial('_top10'); ?>
   <?php $this->renderPartial('_recommended'); ?>
 
 </div><!-- page -->
