@@ -58,3 +58,26 @@ $(function() {
     target: '+=4'
   });
 });
+
+$(function() {
+  $('.brands')
+          .jcarousel({
+    wrap: 'circular'
+  }).jcarouselAutoscroll({
+    target: '+=1',
+    interval: 7000,
+    create: $('.brands').hover(function() {
+      $(this).jcarouselAutoscroll('stop');
+    },
+            function() {
+              $(this).jcarouselAutoscroll('start');
+            })
+  });
+  $('.brands-prev').jcarouselControl({
+    target: '-=4'
+  });
+
+  $('.brands-next').jcarouselControl({
+    target: '+=4'
+  });
+});
