@@ -15,6 +15,8 @@
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/themes/abctoy/css/main.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
 
+    <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
+
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
   </head>
 
@@ -24,6 +26,7 @@
   </body>
   <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/themes/abctoy/js/cufon-yui.js"></script>
   <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/themes/abctoy/js/RotondaC_400-RotondaC_700.font.js"></script>
+  <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/themes/abctoy/js/submenu.js"></script>
   <script type="text/javascript">
     Cufon.replace(".cufon");
   </script>

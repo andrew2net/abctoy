@@ -70,11 +70,14 @@ body
 {
   padding:5px 0px 5px;
   margin:0px;
+  list-style: none;
+  position: relative;
 }
 
 #mainmenu ul li, #topmenu ul li
 {
   display: inline;
+  overflow: visible;
 }
 
 #mainmenu ul li a, #topmenu ul li a
@@ -89,9 +92,33 @@ body
 
 #mainmenu ul li a:hover, #mainmenu ul li.active a
 {
-  color: #6399cd;
+/*  color: #6399cd;
   background-color:#EFF4FA;
-  text-decoration:none;
+  text-decoration:none;*/
+}
+.submenu{
+  position: absolute;
+  display: none;
+  top: -3px;
+  box-shadow: 1px 2px 4px;
+  background: white;
+  z-index: 10;
+}
+.submenu > div{
+  padding: 10px;
+  border-right: 1px solid #DDD;
+  width: 170px;
+  height: 300px;
+  vertical-align: top;
+}
+.submenu .menu-category, .submenu .menu-subcategory{
+  text-decoration: none;
+  color: #666666;
+  line-height: 2;
+}
+.submenu .menu-category{
+  font-size: 10pt;
+  font-weight: bold;
 }
 
 div.flash-error, div.flash-notice, div.flash-success

@@ -5,7 +5,8 @@
 /* @var $group Category */
 /* @var $categories[] Category */
 ?>
-<?php $this->pageTitle = Yii::app()->name . ' - ' . $group->name; ?>
+<?php 
+$this->pageTitle = Yii::app()->name . ' - ' . $group->name; ?>
 <?php $this->renderPartial('_topmenu'); ?>
 
 <div class="container" id="page">
@@ -29,47 +30,7 @@
   <div class="inline-blocks">
     <div style="width: 180px; margin-right: 6px; float: left">
       <?php
-      $categories = $group->descendants(2)->findAll(array('order' => 'lft'));
-//      if (count($categories)) {
-      ?>
-      <div style="border: 1px dashed #666666; border-radius: 3px; min-height: 50px">
-        <div style="margin-top: 10px">
-          <?php
-          $level = $group->level - 1;
-          foreach ($categories as $category) {
-            if ($category->level == $level)
-              echo CHtml::closeTag('li');
-            else if ($category->level > $level)
-              echo CHtml::openTag('ul');
-            else {
-              echo CHtml::closeTag('li');
-
-              for ($i = $level - $category->level; $i; $i--) {
-                echo CHtml::closeTag('ul');
-                echo CHtml::closeTag('li');
-              }
-            }
-            $class = 'category';
-            if (($category->level - $group->level) == 1)
-              $class .= ' nomarker';
-            else
-              $class .= ' subcategory';
-            echo CHtml::openTag('li', array('class' => $class));
-            echo CHtml::openTag('a', array('href' => '#'));
-            echo CHtml::encode($category->getAttribute('name'));
-            echo CHtml::closeTag('a');
-
-            $level = $category->level;
-          }
-          for ($i = $level; $i; $i--) {
-            echo CHtml::closeTag('li');
-            echo CHtml::closeTag('ul');
-          }
-          ?>
-        </div>
-      </div>
-      <?php // } ?>
-      <?php
+      $this->renderPartial('_menuCategory', array('group'=>$group));
       $this->renderPartial('_vGiftSelection', array(
         'giftSelection' => $giftSelection,
         'groups' => $groups,

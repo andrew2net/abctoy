@@ -10,6 +10,7 @@ $cs->registerScriptFile('/js/jcarousel.skeleton.js', CClientScript::POS_END);
 $cs->registerScriptFile('/js/countdown.clock.js', CClientScript::POS_END);
 $cs->registerScriptFile('/js/moment.min.js', CClientScript::POS_HEAD);
 $cs->registerScriptFile('/js/slider.tooltip.js', CClientScript::POS_HEAD);
+//$cs->registerScriptFile('/themes/abctoy/js/submenu.js', CClientScript::POS_END);
 
 $this->renderPartial('_topmenu');
 ?>
