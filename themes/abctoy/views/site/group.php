@@ -118,3 +118,4 @@
 
   </div>
 </div>
+<?php $this->renderPartial('_footer', array('groups' => $groups)); ?>

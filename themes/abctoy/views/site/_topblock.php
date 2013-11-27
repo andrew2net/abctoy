@@ -23,6 +23,6 @@
       <div class="cufon gray" style="font-size: medium; padding-bottom: 0.5em">(10:00 - 18:00 пн.-пт.)</div>
     </div>
     <div class="gray lager">г. Новосибирск</div>
-    <div><a href="#" class="gray uderline-dashed">я в другом городе</a></div>
+    <!--<div><a href="#" class="gray uderline-dashed">я в другом городе</a></div>-->
   </div>
 </div>
