@@ -45,7 +45,11 @@ class Category extends CActiveRecord {
     // class name for the relations automatically generated below.
     return array(
       'product' => array(self::MANY_MANY, 'Product'
-        , 'store_product_category(product_id, category_id)')
+        , 'store_product_category(product_id, category_id)'),
+      'discount' => array(
+        self::MANY_MANY,
+        'Discount',
+        'store_discount_category(category_id, discount_id)')
     );
   }
 

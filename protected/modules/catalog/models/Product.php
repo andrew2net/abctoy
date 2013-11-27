@@ -125,7 +125,7 @@ class Product extends CActiveRecord {
   private function searchCriteria() {
     $criteria = new CDbCriteria;
 
-    $criteria->compare('name', $this->name, true);
+    $criteria->compare('t.name', $this->name, true);
     $criteria->compare('article', $this->article, true);
     $criteria->compare('age', $this->age);
     $criteria->compare('remainder', $this->remainder);
@@ -267,10 +267,66 @@ class Product extends CActiveRecord {
           'top10' => array(
             'joinType' => 'INNER JOIN'),
         )),
-      'recommended' => array(
-        'limit' => 15,
-      )
+      'discountOrder' => array(
+        'with' => array(
+          'category' => array(
+            'select' => FALSE,
+            'with' => array(
+              'discount' => array(
+                'alias' => 'c',
+                'select' => FALSE
+              )
+            )
+          ),
+          'discount' => array(
+            'select' => FALSE,
+            'alias' => 'd',
+          )
+        ),
+        'together' => TRUE,
+        'select' => array(
+          't.*',
+          'MAX(IFNULL(d.percent, c.percent)) AS percent',
+        ),
+        'condition' => "((d.begin_date<=:date OR d.begin_date='0000-00-00')" .
+        " AND (d.end_date>=:date OR d.end_date='0000-00-00')) OR" .
+        "((c.begin_date<=:date OR c.begin_date='0000-00-00')" .
+        " AND (c.end_date>=:date OR c.end_date='0000-00-00'))",
+        'params' => array(':date' => date('Y-m-d')),
+        'order' => 'percent DESC',
+        'group' => 't.id'
+      ),
     ));
+  }
+
+  public function recommended($limit = NULL) {
+    if (!is_null($limit))
+    $this->getDbCriteria()->mergeWith(array(
+      'limit' => $limit,
+    ));
+    
+    return $this;
+  }
+
+  public function subCategory($id) {
+    $category = Category::model()->findByPk($id);
+    $descendants = $category->descendants()->findAll(array('select' => 'id'));
+    $cat = $id;
+    foreach ($descendants as $value)
+      $cat .= ',' . $value->id;
+
+    $this->getDbCriteria()->mergeWith(
+        array(
+          'with' => array(
+            'category' => array(
+              'select' => FALSE,
+            ),
+          ),
+          'together' => TRUE,
+          'condition' => "category.id IN ({$cat})",
+        )
+    );
+    return $this;
   }
 
 }

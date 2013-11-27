@@ -2,9 +2,9 @@
 Yii::import('application.modules.catalog.models.Brand');
 $brands = Brand::model()->withImage()->findAll();
 ?>
-<div class="blue cufon bold" style="font-size: 20pt; position: relative;
+<span class="blue cufon bold" style="font-size: 20pt; position: relative;
      margin: 0 0 -15px 20px; background: white; width: 100px; z-index: 1;
-     padding: 0 8px">Бренды</div>
+     padding: 0 8px; top: 15px">Бренды</span>
 <div style="border: #3399cc solid 4px; border-radius: 4px; position: relative;">
   <div class="brands" style="margin: auto 60px">
     <ul>

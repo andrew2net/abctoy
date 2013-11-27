@@ -1,6 +1,6 @@
 <?php
 /* @var $search Search  */
-/* @var $groups array */
+/* @var $groups[] Category */
 ?>
 <div id="mainmenu">
   <div class="inline-blocks" style="background: none repeat scroll 0% 0% rgb(51, 153, 204)">
@@ -10,7 +10,7 @@
       foreach ($groups as $group) {
         $items[] = array(
           'label' => $group->name,
-          'url' => '#',
+          'url' => $this->createUrl('group', array('id'=>$group->id)),
         );
       }
       $this->widget('zii.widgets.CMenu', array(

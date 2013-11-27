@@ -29,7 +29,7 @@ else {
   <a href="#">
     <div class="<?php echo $item; ?>">
       <div class="<?php echo empty($percent) ? '' : 'discount-label'; ?>"><?php echo $percent; ?></div>
-      <div class="<?php echo $glass; ?>"></div>
+      <!--<div class="<?php echo $glass; ?>"></div>-->
       <div class="item-img"><img src="<?php echo $data->small_img; ?>"></div>
       <div class="item-name"><?php echo $data->name; ?></div>
       <div class="item-rest <?php echo $remainder_class; ?>"><?php echo $remainder; ?></div>

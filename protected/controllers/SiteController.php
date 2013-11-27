@@ -46,7 +46,7 @@ class SiteController extends Controller {
     $searc = new Search;
     $giftSelection = new GiftSelection;
     Yii::import('application.modules.catalog.models.Category');
-    $groups = Category::model()->findAll('level=1');
+    $groups = Category::model()->roots()->findAll();
 
     $this->render('index', array(
       'search' => $searc,
@@ -119,6 +119,25 @@ class SiteController extends Controller {
   public function actionLogout() {
     Yii::app()->user->logout();
     $this->redirect(Yii::app()->homeUrl);
+  }
+
+  public function actionGroup($id) {
+    Yii::import('application.modules.catalog.models.Product');
+    Yii::import('application.modules.catalog.models.Category');
+
+    $groups = Category::model()->roots()->findAll();
+    $group = Category::model()->findByPk($id);
+    $searc = new Search;
+    $giftSelection = new GiftSelection;
+//    $product = Product::model()->category($id);
+
+    $this->render('group', array(
+//      'product' => $product,
+      'search' => $searc,
+      'giftSelection' => $giftSelection,
+      'groups' => $groups,
+      'group' => $group,
+));
   }
 
 }
