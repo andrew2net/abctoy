@@ -5,8 +5,7 @@
 /* @var $group Category */
 /* @var $categories[] Category */
 ?>
-<?php 
-$this->pageTitle = Yii::app()->name . ' - ' . $group->name; ?>
+<?php $this->pageTitle = Yii::app()->name . ' - ' . $group->name; ?>
 <?php $this->renderPartial('_topmenu'); ?>
 
 <div class="container" id="page">
@@ -30,12 +29,12 @@ $this->pageTitle = Yii::app()->name . ' - ' . $group->name; ?>
   <div class="inline-blocks">
     <div style="width: 180px; margin-right: 6px; float: left">
       <?php
-      $this->renderPartial('_menuCategory', array('group'=>$group));
+      $this->renderPartial('_menuCategory', array('group' => $group));
       $this->renderPartial('_vGiftSelection', array(
         'giftSelection' => $giftSelection,
         'groups' => $groups,
       ));
-      $this->renderPartial('_vAdvantage'); 
+      $this->renderPartial('_vAdvantage');
       ?>
     </div>
 
@@ -62,17 +61,20 @@ $this->pageTitle = Yii::app()->name . ' - ' . $group->name; ?>
       <?php } ?>
 
       <?php
-//      Yii::import('application.modules.catalog.models.Product');
-//      $products = new CActiveDataProvider('Product', array(
-//        'criteria' => array('condition' => 'show_me=1')
-//      ));
-//      $this->widget('zii.widgets.CListView', array(
-//        'dataProvider' => $products,
-//        'itemView' => '_item',
-//        'sortableAttributes'=>array('price')
-//          )
-//      );
-      $this->renderPartial('_recommended', array('group' => $group));
+      if ($group->level > 1) {
+        Yii::import('application.modules.catalog.models.Product');
+        $products = new CActiveDataProvider('Product', array(
+          'criteria' => array('condition' => 'show_me=1')
+        ));
+        $this->widget('zii.widgets.CListView', array(
+          'dataProvider' => $products,
+          'itemView' => '_item',
+          'sortableAttributes' => array('price')
+            )
+        );
+      }
+      else
+        $this->renderPartial('_recommended', array('group' => $group));
       ?>
 
     </div>

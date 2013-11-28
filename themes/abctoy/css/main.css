@@ -92,9 +92,10 @@ body
 
 #mainmenu ul li a:hover, #mainmenu ul li.active a
 {
-/*  color: #6399cd;
-  background-color:#EFF4FA;
-  text-decoration:none;*/
+  color: #6399cd;
+  background-color: white;
+  /*text-decoration:none;*/
+  font-weight: bold;
 }
 .submenu{
   position: absolute;
@@ -108,7 +109,7 @@ body
   padding: 10px;
   border-right: 1px solid #DDD;
   width: 170px;
-  height: 300px;
+  min-height: 300px;
   vertical-align: top;
 }
 .submenu .menu-category, .submenu .menu-subcategory{

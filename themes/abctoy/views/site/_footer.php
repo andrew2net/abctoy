@@ -31,7 +31,8 @@
               <?php
               foreach ($groups as $group) {
                 ?>
-                <div><?php echo CHtml::link($group->name, '#'); ?></div>
+                <div><?php echo CHtml::link($group->name
+                    , $this->createUrl('group', array('id'=>$group->id))); ?></div>
               <?php } ?>
             </div>
             <div class="table-cell footer-menu">

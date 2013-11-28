@@ -26,7 +26,9 @@
       else
         $class .= ' subcategory';
       echo CHtml::openTag('li', array('class' => $class));
-      echo CHtml::openTag('a', array('href' => '#'));
+      echo CHtml::openTag('a', array('href' => $this->createUrl('group', array(
+          'id' => $category->id
+      ))));
       echo CHtml::encode($category->getAttribute('name'));
       echo CHtml::closeTag('a');
 
