@@ -266,7 +266,9 @@ class Product extends CActiveRecord {
         'with' => array(
           'top10' => array(
             'joinType' => 'INNER JOIN'),
-        )),
+        ),
+        'condition' => "show_me=1",
+      ),
       'discountOrder' => array(
         'with' => array(
           'category' => array(
@@ -274,13 +276,17 @@ class Product extends CActiveRecord {
             'with' => array(
               'discount' => array(
                 'alias' => 'c',
-                'select' => FALSE
+                'select' => FALSE,
+                'on' => "((c.begin_date<=:date OR c.begin_date='0000-00-00')" .
+                " AND (c.end_date>=:date OR c.end_date='0000-00-00'))",
               )
             )
           ),
           'discount' => array(
             'select' => FALSE,
             'alias' => 'd',
+            'on' => "((d.begin_date<=:date OR d.begin_date='0000-00-00')" .
+            " AND (d.end_date>=:date OR d.end_date='0000-00-00'))",
           )
         ),
         'together' => TRUE,
@@ -288,10 +294,7 @@ class Product extends CActiveRecord {
           't.*',
           'MAX(IFNULL(d.percent, c.percent)) AS percent',
         ),
-        'condition' => "((d.begin_date<=:date OR d.begin_date='0000-00-00')" .
-        " AND (d.end_date>=:date OR d.end_date='0000-00-00')) OR" .
-        "((c.begin_date<=:date OR c.begin_date='0000-00-00')" .
-        " AND (c.end_date>=:date OR c.end_date='0000-00-00'))",
+        'condition' => "show_me=1",
         'params' => array(':date' => date('Y-m-d')),
         'order' => 'percent DESC',
         'group' => 't.id'
@@ -301,10 +304,11 @@ class Product extends CActiveRecord {
 
   public function recommended($limit = NULL) {
     if (!is_null($limit))
-    $this->getDbCriteria()->mergeWith(array(
-      'limit' => $limit,
-    ));
-    
+      $this->getDbCriteria()->mergeWith(array(
+        'limit' => $limit,
+        'condition' => "show_me=1",
+      ));
+
     return $this;
   }
 

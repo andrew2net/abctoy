@@ -43,12 +43,17 @@ class SiteController extends Controller {
    * when an action is not explicitly requested by users.
    */
   public function actionIndex() {
+    Yii::import('application.modules.catalog.models.Product');
+    Yii::import('application.modules.catalog.models.Category');
+
     $searc = new Search;
     $giftSelection = new GiftSelection;
-    Yii::import('application.modules.catalog.models.Category');
     $groups = Category::model()->roots()->findAll();
 
+    $product = Product::model()->discountOrder()->recommended(15);
+
     $this->render('index', array(
+      'product' => $product,
       'search' => $searc,
       'giftSelection' => $giftSelection,
       'groups' => $groups,
@@ -124,20 +129,25 @@ class SiteController extends Controller {
   public function actionGroup($id) {
     Yii::import('application.modules.catalog.models.Product');
     Yii::import('application.modules.catalog.models.Category');
+    Yii::import('application.modules.discount.models.Discount');
 
     $groups = Category::model()->roots()->findAll();
     $group = Category::model()->findByPk($id);
     $searc = new Search;
     $giftSelection = new GiftSelection;
-//    $product = Product::model()->category($id);
+    $product = Product::model()->subCategory($id)->discountOrder();
+    if ($group->level == 1)
+      $product->recommended(12);
+    $product_data = new CActiveDataProvider('Product'
+        , array('criteria' => $product->getDbCriteria()));
 
     $this->render('group', array(
-//      'product' => $product,
+      'product_data' => $product_data,
       'search' => $searc,
       'giftSelection' => $giftSelection,
       'groups' => $groups,
       'group' => $group,
-));
+    ));
   }
 
 }

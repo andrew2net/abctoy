@@ -2,6 +2,7 @@
 /* @var $search Search */
 /* @var $giftSelection GiftSelection */
 /* @var $groups[] Category */
+/* @var $product_data Product */
 /* @var $group Category */
 /* @var $categories[] Category */
 ?>
@@ -44,7 +45,7 @@
       Yii::import('application.modules.catalog.models.Product');
       Yii::import('application.modules.discount.models.Discount');
       $discount_products = Product::model()->subCategory($group->id)
-          ->findAll(array('limit' => 4));
+              ->discountOrder()->findAll(array('limit' => 4));
       if (count($discount_products) > 2) {
         ?>
         <div class="inline-blocks">
@@ -62,19 +63,19 @@
 
       <?php
       if ($group->level > 1) {
-        Yii::import('application.modules.catalog.models.Product');
-        $products = new CActiveDataProvider('Product', array(
-          'criteria' => array('condition' => 'show_me=1')
-        ));
-        $this->widget('zii.widgets.CListView', array(
-          'dataProvider' => $products,
+        $this->widget('ListView', array(
+          'dataProvider' => $product_data,
           'itemView' => '_item',
+          'template' => '{sorter}{items}{pager}',
+          'sorterHeader' => 'Сортировать:',
           'sortableAttributes' => array('price')
             )
         );
       }
       else
-        $this->renderPartial('_recommended', array('group' => $group));
+        $this->renderPartial('_recommended', array(
+          'group' => $group,
+          'product' => $product_data,));
       ?>
 
     </div>

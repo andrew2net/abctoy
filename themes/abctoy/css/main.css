@@ -372,7 +372,7 @@ input[type=checkbox]:checked + label:before, .weekcarousel-prev,
 
 .items{
   display: block;
-  width: 960px;
+  /*width: 960px;*/
   margin: 0 auto;
 }
 

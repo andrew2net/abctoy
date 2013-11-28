@@ -10,7 +10,6 @@ $cs->registerScriptFile('/js/jcarousel.skeleton.js', CClientScript::POS_END);
 $cs->registerScriptFile('/js/countdown.clock.js', CClientScript::POS_END);
 $cs->registerScriptFile('/js/moment.min.js', CClientScript::POS_HEAD);
 $cs->registerScriptFile('/js/slider.tooltip.js', CClientScript::POS_HEAD);
-//$cs->registerScriptFile('/themes/abctoy/js/submenu.js', CClientScript::POS_END);
 
 $this->renderPartial('_topmenu');
 ?>
@@ -32,7 +31,7 @@ $this->renderPartial('_topmenu');
   ?>
   <?php $this->renderPartial('_weekDiscount'); ?>
   <?php $this->renderPartial('_top10'); ?>
-<?php $this->renderPartial('_recommended'); ?>
+<?php $this->renderPartial('_recommended',array('product' => $product)); ?>
 <?php $this->renderPartial('_brands'); ?>
   <div style="margin: 30px 10px">
     <div class="blue bold" style="font-size: 14pt; margin: 15px 0">Добро пожаловать в интернет магазин игрушек!</div>
