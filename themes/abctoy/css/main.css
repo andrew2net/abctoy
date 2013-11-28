@@ -754,3 +754,16 @@ a:hover .item-disc, a:hover .item-price{
 .subcategory a{
   color: #666666;
 }
+
+.img-container{
+  position: relative;
+}
+
+.img-container > img{
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

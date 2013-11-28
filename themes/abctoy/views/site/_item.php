@@ -26,7 +26,7 @@ else {
 ?>
 <div class="helper"></div>
 <div class="item">
-  <a href="#">
+  <a href="<?php echo $this->createUrl('product', array('id'=>$data->id)); ?>">
     <div class="<?php echo $item; ?>">
       <div class="<?php echo empty($percent) ? '' : 'discount-label'; ?>"><?php echo $percent; ?></div>
       <!--<div class="<?php echo $glass; ?>"></div>-->

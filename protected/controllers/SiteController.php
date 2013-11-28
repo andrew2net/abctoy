@@ -153,4 +153,20 @@ class SiteController extends Controller {
     ));
   }
 
+  public function actionProduct($id) {
+    Yii::import('application.modules.catalog.models.Product');
+    Yii::import('application.modules.catalog.models.Brand');
+    Yii::import('application.modules.catalog.models.Category');
+
+    $product = Product::model()->with('brand')->findByPk($id);
+    $groups = Category::model()->roots()->findAll();
+    $searc = new Search;
+
+    $this->render('product', array(
+      'search' => $searc,
+      'groups' => $groups,
+      'product' => $product,
+    ));
+  }
+
 }
