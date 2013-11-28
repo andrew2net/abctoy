@@ -43,6 +43,7 @@ class SiteController extends Controller {
    * when an action is not explicitly requested by users.
    */
   public function actionIndex() {
+    Yii::import('application.modules.discount.models.Discount');
     Yii::import('application.modules.catalog.models.Product');
     Yii::import('application.modules.catalog.models.Category');
 
@@ -51,9 +52,11 @@ class SiteController extends Controller {
     $groups = Category::model()->roots()->findAll();
 
     $product = Product::model()->discountOrder()->recommended(15);
+    $product_data = new CActiveDataProvider('Product'
+        , array('criteria' => $product->getDbCriteria()));
 
     $this->render('index', array(
-      'product' => $product,
+      'product' => $product_data,
       'search' => $searc,
       'giftSelection' => $giftSelection,
       'groups' => $groups,

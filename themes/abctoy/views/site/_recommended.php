@@ -1,29 +1,27 @@
 <div class="inline-blocks" style="margin: 20px 0">
-  <div class="icon-recom"></div>
-  <div class="cufon green bold" style="font-size: 20pt; position: relative; top: -18px; padding: 0 10px">Вам рекомендовано</div>
+  <div <?php echo (isset($group) ? 'style="width: 100%"' : ''); ?>>
+    <div class="inline-blocks <?php echo (isset($group) ? 'right' : ''); ?>">
+      <div class="icon-recom"></div>
+      <div class="cufon green bold" style="font-size: 20pt; position: relative; top: -18px; padding: 0 10px">Вам рекомендовано</div>
+    </div>
+  </div>
   <?php
-  Yii::import('application.modules.catalog.models.Product');
-  $product = Product::model();
   if (!isset($group)) {
-    $product->discountOrder()->recommended(15);
     ?>
     <div style="float: right; font-size: 12pt; position: relative; top: 20px;">
       <span class="cufon green bold">Товар подобран для вашего ребенка</span>
     </div>
     <?php
   }
-  else
-    $product->subCategory($group->id)->discountOrder()->recommended(12);
-    
-    ?>
+  ?>
 </div>
 <div style="margin-bottom: 30px">
   <?php
-  $products = $product->findAll();
+  $products = $product->getData();
   foreach ($products as $value) {
     ?>
     <div style="float: left">
-    <?php $this->renderPartial('_item', array('data' => $value)); ?>
+      <?php $this->renderPartial('_item', array('data' => $value)); ?>
     </div>
-<?php } ?>
+  <?php } ?>
 </div>
