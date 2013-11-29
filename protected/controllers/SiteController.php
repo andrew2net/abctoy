@@ -161,11 +161,13 @@ class SiteController extends Controller {
     $product = Product::model()->with('brand')->findByPk($id);
     $groups = Category::model()->roots()->findAll();
     $searc = new Search;
+    $productForm = new ProductForm;
 
     $this->render('product', array(
       'search' => $searc,
       'groups' => $groups,
       'product' => $product,
+      'productForm' => $productForm,
     ));
   }
 

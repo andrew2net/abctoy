@@ -28,8 +28,8 @@ $adds = Action::model()->published()->findAll();
                 <div style="width: 45%; text-align: center; position: relative; top: -40px">
                   <div class="cufon gray" style="font-size: 14pt">Старая цена</div>
                   <div class="cufon gray strike" style="font-size: 18pt; display: inline-block;
-                       font-weight: bold; margin: 
-                       10px auto"><?php echo number_format($value->product->price, 0, '.', ''); ?>.-</div>
+                       font-weight: bold; margin: 10px auto">
+                         <?php echo number_format($value->product->price, 0, '.', ''); ?>.-</div>
                 </div>
                 <div style="width: 49%">
                   <div class="cufon red" style="font-size: 25pt; font-weight: bold; padding-bottom: 10px">новая цена</div>

@@ -273,7 +273,7 @@ div.search-form
   background-position: -162px -55px;
 }
 
-.icon-cart, .icon-search, input[type=radio] + label:before,
+.icon-cart a:before, .icon-search, input[type=radio] + label:before,
 input[type=radio]:checked + label:before, input[type=checkbox] + label:before,
 input[type=checkbox]:checked + label:before, .weekcarousel-prev,
 .top10carousel-prev, .weekcarousel-next, .top10carousel-next,
@@ -281,15 +281,22 @@ input[type=checkbox]:checked + label:before, .weekcarousel-prev,
   background: url(/themes/abctoy/css/elements.png) no-repeat;
 }
 .icon-cart{
-  background-position: -18px -28px;
-  padding-right: 4em;
-  width: 120px;
+  /*width: 50px;*/
+}
+.icon-cart a:before{
+  content: '';
+  display: inline-block;
+  position: absolute;
+  left: -20px;
+  background-position: -38px -28px;
+  /*padding-right: 4em;*/
+  width: 24px;
   height: 24px;
 }
 
 .icon-cart a{
-  margin: 0 0 0 60px;
-  padding: 10px 0 !important;
+  /*margin: 0 0 0 60px;*/
+  /*padding: 10px 0 !important;*/
 }
 
 .icon-delivery-small, .icon-payment-small, .icon-guarantee-small{
@@ -350,7 +357,9 @@ input[type=checkbox]:checked + label:before, .weekcarousel-prev,
 .blue{
   color: #3399cc;
 }
-
+blue-light{
+  color: #66ccff;
+}
 .gray{
   color: #666666;
 }
@@ -495,6 +504,7 @@ a:hover > .green-item{
   line-height: 33px;
   text-align: center;
   height: 33px;
+  float: left;
 }
 .redbutton .center, .greenbutton .center{
   width: 152px;
@@ -510,6 +520,7 @@ a:hover > .green-item{
 .green-item-bt .left, .green-item-bt .right{
   width: 8px;
   height: 33px;
+  float: left;
 }
 .redbutton .left, .red-item-bt .left{
   background: url(/themes/abctoy/css/buttons.png) no-repeat;
@@ -698,19 +709,28 @@ select{
   top: 120px;
 }
 
-.discount-label{
+.discount-label-big, .discount-label{
   position: absolute;
   background: #cc3333;
   color: white;
   font-weight: bold;
+  z-index: 1;
+  text-align: center;
+  line-height: 3;
+}
+.discount-label-big{
+  font-size: 15pt;
+  width: 60px;
+  height: 60px;
+  top: 20px;
+  border-radius: 30px;
+}
+.discount-label{
   font-size: 10pt;
   width: 40px;
   height: 40px;
   top: -13px;
   left: -15px;
-  z-index: 1;
-  text-align: center;
-  line-height: 3;
   border-radius: 20px;
 }
 .green-glass{

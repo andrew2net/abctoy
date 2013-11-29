@@ -16,13 +16,13 @@
         array(
           'label' => 'Войти',
           'url' => array('#'),
-          'visible' => Yii::app()->user->isGuest,
+          'visible' => FALSE, //Yii::app()->user->isGuest,
           'itemOptions' => array('class' => 'align-right', 'style'=>'padding-right: 50px'),
         ),
         array(
           'label' => 'Личный кабинет',
           'url' => array('#'),
-          'visible' => !Yii::app()->user->isGuest,
+          'visible' => FALSE, //!Yii::app()->user->isGuest,
           'itemOptions' => array('class' => 'align-right'),
         ),
       ),
