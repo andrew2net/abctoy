@@ -333,4 +333,15 @@ class Product extends CActiveRecord {
     return $this;
   }
 
+  public function searchByName($text) {
+    $text = strtr($text, array('%' => '\%', '_' => '\_'));
+    $this->getDbCriteria()->mergeWith(
+        array(
+          'condition' => "t.name LIKE :text",
+          'params' => array(':text' => '%' . $text . '%'),
+        )
+    );
+    return $this;
+  }
+
 }

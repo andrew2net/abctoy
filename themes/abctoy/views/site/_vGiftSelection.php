@@ -4,7 +4,7 @@
 ?>
 <?php $form = $this->beginWidget('CActiveForm'); ?>
 <div class="blue cufon bold" style="font-size: 16pt; position: relative;
-     margin: 40px 0px 10px 5px; padding: 0 8px">Подбор товара</div>
+     margin: 0px 0px 10px 0px">Подбор товара</div>
 <div style="border: #3399cc solid 4px; border-radius: 4px; position: relative">
   <div style="margin: 5px 15px">
     <?php

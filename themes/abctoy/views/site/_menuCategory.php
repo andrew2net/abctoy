@@ -2,7 +2,7 @@
 /* @var $group Category */
 ?>
 
-<div style="border: 1px dashed #666666; border-radius: 3px; min-height: 50px">
+<div style="border: 1px dashed #666666; border-radius: 3px; min-height: 50px; margin-bottom: 20px">
   <div style="margin-top: 10px">
     <?php
     $categories = $group->descendants(2)->findAll(array('order' => 'lft'));

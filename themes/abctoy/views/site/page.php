@@ -24,9 +24,10 @@
   ?>
 
   <?php // echo $model->id; ?>
-
+  <div style="margin-top: 20px">
   <?php
   echo $model->content;
   ?>
+  </div>
 </div>
 <?php $this->renderPartial('_footer', array('groups' => $groups)); ?>

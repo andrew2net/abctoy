@@ -24,16 +24,16 @@
         ?>
       </div>
       <div style="float: right; margin: 5px 20px;">
-        <?php echo CHtml::beginForm('#', 'post'); ?>
+        <?php echo CHtml::beginForm('search', 'post'); ?>
         <?php
         echo CHtml::activeTextField($search, 'text', array(
-          'style' => 'border-radius: 4px 0 0 4px; border: none; width: 10em; height: 23px; padding-left: 10px',
+          'style' => 'border-radius: 4px 0 0 4px; border: none; width: 10em; height: 23px; padding-left: 10px; float: left',
           'placeholder' => 'Поиск'
         ));
         ?>
         <?php
         echo CHtml::submitButton('', array(
-          'style' => 'margin: 0 0 0 -4px; border: none; border-radius: 0 4px 4px 0',
+          'style' => 'margin: 0 0 0 -4px; border: none; border-radius: 0 4px 4px 0; float: left',
           'class' => 'icon-search'
         ));
         ;

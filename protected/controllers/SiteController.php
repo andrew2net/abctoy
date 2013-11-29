@@ -160,20 +160,45 @@ class SiteController extends Controller {
 
     $product = Product::model()->with('brand')->findByPk($id);
     $groups = Category::model()->roots()->findAll();
-    $searc = new Search;
+    $search = new Search;
     $productForm = new ProductForm;
 
     $this->render('product', array(
-      'search' => $searc,
+      'search' => $search,
       'groups' => $groups,
       'product' => $product,
       'productForm' => $productForm,
     ));
   }
 
-  public function actionSort(){
-    if ($_POST['']){
+  public function actionSort() {
+    if ($_POST['']) {
       
     }
   }
+
+  public function actionSearch() {
+    Yii::import('application.modules.catalog.models.Product');
+    Yii::import('application.modules.catalog.models.Category');
+    Yii::import('application.modules.discount.models.Discount');
+
+    $search = new Search;
+    $giftSelection = new GiftSelection;
+    $groups = Category::model()->roots()->findAll();
+    $product = Product::model();
+    
+    if (isset($_POST['Search'])) {
+      $product->searchByName($_POST['Search']['text']);
+      $search->text = $_POST['Search']['text'];
+    }
+    
+    $products = $product->discountOrder()->findAll();
+    $this->render('search', array(
+      'search' => $search,
+      'giftSelection' => $giftSelection,
+      'groups' => $groups,
+      'product'=>$products,
+      ));
+  }
+
 }

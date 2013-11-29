@@ -508,7 +508,7 @@ a:hover > .green-item{
   width: 114px;
 }
 .redbutton .center, .red-item-bt .center{
-  background: url(/themes/abctoy/css/buttons.png) repeat-x 0 -33px;
+  background: url(/themes/abctoy/css/buttons.png) repeat-x 0 -132px;
 }
 .redbutton .left, .redbutton .right, .greenbutton .left,
 .greenbutton .right, .red-item-bt .left, .red-item-bt .right,
@@ -518,19 +518,19 @@ a:hover > .green-item{
   float: left;
 }
 .redbutton .left, .red-item-bt .left{
-  background: url(/themes/abctoy/css/buttons.png) no-repeat;
+  background: url(/themes/abctoy/css/buttons.png) no-repeat 0 -99px;
 }
 .redbutton .right, .red-item-bt .right{
-  background: url(/themes/abctoy/css/buttons.png) no-repeat 0 -66px;
+  background: url(/themes/abctoy/css/buttons.png) no-repeat 0 -165px;
 }
 .redbutton:hover .left, .red-item-bt:hover .left{
-  background-position: 0 -99px;
+  background-position: 0 0;
 }
 .redbutton:hover .center, .red-item-bt:hover .center{
-  background-position: 0 -132px;
+  background-position: 0 -33px;
 }
 .redbutton:hover .right, .red-item-bt:hover .right{
-  background-position: 0 -165px;
+  background-position: 0 -66px;
 }
 
 .greenbutton .center, .green-item-bt .center{
