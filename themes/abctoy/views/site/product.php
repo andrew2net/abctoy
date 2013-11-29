@@ -16,7 +16,6 @@
   ));
   ?>
   <?php
-  setlocale(LC_TIME, 'ru_RU');
   $date_tomorrow = new DateTime('tomorrow');
   $aMonth = array('января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря');
   $tomorrow = $date_tomorrow->format('d') . ' ' . $aMonth[$date_tomorrow->format('m') - 1];

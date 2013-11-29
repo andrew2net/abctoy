@@ -18,12 +18,23 @@
   ));
   ?>
   <?php
+  $breadcrumbs = array();
+  switch ($group->level) {
+    case 3:
+      $g3 = $group->getParent()->getParent();
+      $breadcrumbs[$g3->name] = array('group', 'id' => $g3->id);
+    case 2:
+      $g2 = $group->getParent();
+      $breadcrumbs[$g2->name] = array('group', 'id' => $g2->id);
+  }
+  $breadcrumbs[] = $group->name;
   $this->widget('zii.widgets.CBreadcrumbs', array(
-    'links' => array($group->name),
+    'links' => $breadcrumbs,
     'homeLink' => FALSE,
+    'separator' => ' / ',
     'htmlOptions' => array(
-      'class' => 'cufon green bold',
-      'style' => 'font-size: 16pt; margin: 20px 0'
+      'class' => 'cufon green bold breadcrumbs',
+//      'style' => 'font-size: 16pt; margin: 20px 0; text-decoration: none'
     )
   ))
   ?>

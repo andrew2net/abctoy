@@ -15,15 +15,15 @@
   ?>
 
   <?php
-  $this->breadcrumbs = array(
-    $model->title,
-  );
-  $this->widget('zii.widgets.CBreadcrumbs', array(
-    'links' => $this->breadcrumbs,
-  ));
+//  $this->breadcrumbs = array(
+//    $model->title,
+//  );
+//  $this->widget('zii.widgets.CBreadcrumbs', array(
+//    'links' => $this->breadcrumbs,
+//  ));
   ?>
 
-  <?php echo $model->id; ?>
+  <?php // echo $model->id; ?>
 
   <?php
   echo $model->content;

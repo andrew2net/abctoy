@@ -175,17 +175,6 @@ div.view
   border: 1px solid #C9E0ED;
 }
 
-div.breadcrumbs
-{
-  font-size: 0.9em;
-  padding: 5px 20px;
-}
-
-div.breadcrumbs span
-{
-  font-weight: bold;
-}
-
 div.search-form
 {
   padding: 10px;
@@ -342,8 +331,14 @@ input[type=checkbox]:checked + label:before, .weekcarousel-prev,
   -moz-text-decoration-style: dashed;
 }
 
-.cufon{
-
+.breadcrumbs{
+  color: #99cc33;
+  font-size: 16pt; 
+  margin: 20px 0; 
+}
+.breadcrumbs a{
+  text-decoration: none;
+  color: #99cc33;
 }
 
 .lager{
