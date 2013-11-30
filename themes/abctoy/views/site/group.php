@@ -36,7 +36,8 @@
       'class' => 'cufon green bold breadcrumbs',
 //      'style' => 'font-size: 16pt; margin: 20px 0; text-decoration: none'
     )
-  ))
+  ));
+  echo CHtml::hiddenField('currentGroup', $group->id, array('id'=>'currentGroup'));
   ?>
   <div class="inline-blocks">
     <div style="width: 180px; margin-right: 6px; float: left">

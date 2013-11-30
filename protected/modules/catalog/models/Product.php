@@ -297,7 +297,7 @@ class Product extends CActiveRecord {
         'select' => array(
           't.*',
           'MAX(IFNULL(d.percent, c.percent)) AS percent',
-          '(1+MAX(IFNULL(d.percent, IFNULL(c.percent,0)))/100)*t.price AS dprice',
+          '(1-MAX(IFNULL(d.percent, IFNULL(c.percent,0)))/100)*t.price AS dprice',
         ),
         'condition' => "show_me=1",
         'params' => array(':date' => date('Y-m-d')),
@@ -362,8 +362,8 @@ class Product extends CActiveRecord {
   public function age($min, $max) {
     $this->getDbCriteria()->mergeWith(
         array(
-          'condition' => "t.age<=:max AND t.age_to>=:min",
-          'params' => array(':min' => $min, ':max' => $max),
+          'condition' => "t.age<=:age_max AND t.age_to>=:age_min",
+          'params' => array(':age_min' => $min, ':age_max' => $max),
         )
     );
     return $this;
@@ -386,11 +386,11 @@ class Product extends CActiveRecord {
     if (!empty($sort['category']))
       $this->subCategory($sort['category']);
 
-    $this->age($sort['ageFrom'], $sort['ageTo']);
-
-    if ($sort['availableOnly'])
+    if (isset($sort['availableOnly']) && $sort['availableOnly'])
       $this->availableOnly();
     
+    $this->age($sort['ageFrom'], $sort['ageTo']);
+
     $this->price($sort['priceFrom'], $sort['priceTo']);
 
 //    $this->getDbCriteria()->mergeWith(

@@ -38,12 +38,10 @@
       ?>
       <div class="styled-select">
         <?php
-        $items = array();
-        foreach ($groups as $value) {
-          $items[$value->id] = $value->name;
-        }
-        echo $form->dropDownList($giftSelection, 'category', $items
-            , array('prompt' => 'Все категории'));
+        echo $form->dropDownList($giftSelection, 'category', CHtml::listData($groups, 'id', 'name')
+            , array(
+          'prompt' => 'Все категории',
+        ));
         ?>
       </div>
     </div>
@@ -124,5 +122,5 @@
       </div>
     </div>
   </div>
-<?php $this->endWidget(); ?>
+  <?php $this->endWidget(); ?>
 </div>

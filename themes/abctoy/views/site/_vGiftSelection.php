@@ -2,11 +2,13 @@
 /* @var $giftSelection GiftSelection */
 /* @var $form CActiveForm */
 ?>
-<?php $form = $this->beginWidget('CActiveForm', array(
-    'id' => 'giftSelect',
-    'action' => 'sort',
-    'method' => 'post',
-  )); ?>
+<?php
+$form = $this->beginWidget('CActiveForm', array(
+  'id' => 'giftSelect',
+  'action' => '/sort',
+  'method' => 'post',
+    ));
+?>
 <div class="blue cufon bold" style="font-size: 16pt; position: relative;
      margin: 0px 0px 10px 0px">Подбор товара</div>
 <div style="border: #3399cc solid 4px; border-radius: 4px; position: relative">
@@ -48,27 +50,37 @@
         'class' => 'bold',
         'style' => 'display: block; font-size: 11pt; line-height: 2.5; margin: 10px 0; border-bottom: 1px solid #666666'
       ));
-      echo CHtml::checkBoxList('price', '', array(
-        '300 Р',
-        '300-500 Р',
-        '500-900 Р',
-        '900-1500 Р',
-        'дороже 1500 Р'), array(
-        'separator' => '',
-        'labelOptions' => array('style' => 'display: block; line-height: 1.5')
-      ));
       ?>
+      <div style="margin: 5px 0">
+        <?php
+//        echo CHtml::label('От', 'priceFrom', array('class' => 'bold'));
+        echo CHtml::activeNumberField($giftSelection, 'priceFrom', array(
+          'style' => 'width: 3em; margin: 0 8px 0 5px',
+        ));
+        echo CHtml::label('- ', 'priceTo', array('class' => 'bold'));
+        echo CHtml::activeNumberField($giftSelection, 'priceTo', array(
+          'style' => 'width: 3em; margin: 0 5px'
+        ));
+//      echo CHtml::checkBoxList('price', '', array(
+//        '300 Р',
+//        '300-500 Р',
+//        '500-900 Р',
+//        '900-1500 Р',
+//        'дороже 1500 Р'), array(
+//        'separator' => '',
+//        'labelOptions' => array('style' => 'display: block; line-height: 1.5')
+//      ));
+        ?>
+      </div>
     </div>
-    <?php echo CHtml::checkBox('categoryOnly'); ?>
+    <?php echo CHtml::checkBox('categoryOnly', TRUE, array('id' => 'categoryOnly')); ?>
     <?php
-    echo CHtml::Label('<div style="display: inline-block">Только в этой категории</div>', 'categoryOnly', array(
-      'id' => 'categoryOnly'
-    ));
+    echo CHtml::Label('<div style="display: inline-block">Только в этой категории</div>'
+        , 'categoryOnly');
     ?>
     <div>
       <?php
-      echo CHtml::activeHiddenField($giftSelection, 'priceFrom');
-      echo CHtml::activeHiddenField($giftSelection, 'priceTo');
+      echo CHtml::activeHiddenField($giftSelection, 'category', array('id'=>'GiftCategory'));
       ?>
     </div>
   </div>

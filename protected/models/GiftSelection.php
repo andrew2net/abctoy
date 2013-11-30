@@ -20,6 +20,7 @@ class GiftSelection extends CFormModel {
     $this->gender = 0;
     $this->ageFrom = 1;
     $this->ageTo = 4;
+    $this->category = 10;
     $this->availableOnly = 1;
     $this->priceFrom = 1000;
     $this->priceTo = 4000;
