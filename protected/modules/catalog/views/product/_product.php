@@ -44,10 +44,13 @@
 
 <div class="inline-blocks">
   <div>
-    <?php echo $form->textFieldControlGroup($model, 'age', array('span' => 2)); ?>
+    <?php echo $form->textFieldControlGroup($model, 'age', array('span' => 1)); ?>
+  </div>
+  <div>
+    <?php echo $form->textFieldControlGroup($model, 'age_to', array('span' => 1)); ?>
   </div>
 
-  <div>
+  <div style="margin-left: 1em">
     <?php
     echo $form->inlineRadioButtonListControlGroup($model, 'gender_id'
         , $model->genders

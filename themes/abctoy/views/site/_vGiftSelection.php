@@ -2,7 +2,11 @@
 /* @var $giftSelection GiftSelection */
 /* @var $form CActiveForm */
 ?>
-<?php $form = $this->beginWidget('CActiveForm'); ?>
+<?php $form = $this->beginWidget('CActiveForm', array(
+    'id' => 'giftSelect',
+    'action' => 'sort',
+    'method' => 'post',
+  )); ?>
 <div class="blue cufon bold" style="font-size: 16pt; position: relative;
      margin: 0px 0px 10px 0px">Подбор товара</div>
 <div style="border: #3399cc solid 4px; border-radius: 4px; position: relative">
@@ -69,7 +73,7 @@
     </div>
   </div>
   <div>
-    <a href="#">
+    <a id="aSubmit" href="#">
       <div style="position: relative; margin: 10px auto; display: block" class="green-item-bt inline-blocks">
         <div class="left"></div>
         <div class="center">ПОДОБРАТЬ</div>

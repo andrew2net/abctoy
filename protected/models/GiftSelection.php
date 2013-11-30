@@ -25,6 +25,12 @@ class GiftSelection extends CFormModel {
     $this->priceTo = 4000;
   }
 
+  public function rules() {
+    return array(
+      array('gender, ageFrom, ageTo, priceFrom, priceTo, category, availableOnly', 'safe'),
+    );
+  }
+
   public function attributeLabels() {
     return array(
       'gender' => 'Пол ребенка',

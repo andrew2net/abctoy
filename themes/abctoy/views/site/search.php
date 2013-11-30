@@ -31,8 +31,14 @@
     <div style="width: 760px">
       <div style="margin-top: 20px">
         <?php
-        foreach ($product as $item)
-          $this->renderPartial('_item', array('data' => $item));
+//        foreach ($product as $item)
+//          $this->renderPartial('_item', array('data' => $item));
+        $this->widget('zii.widgets.CListView', array(
+          'dataProvider' => $product,
+          'itemView' => '_item',
+          'template' => '{items}{pager}',
+            )
+        );
         ?>
       </div>
     </div>

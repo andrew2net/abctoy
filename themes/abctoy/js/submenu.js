@@ -6,3 +6,8 @@ $('.mainmenulink').hover(function (){
 $('.mainmenuarea').mouseleave(function (){
   $('.submenu').css('display', 'none');
 });
+  $(document).ready(function() {
+    $('#aSubmit').click(function() {
+      $('#giftSelect').submit();
+    });
+  });

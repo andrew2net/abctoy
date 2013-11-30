@@ -53,7 +53,8 @@ $this->widget('bootstrap.widgets.TbGridView', array(
       'value' => '$data->brand->name',
       'filter' => $model->getBrandOptions(),
     ),
-    'age',
+//    'age',
+//    'age_to',
     array(
       'name' => 'gender_id',
       'value' => '$data->gender',

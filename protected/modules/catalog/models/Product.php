@@ -11,6 +11,7 @@
  * @property string $article
  * @property integer $brand_id
  * @property integer $age
+ * @property integer $age_to
  * @property integer $gender_id
  * @property integer $remainder
  * @property string $description
@@ -50,7 +51,7 @@ class Product extends CActiveRecord {
     // NOTE: you should only define rules for those attributes that
     // will receive user inputs.
     return array(
-      array('age, gender_id, remainder', 'numerical', 'integerOnly' => true),
+      array('age, age_to, gender_id, remainder', 'numerical', 'integerOnly' => true),
       array('name, article, brand_id, price', 'required'),
       array('name', 'length', 'max' => 30),
       array('img, small_img', 'length', 'max' => 255),
@@ -62,7 +63,7 @@ class Product extends CActiveRecord {
       array('article', 'unique'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
-      array('name, article, brand_id, age, gender_id, remainder, price, show_me', 'safe', 'on' => 'search'),
+      array('name, article, brand_id, age, age_to, gender_id, remainder, price, show_me', 'safe', 'on' => 'search'),
     );
   }
 
@@ -93,7 +94,8 @@ class Product extends CActiveRecord {
       'small_img' => 'Миниатюра',
       'article' => 'Артикул',
       'brand_id' => 'Бренд',
-      'age' => 'Возраст',
+      'age' => 'Возраст с',
+      'age_to' => 'по',
       'gender_id' => 'Пол',
       'remainder' => 'Остаток',
       'description' => 'Описание',
@@ -128,6 +130,7 @@ class Product extends CActiveRecord {
     $criteria->compare('t.name', $this->name, true);
     $criteria->compare('article', $this->article, true);
     $criteria->compare('age', $this->age);
+    $criteria->compare('age_to', $this->age_to);
     $criteria->compare('remainder', $this->remainder);
     $criteria->compare('price', $this->price);
     $criteria->compare('show_me', $this->show_me);
@@ -269,6 +272,7 @@ class Product extends CActiveRecord {
         ),
         'condition' => "show_me=1",
       ),
+      'availableOnly' => array('condition' => "remainder>0",),
       'discountOrder' => array(
         'with' => array(
           'category' => array(
@@ -293,6 +297,7 @@ class Product extends CActiveRecord {
         'select' => array(
           't.*',
           'MAX(IFNULL(d.percent, c.percent)) AS percent',
+          '(1+MAX(IFNULL(d.percent, IFNULL(c.percent,0)))/100)*t.price AS dprice',
         ),
         'condition' => "show_me=1",
         'params' => array(':date' => date('Y-m-d')),
@@ -341,6 +346,59 @@ class Product extends CActiveRecord {
           'params' => array(':text' => '%' . $text . '%'),
         )
     );
+    return $this;
+  }
+
+  public function gender($id) {
+    $this->getDbCriteria()->mergeWith(
+        array(
+          'condition' => "t.gender_id=:id",
+          'params' => array(':id' => $id),
+        )
+    );
+    return $this;
+  }
+
+  public function age($min, $max) {
+    $this->getDbCriteria()->mergeWith(
+        array(
+          'condition' => "t.age<=:max AND t.age_to>=:min",
+          'params' => array(':min' => $min, ':max' => $max),
+        )
+    );
+    return $this;
+  }
+
+  public function price($min, $max) {
+    $this->discountOrder();
+    $this->getDbCriteria()->mergeWith(
+        array(
+          'having' => "dprice BETWEEN :min AND :max",
+          'params' => array(':min' => $min, ':max' => $max),
+    ));
+    return $this;
+  }
+
+  public function sort($sort) {
+    if ($sort['gender'] != 0)
+      $this->gender($sort['gender']);
+
+    if (!empty($sort['category']))
+      $this->subCategory($sort['category']);
+
+    $this->age($sort['ageFrom'], $sort['ageTo']);
+
+    if ($sort['availableOnly'])
+      $this->availableOnly();
+    
+    $this->price($sort['priceFrom'], $sort['priceTo']);
+
+//    $this->getDbCriteria()->mergeWith(
+//        array(
+//          'condition' => "t.name LIKE :text",
+//          'params' => array(':text' => $text),
+//        )
+//    );
     return $this;
   }
 

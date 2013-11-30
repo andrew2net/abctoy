@@ -172,9 +172,31 @@ class SiteController extends Controller {
   }
 
   public function actionSort() {
-    if ($_POST['']) {
-      
+    Yii::import('application.modules.catalog.models.Product');
+    Yii::import('application.modules.catalog.models.Category');
+    Yii::import('application.modules.discount.models.Discount');
+
+    $search = new Search;
+    $giftSelection = new GiftSelection;
+    $groups = Category::model()->roots()->findAll();
+    $product = Product::model();
+
+    if (isset($_POST['GiftSelection'])) {
+      $product->sort($_POST['GiftSelection']);
+      $giftSelection->attributes = $_POST['GiftSelection'];
     }
+
+//    $product->discountOrder();
+    $product_data = new CActiveDataProvider($product
+        , array('pagination' => array('pageSize' => 20),
+    ));
+
+    $this->render('sort', array(
+      'search' => $search,
+      'giftSelection' => $giftSelection,
+      'groups' => $groups,
+      'product' => $product_data,
+    ));
   }
 
   public function actionSearch() {
@@ -186,19 +208,24 @@ class SiteController extends Controller {
     $giftSelection = new GiftSelection;
     $groups = Category::model()->roots()->findAll();
     $product = Product::model();
-    
+
     if (isset($_POST['Search'])) {
       $product->searchByName($_POST['Search']['text']);
       $search->text = $_POST['Search']['text'];
     }
-    
-    $products = $product->discountOrder()->findAll();
+
+    $product->discountOrder();
+    $product_data = new CActiveDataProvider('Product'
+        , array('criteria' => $product->getDbCriteria(),
+      'pagination' => array('pageSize' => 20),
+    ));
+
     $this->render('search', array(
       'search' => $search,
       'giftSelection' => $giftSelection,
       'groups' => $groups,
-      'product'=>$products,
-      ));
+      'product' => $product_data,
+    ));
   }
 
 }
