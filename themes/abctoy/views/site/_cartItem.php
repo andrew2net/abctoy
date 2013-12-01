@@ -27,7 +27,7 @@ else {
   <div class="img-container" style="width: 150px; height: 150px">
     <img style="max-width: 150px; max-height: 150px" src="<?php echo $product->product->small_img; ?>">
   </div>
-  <div style="font-size: 12pt; margin: 0 40px">
+  <div style="font-size: 12pt; margin: 0 40px; width: 200px">
     <div>
       <a href="<?php echo $this->createUrl('product', array('id' => $product->product_id)); ?>">
         <?php echo $product->product->name; ?>
