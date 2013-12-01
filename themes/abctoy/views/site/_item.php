@@ -35,7 +35,7 @@ else {
       <div class="item-rest <?php echo $remainder_class; ?>"><?php echo $remainder; ?></div>
       <div class="item-disc"><?php echo $old_price; ?></div>
       <div class="cufon item-price"><?php echo $price; ?>.-</div>
-      <div class="<?php echo $button; ?> inline-blocks">
+      <div class="<?php echo $button; ?> inline-blocks addToCart" product="<?php echo $data->id; ?>">
         <div class="left"></div>
         <div class="center">В КОРЗИНУ</div>
         <div class="right"></div>

@@ -2,7 +2,7 @@
   <div <?php echo (isset($group) ? 'style="width: 100%"' : ''); ?>>
     <div class="inline-blocks <?php echo (isset($group) ? 'right' : ''); ?>">
       <div class="icon-recom"></div>
-      <div class="cufon green bold" style="font-size: 20pt; position: relative; top: -18px; padding: 0 10px">Вам рекомендовано</div>
+      <div class="cufon green bold" style="font-size: 20pt; position: relative; padding: 0 10px">Вам рекомендовано</div>
     </div>
   </div>
   <?php

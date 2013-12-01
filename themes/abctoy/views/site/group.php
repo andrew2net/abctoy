@@ -64,7 +64,7 @@
           <div style="width: 100%">
             <div class="inline-blocks right">
               <div class="icon-dicount"></div>
-              <div class="cufon red bold" style="font-size: 20pt; position: relative; top: -18px; padding: 0 10px">Товары со скидкой</div>
+              <div class="cufon red bold" style="font-size: 20pt; position: relative; padding: 0 10px">Товары со скидкой</div>
             </div>
           </div>
         </div>

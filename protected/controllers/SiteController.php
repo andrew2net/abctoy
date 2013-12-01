@@ -228,4 +228,138 @@ class SiteController extends Controller {
     ));
   }
 
+  public function actionAddToCart() {
+
+    if (Yii::app()->user->isGuest)
+      $session_id = $this->getSession();
+    else
+      $session_id = '';
+
+    $carts = Cart::model()->shoppingCart($session_id)
+        ->cartItem($session_id, $_POST['id'])
+        ->findAll();
+    if (isset($carts[0]))
+      $cart = $carts[0];
+    else {
+      $cart = new Cart;
+      if (Yii::app()->user->isGuest)
+        $cart->session_id = $session_id;
+      else
+        $cart->user_id = Yii::app()->user->id;
+      $cart->product_id = $_POST['id'];
+    }
+
+    $cart->quantity += $_POST['quantity'];
+    $cart->time = date('Y-m-d H:i:s');
+    $cart->save();
+
+    echo $this->cartLabel();
+    Yii::app()->end();
+  }
+
+  public function cartLabel() {
+    $quantity = Cart::model()->countProduct($this->getSession())->findAll();
+    if (!$quantity[0]->quantity)
+      return 'Козина пуста';
+
+    $tovar = array(1, 21, 31, 41);
+    $tovara = array(2, 3, 4, 22, 23, 24, 32, 33, 34, 42, 43, 44);
+    $tovarSuffix = ' товаров';
+    if (array_search($quantity[0]->quantity, $tovar) !== FALSE)
+      $tovarSuffix = ' товар';
+    elseif (array_search($quantity[0]->quantity, $tovara) !== FALSE)
+      $tovarSuffix = ' товара';
+
+    return 'В корзине ' . $quantity[0]->quantity . $tovarSuffix;
+  }
+
+  public function actionCart() {
+    Yii::import('application.modules.catalog.models.Product');
+    Yii::import('application.modules.catalog.models.Brand');
+    Yii::import('application.modules.delivery.models.Delivery');
+    Yii::import('application.modules.payment.models.Payment');
+
+    if (Yii::app()->user->isGuest)
+      $profile = CustomerProfile::model()->findByAttributes(array(
+        'session_id' => $this->getSession()));
+    else
+      $profile = CustomerProfile::model()->findByAttributes(array(
+        'user_id' => Yii::app()->user->id));
+
+    if (is_null($profile)) {
+      $profile = new CustomerProfile;
+      if (Yii::app()->user->isGuest)
+        $profile->session_id = $this->getSession();
+      else
+        $profile->user_id = Yii::app()->user->id;
+    }
+
+    $order = new Order;
+    if (isset($_POST['CustomerProfile'])) {
+      $profile->attributes = $_POST['CustomerProfile'];
+      if ($profile->save()) {
+        foreach ($_POST['Cart'] as $key => $value) {
+          
+        }
+      }
+    }
+    $order->delivery_id = 1;
+    $order->payment_id = 1;
+    $delivery = Delivery::model()->findAll();
+    $payment = Payment::model()->findAll();
+
+//    $payments = array();
+//    foreach ($payment as $value) {
+//      $payments[$value->id] = '<span class="bold">';
+//    }
+
+    $cart = Cart::model()->shoppingCart($this->getSession())
+            ->with('product.brand')->findAll();
+
+    $this->render('shoppingCart', array(
+      'cart' => $cart,
+      'profile' => $profile,
+      'order' => $order,
+      'delivery' => $delivery,
+      'payment' => $payment,
+    ));
+  }
+
+  private function getSession() {
+    if (!Yii::app()->user->isGuest)
+      return '';
+
+    if (isset(Yii::app()->request->cookies['cart']->value))
+      $session_id = Yii::app()->request->cookies['cart']->value;
+    else {
+      $session_id = Yii::app()->session->sessionId;
+      $cookie = new CHttpCookie('cart', $session_id);
+      $cookie->expire = time() + 2592000;
+      $cookie->httpOnly = TRUE;
+      Yii::app()->request->cookies['cart'] = $cookie;
+    }
+    return $session_id;
+  }
+
+  public function actionSuggestCity($term) {
+
+    function formatArray($element) {
+      return $element['name_ru'];
+    }
+
+    $city = strtr($term, array('%' => '\%', '_' => '\_'));
+    $suggest_cities = Yii::app()->db->createCommand()
+        ->select('name_ru')->from('net_city')
+        ->where('name_ru LIKE :data', array(':data' => '%' . $term . '%'))->limit(20)
+        ->group('name_ru')
+        ->queryAll();
+    if (is_array($suggest_cities))
+      $suggest = array_map('formatArray', $suggest_cities);
+    else
+      $suggest = array();
+
+    echo CJSON::encode($suggest);
+    Yii::app()->end();
+  }
+
 }

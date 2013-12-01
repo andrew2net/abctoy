@@ -58,7 +58,7 @@
           <span style="position: relative; bottom: -5px">шт.</span>
         </div>
         <div style="position: absolute; right: 0; bottom: 0">
-          <div class="redbutton">
+          <div class="redbutton addToCart" product="<?php echo $product->id; ?>">
             <div class="left"></div>
             <div class="center">В корзину</div>
             <div class="right"></div>

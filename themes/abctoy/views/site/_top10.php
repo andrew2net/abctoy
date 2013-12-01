@@ -7,7 +7,7 @@ if (count($top10)){
 
 <div class="inline-blocks" style="margin: 20px 0">
   <div class="icon-top10"></div>
-  <div class="cufon yellow bold" style="font-size: 20pt; position: relative; top: -18px; padding: 0 10px">ТОП 10 подарков</div>
+  <div class="cufon yellow bold" style="font-size: 20pt; position: relative; padding: 0 10px">ТОП 10 подарков</div>
   <div style="float: right; font-size: 12pt; position: relative; top: 20px;">
     <span class="cufon yellow bold">Доверьтесь выбору наших покупателей</span>
   </div>

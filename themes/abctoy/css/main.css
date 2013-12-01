@@ -456,6 +456,7 @@ a:hover > .green-item{
 
 .inline-blocks > div{
   display: inline-block;
+  vertical-align: middle;
 }
 
 .jcarousel, .weekcarousel, .top10carousel, .brands {

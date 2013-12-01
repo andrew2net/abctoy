@@ -9,15 +9,16 @@
         array('label' => 'FAQ', 'url' => array('/faq')),
         array('label' => 'Контакты', 'url' => array('/contact')),
         array(
-          'label' => 'В корзине',
-          'url' => array('#'),
+          'label' => $this->cartLabel(),
+          'url' => array('/cart'),
+          'linkOptions' => array('id' => 'shoppingCart'),
           'itemOptions' => array('class' => 'align-right icon-cart'),
         ),
         array(
           'label' => 'Войти',
           'url' => array('#'),
           'visible' => FALSE, //Yii::app()->user->isGuest,
-          'itemOptions' => array('class' => 'align-right', 'style'=>'padding-right: 50px'),
+          'itemOptions' => array('class' => 'align-right', 'style' => 'padding-right: 50px'),
         ),
         array(
           'label' => 'Личный кабинет',
