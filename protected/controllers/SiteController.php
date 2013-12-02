@@ -235,9 +235,7 @@ class SiteController extends Controller {
     else
       $session_id = '';
 
-    $carts = Cart::model()->shoppingCart($session_id)
-        ->cartItem($session_id, $_POST['id'])
-        ->findAll();
+    $carts = Cart::model()->cartItem($session_id, $_POST['id'])->findAll();
     if (isset($carts[0]))
       $cart = $carts[0];
     else {
@@ -294,13 +292,47 @@ class SiteController extends Controller {
         $profile->user_id = Yii::app()->user->id;
     }
 
+    $cart = Cart::model()->shoppingCart($this->getSession())
+            ->with('product.brand')->findAll();
+
     $order = new Order;
     if (isset($_POST['CustomerProfile'])) {
-      $profile->attributes = $_POST['CustomerProfile'];
-      if ($profile->save()) {
-        foreach ($_POST['Cart'] as $key => $value) {
-          
+      $tr = $order->dbConnection->beginTransaction();
+      try {
+        $profile->attributes = $_POST['CustomerProfile'];
+        if ($profile->save()) {
+          $count_product = 0;
+          foreach ($_POST['Cart'] as $q)
+            $count_product += $q['quantity'] > 0 ? $q['quantity'] : 0;
+          if ($count_product > 0) {
+            $order->attributes = $_POST['Order'];
+            $order->profile_id = $profile->id;
+            $order->status_id = 0;
+            $order->time = date('Y-m-d H:i:s');
+            if ($order->save())
+              foreach ($_POST['Cart'] as $key => $value) {
+                if ($value['quantity'] > 0) {
+                  $order_product = new OrderProduct;
+                  $order_product->order_id = $order->id;
+                  $order_product->product_id = $key;
+                  $order_product->quantity = $value['quantity'];
+                  $product = Product::model()->findByPk($key);
+                  $discount = $product->getActualDiscount();
+                  if (is_array($discount))
+                    $order_product->price = $discount['price'];
+                  else
+                    $order_product->price = $product->price;
+                  $order_product->save();
+                }
+              }
+          }
+          foreach ($cart as $item)
+            $item->delete();
+          $tr->commit();
         }
+      } catch (Exception $e) {
+        $tr->rollback();
+        throw $e;
       }
     }
     $order->delivery_id = 1;
@@ -312,9 +344,6 @@ class SiteController extends Controller {
 //    foreach ($payment as $value) {
 //      $payments[$value->id] = '<span class="bold">';
 //    }
-
-    $cart = Cart::model()->shoppingCart($this->getSession())
-            ->with('product.brand')->findAll();
 
     $this->render('shoppingCart', array(
       'cart' => $cart,

@@ -1,18 +1,55 @@
 <?php
 /* @var $this DefaultController */
+/* @var $model Order */
 
-$this->breadcrumbs=array(
-	$this->module->id,
+$this->breadcrumbs = array(
+  'Заказы',
 );
 ?>
 
-<h1><?php echo $this->uniqueId . '/' . $this->action->id; ?></h1>
+<h3>Заказы</h3>
 
-<p>
-This is the view content for action "<?php echo $this->action->id; ?>".
-The action belongs to the controller "<?php echo get_class($this); ?>"
-in the "<?php echo $this->module->id; ?>" module.
-</p>
-<p>
-You may customize this page by editing <tt><?php echo __FILE__; ?></tt>
-</p>
+<?php
+Yii::import('application.modules.payment.models.Payment');
+Yii::import('application.modules.delivery.models.Delivery');
+$this->widget('bootstrap.widgets.TbGridView', array(
+  'id' => 'order-grid',
+  'dataProvider' => $model->timeOrderDesc()->search(),
+  'filter' => $model,
+  'columns' => array(
+    'time',
+    array(
+      'name' => 'status_id',
+      'value' => '$data->status',
+      'filter' => $model->statuses,
+    ),
+    array(
+      'name' => 'profile_fio',
+      'value' => '$data->profile->fio',
+    ),
+    array(
+      'name' => 'profile_email',
+      'value' => '$data->profile->email',
+    ),
+    array(
+      'name' => 'profile_phone',
+      'value' => '$data->profile->phone',
+    ),
+    array(
+      'name' => 'payment_id',
+      'value' => '$data->payment->name',
+      'filter' => $model->paymentOptions,
+    ),
+    array(
+      'name' => 'delivery_id',
+      'value' => '$data->delivery->name',
+      'filter' => $model->deliveryOptions,
+    ),
+    array(
+      'class' => 'bootstrap.widgets.TbButtonColumn',
+      'template' => '{update}',
+    ),
+  )
+    )
+);
+?>

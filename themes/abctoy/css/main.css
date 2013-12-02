@@ -501,6 +501,7 @@ a:hover > .green-item{
   text-align: center;
   height: 33px;
   float: left;
+  cursor: pointer;
 }
 .redbutton .center, .greenbutton .center{
   width: 152px;
