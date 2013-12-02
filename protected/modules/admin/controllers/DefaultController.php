@@ -24,21 +24,44 @@ class DefaultController extends Controller {
    * @param integer $id the ID of the model to be updated
    */
   public function actionUpdate($id) {
+    Yii::import('application.modules.delivery.models.Delivery');
+    Yii::import('application.modules.payment.models.Payment');
+    Yii::import('application.modules.catalog.models.Product');
     $model = $this->loadModel($id);
-    $product = OrderProduct::model()->findAllByAttributes(array('oreder_id' => $model->id));
+    $product = OrderProduct::model()->with(array('product'))
+        ->findAllByAttributes(array('order_id' => $model->id));
+    $profile = CustomerProfile::model()->findByPk($model->profile_id);
 
     // Uncomment the following line if AJAX validation is needed
     // $this->performAjaxValidation($model);
 
     if (isset($_POST['Order'])) {
       $model->attributes = $_POST['Order'];
-      if ($model->save())
-        $this->redirect(array('view', 'id' => $model->id));
+      if ($model->save()) {
+        $profile->attributes = $_POST['CustomerProfile'];
+        if ($profile->save()) {
+          foreach ($_POST['OrderProduct'] as $id => $value) {
+            $order_product = OrderProduct::model()->findByPk(array(
+              'order_id' => $model->id,
+              'product_id' => $id));
+            if (!is_null($order_product)) {
+              $order_product->quantity = $value['quantity'] > 0 ? $value['quantity'] : 0;
+              $order_product->price = $value['price'] > 0 ? $value['price'] : 0;
+              $order_product->save();
+            }
+          }
+          $this->redirect(array('index'));
+        }
+      }
     }
+
+    if ($model->status_id == 0)
+      $model->status_id = 1;
 
     $this->render('update', array(
       'model' => $model,
       'product' => $product,
+      'profile' => $profile,
     ));
   }
 
@@ -50,7 +73,8 @@ class DefaultController extends Controller {
    * @throws CHttpException
    */
   public function loadModel($id) {
-    $model = Order::model()->findByPk($id);
+    Yii::import('application.modules.discount.models.Coupon');
+    $model = Order::model()->with(array('coupon'))->findByPk($id);
     if ($model === null)
       throw new CHttpException(404, 'The requested page does not exist.');
     return $model;

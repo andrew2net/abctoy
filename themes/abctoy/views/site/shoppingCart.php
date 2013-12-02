@@ -127,7 +127,7 @@
           'attribute' => 'city',
           'sourceUrl' => '/site/suggestcity',
           'htmlOptions' => array('style' => 'font-size: 12pt')
-        ))
+        ));
         ?>
       <?php echo CHtml::error($profile, 'city', array('style'=>'font-size:10pt', 'class'=>'red')); ?>
       </div>

@@ -29,8 +29,8 @@ class Order extends CActiveRecord {
     '2' => 'Нет в наличии',
     '3' => 'Ожидание оплаты',
     '4' => 'Отгружен',
-    '4' => 'Отменен',
-    '4' => 'Доставлен',
+    '5' => 'Отменен',
+    '6' => 'Доставлен',
   );
 
   public function getStatuses() {
@@ -163,8 +163,13 @@ class Order extends CActiveRecord {
   public function afterFind() {
 
     $this->time = Yii::app()->dateFormatter->format('dd.MM.yyyy HH:mm:ss', $this->time);
-
     parent::afterFind();
+  }
+
+  public function beforeSave() {
+    $this->time = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm:ss', $this->time);
+//    $this->coupon_id
+    return parent::beforeSave();
   }
 
 }

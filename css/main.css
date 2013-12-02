@@ -299,3 +299,17 @@ div.search-form
 .table > div{
   display: table-cell
 }
+
+#Order_time, #Order_profile_phone {
+  width: 8em;
+}
+
+.display-field {
+  /*width:5em;*/
+  border:1px solid #DDD;
+  height:2em;
+  /*position:relative;*/
+  border-radius:5px;
+  line-height: 2;
+  padding: 0 4px;
+}
