@@ -11,8 +11,8 @@
   ));
   ?>
   <div class="blue cufon bold" style="font-size: 20pt; position: relative;
-       margin: 0 0 -15px 20px; background: white; width: 205px; z-index: 1;
-       padding: 0 8px">Подбор подарка</div>
+       margin: 0 0 -15px 20px; background: white; width: 200px; z-index: 1;
+       padding: 0 8px">Подбор товара</div>
   <div class="inline-blocks" style="border: #3399cc solid 4px; border-radius: 4px; position: relative">
     <div style="margin: 20px">
       <?php

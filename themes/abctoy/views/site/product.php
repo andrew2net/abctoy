@@ -67,7 +67,7 @@
       </div>
       <div>
         <div style="text-align: center; width: 168px; float: right; font-size: 11pt; margin-top: 5px">
-          <a href="#">Купить в 1 клик</a>
+          <a id="buy-one-click" product="<?php echo $product->id; ?>" href="#">Купить в 1 клик</a>
         </div>
       </div>
     </div>
@@ -77,4 +77,5 @@
     <div style="margin: 20px 0 40px"><?php echo $product->description; ?></div>
   </div>
   <?php $this->endWidget(); ?>
-  <?php $this->renderPartial('_footer', array('groups' => $groups)); ?>
+</div>
+<?php $this->renderPartial('_footer', array('groups' => $groups)); ?>

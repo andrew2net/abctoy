@@ -36,16 +36,30 @@ $('.addToCart').click(function(event) {
   });
 });
 
-$('.cart-quantity').change(function (){
+$('#buy-one-click').click(function() {
+  $('form').submit();
+});
+
+$('.cart-quantity').change(function() {
   var sum = 0;
-  $('.cart-quantity').each(function (){
+  $('.cart-quantity').each(function() {
     var price = $(this).attr('price');
     sum += parseInt(this.value) * price;
   });
-  $('#cart-summ').html(sum + '.-');
-  Cufon.replace('#cart-summ');
+  var id = $(this).attr('product');
+  var quantity = parseInt(this.value);
+  $.post('/changeCart', {
+    'id': id,
+    'quantity': quantity
+  },
+  function() {
+    $('#cart-summ').html(sum + '.-');
+    Cufon.replace('#cart-summ');
+  }
+  );
 });
 
-$('.submit').click(function (){
+$('.submit').click(function() {
   $('form').submit();
 });
+

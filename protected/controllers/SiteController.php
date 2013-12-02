@@ -163,6 +163,10 @@ class SiteController extends Controller {
     $search = new Search;
     $productForm = new ProductForm;
 
+    if (isset($_POST['ProductForm'])) {
+      $this->addToCart($_GET['id'], $_POST['ProductForm']['quantity']);
+      $this->redirect('/cart');
+    }
     $this->render('product', array(
       'search' => $search,
       'groups' => $groups,
@@ -230,12 +234,32 @@ class SiteController extends Controller {
 
   public function actionAddToCart() {
 
+    $this->addToCart($_POST['id'], $_POST['quantity']);
+    echo $this->cartLabel();
+    Yii::app()->end();
+  }
+
+  public function actionChangeCart() {
+
+    $this->addToCart($_POST['id'], $_POST['quantity'], TRUE);
+    echo ' ';
+    Yii::app()->end();
+  }
+
+  private function addToCart($id, $quantity, $change = FALSE) {
+
+    if (!is_numeric($quantity))
+      return ;
+    
+    if ($quantity<0)
+      return ;
+    
     if (Yii::app()->user->isGuest)
       $session_id = $this->getSession();
     else
       $session_id = '';
 
-    $carts = Cart::model()->cartItem($session_id, $_POST['id'])->findAll();
+    $carts = Cart::model()->cartItem($session_id, $id)->findAll();
     if (isset($carts[0]))
       $cart = $carts[0];
     else {
@@ -244,15 +268,16 @@ class SiteController extends Controller {
         $cart->session_id = $session_id;
       else
         $cart->user_id = Yii::app()->user->id;
-      $cart->product_id = $_POST['id'];
+      $cart->product_id = $id;
     }
 
-    $cart->quantity += $_POST['quantity'];
+    if ($change)
+      $cart->quantity = $quantity;
+    else
+      $cart->quantity += $quantity;
+
     $cart->time = date('Y-m-d H:i:s');
     $cart->save();
-
-    echo $this->cartLabel();
-    Yii::app()->end();
   }
 
   public function cartLabel() {
@@ -329,6 +354,7 @@ class SiteController extends Controller {
           foreach ($cart as $item)
             $item->delete();
           $tr->commit();
+          $this->redirect('/');
         }
       } catch (Exception $e) {
         $tr->rollback();

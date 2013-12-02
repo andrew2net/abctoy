@@ -28,7 +28,7 @@
     </div>
     <div style="position: relative; top: 35px">
       <div class="cufon green bold" style="font-size: 24pt; text-align: right">Оформление заказа</div>
-      <div style="text-align: right"><a href="<?php echo Yii::app()->request->urlReferrer; ?>">Продолжить покупки</a></div>
+      <div style="text-align: right"><a href="/">Продолжить покупки</a></div>
     </div>
   </div>
   <div class="cufon gray bold" style="font-size: 28pt; margin-top: 20px">Ваша корзина</div>

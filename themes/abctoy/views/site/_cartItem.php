@@ -40,7 +40,8 @@ else {
     echo CHtml::activeNumberField($product, "[$product->product_id]quantity", array(
       'style' => 'width: 1.5em; font-size: 16pt',
       'class' => 'cart-quantity',
-      'price' => $price));
+      'price' => $price,
+      'product' => $product->product_id));
     ?>
     <span style="position: relative; top: 5px; font-size: 12pt"> шт.</span>
   </div>

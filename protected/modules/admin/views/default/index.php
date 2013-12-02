@@ -8,7 +8,7 @@ $this->breadcrumbs = array(
 ?>
 
 <h3>Заказы</h3>
-
+<?php // $this->beginWidget('CHtmlPurifier'); ?>
 <?php
 Yii::import('application.modules.payment.models.Payment');
 Yii::import('application.modules.delivery.models.Delivery');
@@ -53,3 +53,4 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     )
 );
 ?>
+<?php // $this->endWidget(); ?>

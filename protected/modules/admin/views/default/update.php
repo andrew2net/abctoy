@@ -3,19 +3,11 @@
 /* @var $model Order */
 
 $this->breadcrumbs=array(
-	'Orders'=>array('index'),
-	$model->id=>array('view','id'=>$model->id),
-	'Update',
-);
-
-$this->menu=array(
-	array('label'=>'List Order', 'url'=>array('index')),
-	array('label'=>'Create Order', 'url'=>array('create')),
-	array('label'=>'View Order', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Order', 'url'=>array('admin')),
+	'Заказы'=>array('index'),
+	'Обработка заказа',
 );
 ?>
 
-<h1>Update Order <?php echo $model->id; ?></h1>
+<h3>Заказ № <?php echo $model->id; ?></h3>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>
