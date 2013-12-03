@@ -208,7 +208,8 @@ class ProductController extends Controller {
           $_FILES['ImportFile']['name']['productFile'];
       $importData->productFile->saveAs($importFilePath);
       $data = new Spreadsheet_Excel_Reader($importFilePath, FALSE);
-      $rows = 50; // $data->rowcount(1);
+      $sheet = 0;
+      $rows = $data->rowcount($sheet);
       $productImagePath = Yii::getPathOfAlias('webroot.productimages') .
           DIRECTORY_SEPARATOR;
       $quotes = array(
@@ -216,22 +217,51 @@ class ProductController extends Controller {
         "\xE2\x80\x99" => "'", // ’ (U+2019) in UTF-8
       );
       for ($index = 2; $index < $rows; $index++) {
-        $brand_name = $data->val($index, 'B', 1);
+        $brand_name = $data->val($index, 'B', $sheet);
         $brand = Brand::model()->findByAttributes(array('name' => $brand_name));
         if (is_null($brand)) {
           $brand = new Brand;
           $brand->name = $brand_name;
           $brand->save();
         }
-        $name = strtr($data->val($index, 'A', 1), $quotes);
+        $group_name = $data->val($index, 'H', $sheet);
+        $group = Category::model()->findByAttributes(array(
+          'name' => $group_name), 'level=1');
+        if (is_null($group)) {
+          $group = new Category;
+          $group->name = $group_name;
+          $group->saveNode();
+        }
+
+        $category_name = $data->val($index, 'G', $sheet);
+        $category = Category::model()->findByAttributes(array(
+          'name' => $category_name), 'level=2');
+        if (is_null($category)) {
+          $category = new Category;
+          $category->name = $category_name;
+          $category->appendTo($group);
+        }
+        $subcategory_name = $data->val($index, 'F', $sheet);
+        $subcategory = Category::model()->findByAttributes(array(
+          'name' => $subcategory_name), 'level=3');
+        if (is_null($subcategory)) {
+          $subcategory = new Category;
+          $subcategory->name = $subcategory_name;
+          $subcategory->appendTo($category);
+        }
+        $name = strtr($data->val($index, 'A', $sheet), $quotes);
+        $age = (string) $data->val($index, 'K', $sheet);
+        $ages = split(' ', $age);
         $productData = array(
           'name' => $name,
-          'article' => (string) $data->val($index, 'C', 1),
+          'article' => (string) $data->val($index, 'C', $sheet),
           'brand_id' => (int) $brand->id,
-          'gender_id' => 0,
-          'remainder' => (int) $data->val($index, 'F', 1),
-          'description' => $name,
-          'price' => (float) $data->val($index, 'G', 1),
+          'gender_id' => $data->val($index, 'L', $sheet),
+          'remainder' => (int) $data->val($index, 'I', $sheet),
+          'description' => $data->val($index, 'M', $sheet),
+          'price' => (float) $data->val($index, 'J', $sheet),
+          'age' => $ages[0],
+          'age_to' => $ages[1],
           'show_me' => 1,
         );
         $product = Product::model()->findByAttributes(array(
@@ -241,8 +271,16 @@ class ProductController extends Controller {
           $product->attributes = $productData;
           $product->save(FALSE);
         }
+        $product_category = ProductCategory::model()->findByAttributes(array(
+          'product_id' => $product->id, 'category_id' => $subcategory->id));
+        if (is_null($product_category)) {
+          $product_category = new ProductCategory;
+          $product_category->category_id = $subcategory->id;
+          $product_category->product_id = $product->id;
+          $product_category->save();
+        }
 
-        $imageUrl = $data->val($index, 'D', 1);
+        $imageUrl = $data->val($index, 'D', $sheet);
         $ext = substr($imageUrl, strrpos($imageUrl, '.', -1));
         $productData['img'] = '/productimages/' . $product->id . $ext;
         $ch = curl_init($imageUrl);
@@ -252,7 +290,7 @@ class ProductController extends Controller {
         curl_exec($ch);
         fclose($fp);
 
-        $smallImgUrl = $data->val($index, 'E', 1);
+        $smallImgUrl = $data->val($index, 'E', $sheet);
         $small_ext = substr($smallImgUrl, strrpos($smallImgUrl, '.', -1));
         $productData['small_img'] = '/productimages/'
             . $product->id . 's' . $small_ext;
