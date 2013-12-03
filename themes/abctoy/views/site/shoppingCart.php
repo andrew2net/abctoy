@@ -187,9 +187,6 @@
         'order' => $order,
         'payment' => $payment
       ));
-//      echo CHtml::activeRadioButtonList($order, 'payment_id'
-//          , CHtml::listData($payment, 'id', 'description'), array(
-//        'labelOptions' => array('style' => 'display: block', 'class' => 'cart-radio')));
       ?>
     </div>
   </div>
