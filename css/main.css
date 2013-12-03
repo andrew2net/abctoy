@@ -305,10 +305,8 @@ div.search-form
 }
 
 .display-field {
-  /*width:5em;*/
   border:1px solid #DDD;
   height:2em;
-  /*position:relative;*/
   border-radius:5px;
   line-height: 2;
   padding: 0 4px;

@@ -525,13 +525,13 @@ a:hover > .green-item{
 .redbutton .right, .red-item-bt .right{
   background: url(/themes/abctoy/css/buttons.png) no-repeat 0 -165px;
 }
-.redbutton:hover .left, .red-item-bt:hover .left{
+.redbutton:active .left, .red-item-bt:active .left{
   background-position: 0 0;
 }
-.redbutton:hover .center, .red-item-bt:hover .center{
+.redbutton:active .center, .red-item-bt:active .center{
   background-position: 0 -33px;
 }
-.redbutton:hover .right, .red-item-bt:hover .right{
+.redbutton:active .right, .red-item-bt:active .right{
   background-position: 0 -66px;
 }
 
@@ -545,14 +545,30 @@ a:hover > .green-item{
 .greenbutton .right, .green-item-bt .right{
   background: url(/themes/abctoy/css/buttons.png) no-repeat 0 -264px;
 }
-.greenbutton:hover .left, .green-item-bt:hover .left{
+.greenbutton:active .left, .green-item-bt:active .left{
   background-position: 0 -297px;
 }
-.greenbutton:hover .center, .green-item-bt:hover .center{
+.greenbutton:active .center, .green-item-bt:active .center{
   background-position: 0 -330px;
 }
-.greenbutton:hover .right, .green-item-bt:hover .right{
+.greenbutton:active .right, .green-item-bt:active .right{
   background-position: 0 -363px;
+}
+
+input[type=radio] + .cart-radio{
+  padding: 0px 10px 10px 55px;
+}
+input[type=radio] + .cart-radio:before,
+input[type=radio]:checked + .cart-radio:before{
+  background: url(/themes/abctoy/css/cart-radio.png) no-repeat 0 -38px;
+  width: 38px;
+  height: 38px;
+  margin: auto 0;
+  top: 0;
+  bottom: 10px;
+}
+input[type=radio]:checked + .cart-radio:before{
+  background-position: 0 0;
 }
 
 input[type=radio] +label, input[type=checkbox] + label
@@ -783,4 +799,15 @@ a:hover .item-disc, a:hover .item-price{
   bottom: 0;
   left: 0;
   right: 0;
+}
+
+#cart-submit{
+  border: none;
+  background: url(/themes/abctoy/css/cart-button.png) no-repeat;
+  width: 310px;
+  height: 60px;
+  cursor: pointer;
+}
+#cart-submit:active{
+  background-position: 0 -61px;
 }

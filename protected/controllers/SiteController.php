@@ -249,11 +249,11 @@ class SiteController extends Controller {
   private function addToCart($id, $quantity, $change = FALSE) {
 
     if (!is_numeric($quantity))
-      return ;
-    
-    if ($quantity<0)
-      return ;
-    
+      return;
+
+    if ($quantity < 0)
+      return;
+
     if (Yii::app()->user->isGuest)
       $session_id = $this->getSession();
     else
@@ -322,48 +322,54 @@ class SiteController extends Controller {
 
     $order = new Order;
     if (isset($_POST['CustomerProfile'])) {
-      $tr = $order->dbConnection->beginTransaction();
-      try {
-        $profile->attributes = $_POST['CustomerProfile'];
-        if ($profile->save()) {
-          $count_product = 0;
-          foreach ($_POST['Cart'] as $q)
-            $count_product += $q['quantity'] > 0 ? $q['quantity'] : 0;
-          if ($count_product > 0) {
-            $order->attributes = $_POST['Order'];
-            $order->profile_id = $profile->id;
-            $order->status_id = 0;
-            $order->time = date('Y-m-d H:i:s');
-            if ($order->save())
-              foreach ($_POST['Cart'] as $key => $value) {
-                if ($value['quantity'] > 0) {
-                  $order_product = new OrderProduct;
-                  $order_product->order_id = $order->id;
-                  $order_product->product_id = $key;
-                  $order_product->quantity = $value['quantity'];
-                  $product = Product::model()->findByPk($key);
-                  $discount = $product->getActualDiscount();
-                  if (is_array($discount))
-                    $order_product->price = $discount['price'];
-                  else
-                    $order_product->price = $product->price;
-                  $order_product->save();
+      $profile->attributes = $_POST['CustomerProfile'];
+      if ($profile->save()) {
+        $tr = $order->dbConnection->beginTransaction();
+        try {
+          if (isset($_POST['Cart'])) {
+            $count_product = 0;
+            foreach ($_POST['Cart'] as $q)
+              $count_product += $q['quantity'] > 0 ? $q['quantity'] : 0;
+            if ($count_product > 0) {
+              $order->attributes = $_POST['Order'];
+              $order->profile_id = $profile->id;
+              $order->status_id = 0;
+              $order->time = date('Y-m-d H:i:s');
+              if ($order->save())
+                foreach ($_POST['Cart'] as $key => $value) {
+                  if ($value['quantity'] > 0) {
+                    $order_product = new OrderProduct;
+                    $order_product->order_id = $order->id;
+                    $order_product->product_id = $key;
+                    $order_product->quantity = $value['quantity'];
+                    $product = Product::model()->findByPk($key);
+                    $discount = $product->getActualDiscount();
+                    if (is_array($discount))
+                      $order_product->price = $discount['price'];
+                    else
+                      $order_product->price = $product->price;
+                    $order_product->save();
+                  }
                 }
-              }
+            }
+            foreach ($cart as $item)
+              $item->delete();
+            $tr->commit();
           }
-          foreach ($cart as $item)
-            $item->delete();
-          $tr->commit();
           $this->redirect('/');
+        } catch (Exception $e) {
+          $tr->rollback();
+          throw $e;
         }
-      } catch (Exception $e) {
-        $tr->rollback();
-        throw $e;
       }
     }
-    $order->delivery_id = 1;
     $order->payment_id = 1;
-    $delivery = Delivery::model()->findAll();
+    $delivery = Delivery::model()->getDeliveryList($profile->city);
+    if (is_array($delivery))
+      $order->delivery_id = key($delivery);
+    else
+      $order->delivery_id = 1;
+
     $payment = Payment::model()->findAll();
 
 //    $payments = array();
@@ -378,6 +384,26 @@ class SiteController extends Controller {
       'delivery' => $delivery,
       'payment' => $payment,
     ));
+  }
+
+  public function actionDelivery() {
+    if (!isset($_GET['city'])) {
+      echo '';
+      Yii::app()->end();
+    }
+    Yii::import('application.modules.delivery.models.Delivery');
+    $order = new Order;
+    $delivery = Delivery::model()->getDeliveryList($_GET['city']);
+    if (is_array($delivery))
+      $order->delivery_id = key($delivery);
+    else
+      $order->delivery_id = 1;
+
+    echo $this->renderPartial('_delivery', array(
+          'order' => $order,
+          'delivery' => $delivery,
+            ), TRUE);
+    Yii::app()->end();
   }
 
   private function getSession() {

@@ -27,6 +27,7 @@ $this->widget('ext.bootstrap.widgets.TbGridView', array(
   'dataProvider' => $dataProvider,
   'columns' => array(
     'name',
+    'description',
     array(
       'class' => 'bootstrap.widgets.TbButtonColumn',
       'template' => '{update}{delete}',

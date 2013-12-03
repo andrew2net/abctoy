@@ -2,7 +2,7 @@
 /* @var $cart Cart[] */
 /* @var $profile CustomerProfile */
 /* @var $order Order */
-/* @var $delivery Delivery */
+/* @var $delivery array */
 /* @var $payment Payment */
 ?>
 <div class="container" id="page" style="margin-top: 0">
@@ -73,7 +73,7 @@
         echo $form->textField($profile, 'fio'
             , array('style' => 'font-size: 12pt'));
         ?>
-      <?php echo CHtml::error($profile, 'fio', array('style'=>'font-size:10pt', 'class'=>'red')); ?>
+        <?php echo CHtml::error($profile, 'fio', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
       </div>
       <div><?php
         echo CHtml::label('E-mail<span class="red">*</span>', 'CustomerProfile_email'
@@ -86,7 +86,7 @@
         echo CHtml::activeEmailField($profile, 'email'
             , array('style' => 'font-size: 12pt'));
         ?>
-      <?php echo CHtml::error($profile, 'email', array('style'=>'font-size:10pt', 'class'=>'red')); ?>
+        <?php echo CHtml::error($profile, 'email', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
       </div>
       <div><?php
         echo CHtml::label('Телефон<span class="red">*</span>', 'CustomerProfile_phone'
@@ -99,7 +99,7 @@
         echo CHtml::activeTelField($profile, 'phone'
             , array('style' => 'font-size: 12pt'));
         ?>
-      <?php echo CHtml::error($profile, 'phone', array('style'=>'font-size:10pt', 'class'=>'red')); ?>
+        <?php echo CHtml::error($profile, 'phone', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
       </div>
       <div><?php
         echo CHtml::label('Удобное время звонка<span class="red">**</span>', 'CustomerProfile_call_time_id'
@@ -123,13 +123,14 @@
       </div>
       <div style="margin-bottom: 1em"><?php
         $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+          'id' => 'cart-city',
           'model' => $profile,
           'attribute' => 'city',
           'sourceUrl' => '/site/suggestcity',
           'htmlOptions' => array('style' => 'font-size: 12pt')
         ));
         ?>
-      <?php echo CHtml::error($profile, 'city', array('style'=>'font-size:10pt', 'class'=>'red')); ?>
+        <?php echo CHtml::error($profile, 'city', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
       </div>
       <div><?php
         echo CHtml::label('Адрес доставки', 'CustomerProfile_address'
@@ -172,12 +173,12 @@
     </div>
   </div>
   <div class="inline-blocks" style="margin-top: 20px">
-    <div style="width: 400px; vertical-align: top; margin-right: 50px">
-      <div class="cufon bold gray" style="font-size: 12pt; margin: 20px 0">Способ доставки</div>
+    <div id="cart-delivery">
       <?php
-      echo CHtml::activeRadioButtonList($order, 'delivery_id'
-          , CHtml::listData($delivery, 'id', 'description'), array(
-        'labelOptions' => array('style' => 'display: block')));
+      echo $this->renderPartial('_delivery', array(
+        'order' => $order,
+        'delivery' => $delivery
+      ));
       ?>
     </div>
     <div style="width: 400px; vertical-align: top">
@@ -185,16 +186,21 @@
       <?php
       echo CHtml::activeRadioButtonList($order, 'payment_id'
           , CHtml::listData($payment, 'id', 'description'), array(
-        'labelOptions' => array('style' => 'display: block')));
+        'labelOptions' => array('style' => 'display: block', 'class' => 'cart-radio')));
       ?>
     </div>
   </div>
-  <div style="margin-top: 40px">
-    <div class="greenbutton submit" style="margin: 0 auto; width: 116px">
-      <div class="left"></div>
-      <div class="center" style="width: 100px">Купить</div>
-      <div class="right"></div>
-    </div>
+  <div style="margin-top: 40px; text-align: center">
+    <?php echo CHtml::submitButton('', array('id' => 'cart-submit')); ?>
   </div>
   <?php $this->endWidget() ?>
 </div>
+<script type="text/javascript">
+  $('#cart-city').change(function() {
+    $.get('/delivery',{
+      'city' : this.value
+    }, function(data) {
+      $('#cart-delivery').html(data);
+    });
+  });
+</script>

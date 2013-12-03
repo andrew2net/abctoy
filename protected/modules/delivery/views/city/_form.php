@@ -38,6 +38,7 @@
       <th colspan="2">
         <?php echo TbHtml::label('Способы доставки', 'delivery'); ?>
       </th>
+      <th></th>
       <th>
         <?php echo TbHtml::label('Стоимость', 'price'); ?>
       </th>
@@ -66,7 +67,8 @@
             <?php echo TbHtml::checkBox('delivery[' . $value->id . ']', $checked); ?>
           </td>
           <td><?php echo $value->name; ?></td>
-          <td><?php echo TbHtml::telField('price[' . $value->id . ']', $priceValue);
+          <td><?php echo $value->description; ?></td>
+          <td><?php echo TbHtml::textField('price[' . $value->id . ']', $priceValue);
             ?></td>
           <!--</div>-->
         </tr>
