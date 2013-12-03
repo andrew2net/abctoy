@@ -811,3 +811,19 @@ a:hover .item-disc, a:hover .item-price{
 #cart-submit:active{
   background-position: 0 -61px;
 }
+
+.payment1, .payment2{
+  background: url(/themes/abctoy/css/pay-icons.png) no-repeat;
+  width: 48px;
+  display: inline-block;
+  margin-right: 10px
+}
+.payment1{
+  height: 45px;
+  margin-bottom: 5px;
+}
+.payment2{
+  height: 33px;
+  background-position: 0 -45px;
+  margin-bottom: 15px;
+}

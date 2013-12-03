@@ -173,34 +173,37 @@
     </div>
   </div>
   <div class="inline-blocks" style="margin-top: 20px">
-    <div id="cart-delivery">
+    <div id="cart-delivery" style="vertical-align: top">
       <?php
-      echo $this->renderPartial('_delivery', array(
+      $this->renderPartial('_delivery', array(
         'order' => $order,
         'delivery' => $delivery
       ));
       ?>
     </div>
-    <div style="width: 400px; vertical-align: top">
-      <div class="cufon bold gray" style="font-size: 12pt; margin: 20px 0">Способ оплаты</div>
+    <div style="vertical-align: top">
       <?php
-      echo CHtml::activeRadioButtonList($order, 'payment_id'
-          , CHtml::listData($payment, 'id', 'description'), array(
-        'labelOptions' => array('style' => 'display: block', 'class' => 'cart-radio')));
+      $this->renderPartial('_payment', array(
+        'order' => $order,
+        'payment' => $payment
+      ));
+//      echo CHtml::activeRadioButtonList($order, 'payment_id'
+//          , CHtml::listData($payment, 'id', 'description'), array(
+//        'labelOptions' => array('style' => 'display: block', 'class' => 'cart-radio')));
       ?>
     </div>
   </div>
-  <div style="margin-top: 40px; text-align: center">
-    <?php echo CHtml::submitButton('', array('id' => 'cart-submit')); ?>
+    <div style="margin-top: 40px; text-align: center">
+      <?php echo CHtml::submitButton('', array('id' => 'cart-submit')); ?>
+    </div>
+    <?php $this->endWidget() ?>
   </div>
-  <?php $this->endWidget() ?>
-</div>
-<script type="text/javascript">
-  $('#cart-city').change(function() {
-    $.get('/delivery',{
-      'city' : this.value
-    }, function(data) {
-      $('#cart-delivery').html(data);
+  <script type="text/javascript">
+    $('#cart-city').change(function() {
+      $.get('/delivery', {
+        'city': this.value
+      }, function(data) {
+        $('#cart-delivery').html(data);
+      });
     });
-  });
-</script>
+  </script>

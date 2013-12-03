@@ -370,7 +370,7 @@ class SiteController extends Controller {
     else
       $order->delivery_id = 1;
 
-    $payment = Payment::model()->findAll();
+    $payment = Payment::model()->getPaymentList();
 
 //    $payments = array();
 //    foreach ($payment as $value) {
