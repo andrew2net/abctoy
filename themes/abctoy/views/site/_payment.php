@@ -3,7 +3,7 @@
 /* @var $payment Payment */
 ?>
 
-<div style="width: 400px; vertical-align: top">
+<div style="width: 445px; vertical-align: top">
   <div class="cufon bold gray" style="font-size: 12pt; margin: 20px 0">Способ оплаты</div>
   <?php
   echo CHtml::activeRadioButtonList($order, 'payment_id'

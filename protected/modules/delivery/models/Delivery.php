@@ -123,9 +123,12 @@ class Delivery extends CActiveRecord {
     foreach ($models as $delivery) {
       if (count($delivery->cityDeliveries) > 0) {
         foreach ($delivery->cityDeliveries as $item) {
-          $output = CHtml::tag('span', array('class' => 'bold'), $delivery->name);
+          $output = CHtml::tag('span', array(
+                'class' => 'bold',
+                'price' => (float)$item->price,
+                  ), $delivery->name);
           if ($delivery->name == 'ЭКСПРЕСС ДОСТАВКА')
-            $output .= CHtml::tag('span', array('class' => 'bold'), ' ('.$delivery->description. ') ');
+            $output .= CHtml::tag('span', array('class' => 'bold'), ' (' . $delivery->description . ') ');
           else
             $output .= ' (' . $delivery->description . ') ';
           if ($item->price > 0)

@@ -99,7 +99,7 @@ class Payment extends CActiveRecord {
     foreach ($models as $payment) {
       $output = CHtml::tag('div', array('class' => 'payment' . $payment->id));
       $output .= CHtml::closeTag('div');
-      $output .= CHtml::tag('div', array('style' => 'display:inline-block;width:275px'));
+      $output .= CHtml::tag('div', array('style' => 'display:inline-block;width:320px'));
       $output .= CHtml::tag('div', array(
             'class' => 'bold',
             'style' => 'margin-bottom:5px',

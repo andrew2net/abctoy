@@ -57,7 +57,7 @@
   </div>
   <div class="bold" style="font-size: 26pt">
     <span class="cufon gray">Общая сумма заказа: </span>
-    <span id="cart-summ" class="cufon red"><?php echo $sum; ?>.-</span>
+    <span id="cart-summ" summ="<?php echo $sum; ?>" class="cufon red"><?php echo $sum; ?>.-</span>
   </div>
   <div class="cufon gray bold" style="font-size: 26pt; text-align: center; margin: 40px 0">Контактная информация</div>
   <div class="inline-blocks" style="font-size: 12pt">
@@ -173,13 +173,16 @@
     </div>
   </div>
   <div class="inline-blocks" style="margin-top: 20px">
-    <div id="cart-delivery" style="vertical-align: top">
-      <?php
-      $this->renderPartial('_delivery', array(
-        'order' => $order,
-        'delivery' => $delivery
-      ));
-      ?>
+    <div style="width: 450px; vertical-align: top; margin-right: 50px">
+      <div class="cufon bold gray" style="font-size: 12pt; margin: 20px 0">Способ доставки</div>
+      <div id="cart-delivery">
+        <?php
+        $this->renderPartial('_delivery', array(
+          'order' => $order,
+          'delivery' => $delivery
+        ));
+        ?>
+      </div>
     </div>
     <div style="vertical-align: top">
       <?php
@@ -190,17 +193,11 @@
       ?>
     </div>
   </div>
-    <div style="margin-top: 40px; text-align: center">
-      <?php echo CHtml::submitButton('', array('id' => 'cart-submit')); ?>
-    </div>
-    <?php $this->endWidget() ?>
+  <div class="bold" style="font-size: 26pt; text-align: center">
+    <span class="cufon">Общая сумма заказа: </span><span id="cart-total" class="red"></span>
   </div>
-  <script type="text/javascript">
-    $('#cart-city').change(function() {
-      $.get('/delivery', {
-        'city': this.value
-      }, function(data) {
-        $('#cart-delivery').html(data);
-      });
-    });
-  </script>
+  <div style="margin-top: 40px; text-align: center">
+    <?php echo CHtml::submitButton('', array('id' => 'cart-submit')); ?>
+  </div>
+  <?php $this->endWidget() ?>
+</div>
