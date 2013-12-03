@@ -209,7 +209,8 @@ class ProductController extends Controller {
       $importData->productFile->saveAs($importFilePath);
       $data = new Spreadsheet_Excel_Reader($importFilePath, FALSE);
       $sheet = 0;
-      $rows = $data->rowcount($sheet);
+//      $rows = $data->rowcount($sheet);
+      $rows = 2090;
       $productImagePath = Yii::getPathOfAlias('webroot.productimages') .
           DIRECTORY_SEPARATOR;
       $quotes = array(
