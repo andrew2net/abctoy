@@ -213,9 +213,10 @@ class SiteController extends Controller {
     $groups = Category::model()->roots()->findAll();
     $product = Product::model();
 
-    if (isset($_POST['Search'])) {
-      $product->searchByName($_POST['Search']['text']);
-      $search->text = $_POST['Search']['text'];
+    if (isset($_GET['Search'])) {
+      $product->searchByName($_GET['Search']['text']);
+      $search->text = $_GET['Search']['text'];
+      $product->searchByName($_GET['Search']['text']);
     }
 
     $product->discountOrder();
