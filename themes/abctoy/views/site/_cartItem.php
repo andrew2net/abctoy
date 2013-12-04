@@ -6,6 +6,7 @@ if (is_array($discount)) {
 //  $percent = '-' . $discount['discount'] . '%';
   $old_price = number_format($product->product->price, 0, '.', ' ');
   $price = $discount['price'];
+  $disc = $product->product->price - $discount['price'];
 //  $remainder = $data->remainder > 0 ? 'Осталось ' . $data->remainder . ' шт' : '';
 //  $remainder_class = 'gray';
 //  $glass = 'red-glass';
@@ -16,6 +17,7 @@ else {
 //  $percent = '';
   $price = $product->product->price;
   $old_price = '';
+  $disc = 0;
 //  $remainder = $data->remainder > 0 ? 'В наличии' : '';
 //  $remainder_class = 'green';
 //  $glass = 'green-glass';
@@ -38,10 +40,11 @@ else {
   </div>
   <div style="margin: 0 40px"><?php
     echo CHtml::activeNumberField($product, "[$product->product_id]quantity", array(
-      'style' => 'width: 1.5em; font-size: 16pt',
-      'class' => 'cart-quantity',
+      'style' => 'width: 1.5em; font-size: 16pt; border:1px dashed #BBB;border-radius:3px',
+      'class' => 'cart-quantity input-number',
       'price' => $price,
-      'product' => $product->product_id));
+      'disc' => $disc,
+      'product' => $product->product_id,));
     ?>
     <span style="position: relative; top: 5px; font-size: 12pt"> шт.</span>
   </div>
@@ -49,4 +52,5 @@ else {
     <div class="cufon gray strike bold" style="font-size: 16pt; display: inherit"><?php echo $old_price; ?></div>
     <div class="cufon red bold" style="font-size: 26pt"><?php echo number_format($price, 0, '.', ''); ?>.-</div>
   </div>
+  <div><a class="cart-item-del" product="<?php echo $product->product_id ?>" style="font-size: 12pt" href="">Удалить</a></div>
 </div>

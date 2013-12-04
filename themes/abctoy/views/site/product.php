@@ -46,7 +46,7 @@
       <div>Производитель: <?php echo $product->brand->name; ?></div>
       <div>Возраст: <?php echo $product->age; ?></div>
       <div>Наличие: <?php echo $product->remainder ? 'товар в наличии на складе' : 'товар временно отсутствует'; ?></div>
-      <div><?php echo CHtml::link('ДОСТАВКА', $this->createUrl('delivery_payment')); ?> по новосибирску возможна завтра <?php echo $tomorrow; ?></div>
+      <!--<div><?php echo CHtml::link('ДОСТАВКА', $this->createUrl('delivery_payment')); ?> по новосибирску возможна завтра <?php echo $tomorrow; ?></div>-->
       <div class="cufon gray strike bold" style="font-size: 22pt; margin-top: 20px;
            display: inherit"><?php echo $old_price; ?></div>
       <div class="inline-blocks" style="position: relative">

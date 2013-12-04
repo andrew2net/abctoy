@@ -1,3 +1,14 @@
+Number.prototype.formatMoney = function(c, d, t) {
+  var n = this,
+          c = isNaN(c = Math.abs(c)) ? 0 : c,
+          d = d == undefined ? "." : d,
+          t = t == undefined ? " " : t,
+          s = n < 0 ? "-" : "",
+          i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
+          j = (j = i.length) > 3 ? j % 3 : 0;
+  return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "") + '.-';
+};
+
 $('.mainmenulink').hover(function() {
   $('.submenu').css('display', 'none');
   var id = '#' + $(this).attr('submenu');
@@ -41,52 +52,55 @@ $('#buy-one-click').click(function() {
 });
 
 $('.cart-quantity').change(function() {
-  var sum = 0;
-  $('.cart-quantity').each(function() {
-    var price = $(this).attr('price');
-    sum += parseInt(this.value) * price;
-  });
   var id = $(this).attr('product');
   var quantity = parseInt(this.value);
+  if (isNaN(quantity))
+    quantity = 0;
   $.post('/changeCart', {
     'id': id,
     'quantity': quantity
-  },
-  function() {
-    $('#cart-summ').html(sum + '.-');
-    Cufon.replace('#cart-summ');
-  }
-  );
+  });
+});
+
+$('.cart-item-del').click(function() {
+  var id = $(this).attr('product');
+  $.post('/delitemcart', {
+    'id': id,
+  });
+});
+
+$('.cart-quantity').keyup(function() {
+  calcSumm();
 });
 
 $('.submit').click(function() {
   $('form').submit();
 });
 
-Number.prototype.formatMoney = function(c, d, t) {
-  var n = this,
-          c = isNaN(c = Math.abs(c)) ? 0 : c,
-          d = d == undefined ? "." : d,
-          t = t == undefined ? " " : t,
-          s = n < 0 ? "-" : "",
-          i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
-          j = (j = i.length) > 3 ? j % 3 : 0;
-  return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "") + '.-';
-};
-
-function delivery() {
-  var price = parseFloat($('input:checked + .cart-radio > span').attr('price'));
-  var sum = parseFloat($('#cart-summ').attr('summ'));
-  if (!isNaN(price)) {
-    var price_f = price.formatMoney();
+function calcSumm() {
+  var cartSumm = 0;
+  var discountSumm = 0;
+  $('.cart-quantity').each(function() {
+    var price = $(this).attr('price');
+    var quantity = parseInt(this.value);
+    cartSumm += quantity * price;
+    discountSumm += $(this).attr('disc') * quantity;
+  });
+  if (isNaN(cartSumm))
+    cartSumm = 0;
+  $('#cart-summ').html(cartSumm.formatMoney());
+  $('#cart-discount').html(discountSumm.formatMoney());
+  var priceDelivery = parseFloat($('input:checked + .cart-radio > span').attr('price'));
+  if (!isNaN(priceDelivery)) {
+    var price_f = priceDelivery.formatMoney();
     $('#delivery-summ').html(price_f);
-    $('#cart-total').html((price + sum).formatMoney());
+    $('#cart-total').html((priceDelivery + cartSumm).formatMoney());
   }
   else {
     $('#delivery-summ').html('');
-    $('#cart-total').html(sum.formatMoney());
+    $('#cart-total').html(cartSumm.formatMoney());
   }
-  Cufon.replace('#delivery-summ, #cart-total');
+  Cufon.replace('#cart-summ, #cart-discount, #delivery-summ, #cart-total');
 }
 
 $('#cart-city').change(function() {
@@ -94,12 +108,32 @@ $('#cart-city').change(function() {
     'city': this.value
   }, function(data) {
     $('#cart-delivery').html(data);
-    delivery();
+    calcSumm();
   });
 });
 
-delivery();
+calcSumm();
 $('#cart-delivery').on('change', 'input[name="Order[delivery_id]"]', function() {
-  delivery();
+  calcSumm();
 }
 );
+
+$(document).ready(function() {
+  $(".input-number").keydown(function(event) {
+    // Allow: backspace, delete, tab, escape, enter and .
+    if ($.inArray(event.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+            // Allow: Ctrl+A
+                    (event.keyCode == 65 && event.ctrlKey === true) ||
+                    // Allow: home, end, left, right
+                            (event.keyCode >= 35 && event.keyCode <= 39)) {
+              // let it happen, don't do anything
+              return;
+            }
+            else {
+              // Ensure that it is a number and stop the keypress
+              if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                event.preventDefault();
+              }
+            }
+          });
+});

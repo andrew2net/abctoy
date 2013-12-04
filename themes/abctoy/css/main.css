@@ -106,7 +106,7 @@ body
 .submenu > div{
   padding: 10px;
   border-right: 1px solid #DDD;
-  width: 170px;
+  width: 169px;
   min-height: 300px;
   vertical-align: top;
 }
@@ -826,4 +826,12 @@ a:hover .item-disc, a:hover .item-price{
   height: 33px;
   background-position: 0 -45px;
   margin-bottom: 15px;
+}
+.input-text{
+  background: whitesmoke;
+  border: 1px solid #DDD;
+  border-radius: 5px;
+  padding: 4px;
+  margin: 5px 0;
+  font-size: 12pt;
 }

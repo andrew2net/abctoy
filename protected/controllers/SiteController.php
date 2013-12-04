@@ -254,10 +254,7 @@ class SiteController extends Controller {
     if ($quantity < 0)
       return;
 
-    if (Yii::app()->user->isGuest)
-      $session_id = $this->getSession();
-    else
-      $session_id = '';
+    $session_id = $this->getSession();
 
     $carts = Cart::model()->cartItem($session_id, $id)->findAll();
     if (isset($carts[0]))
@@ -400,9 +397,9 @@ class SiteController extends Controller {
       $order->delivery_id = 1;
 
     echo $this->renderPartial('_delivery', array(
-          'order' => $order,
-          'delivery' => $delivery,
-            ), TRUE);
+      'order' => $order,
+      'delivery' => $delivery,
+        ), TRUE);
     Yii::app()->end();
   }
 
@@ -440,6 +437,16 @@ class SiteController extends Controller {
       $suggest = array();
 
     echo CJSON::encode($suggest);
+    Yii::app()->end();
+  }
+
+  public function actionDelItemCart() {
+    if (isset($_POST['id'])) {
+      $carts = Cart::model()->cartItem($this->getSession(), $_POST['id'])->findAll();
+      foreach ($carts as $cart) {
+        $cart->delete();
+      }
+    }
     Yii::app()->end();
   }
 

@@ -5,8 +5,13 @@
 <div style="border: 1px dashed #666666; border-radius: 3px; min-height: 50px; margin-bottom: 20px">
   <div style="margin-top: 10px">
     <?php
-    $categories = $group->descendants(2)->findAll(array('order' => 'lft'));
-    $level = $group->level - 1;
+    if ($group->level > 1){
+      $root = $group->ancestors($group->level)->findAll();
+      $menu = $root[0];
+    }else 
+      $menu = $group;
+    $categories = $menu->descendants(2)->findAll(array('order' => 'lft'));
+    $level = 0;
     foreach ($categories as $category) {
       if ($category->level == $level)
         echo CHtml::closeTag('li');
@@ -21,7 +26,7 @@
         }
       }
       $class = 'category';
-      if (($category->level - $group->level) == 1)
+      if (($category->level - 1) == 1)
         $class .= ' nomarker';
       else
         $class .= ' subcategory';

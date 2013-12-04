@@ -55,6 +55,9 @@
     }
     ?>
   </div>
+  <div class="bold" style="font-size: 14pt">
+    <span class="cufon">Сумма скидки </span><span id="cart-discount" class="cufon"></span>
+  </div>
   <div class="bold" style="font-size: 26pt">
     <span class="cufon gray">Общая сумма заказа: </span>
     <span id="cart-summ" summ="<?php echo $sum; ?>" class="cufon red"><?php echo $sum; ?>.-</span>
@@ -71,7 +74,7 @@
       </div>
       <div style="margin-bottom: 1em"><?php
         echo $form->textField($profile, 'fio'
-            , array('style' => 'font-size: 12pt'));
+            , array('class' => 'input-text'));
         ?>
         <?php echo CHtml::error($profile, 'fio', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
       </div>
@@ -84,7 +87,7 @@
       </div>
       <div style="margin-bottom: 1em"><?php
         echo CHtml::activeEmailField($profile, 'email'
-            , array('style' => 'font-size: 12pt'));
+            , array('class' => 'input-text'));
         ?>
         <?php echo CHtml::error($profile, 'email', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
       </div>
@@ -97,7 +100,7 @@
       </div>
       <div style="margin-bottom: 1em"><?php
         echo CHtml::activeTelField($profile, 'phone'
-            , array('style' => 'font-size: 12pt'));
+            , array('class' => 'input-text'));
         ?>
         <?php echo CHtml::error($profile, 'phone', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
       </div>
@@ -127,7 +130,7 @@
           'model' => $profile,
           'attribute' => 'city',
           'sourceUrl' => '/site/suggestcity',
-          'htmlOptions' => array('style' => 'font-size: 12pt')
+          'htmlOptions' => array('class' => 'input-text')
         ));
         ?>
         <?php echo CHtml::error($profile, 'city', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
@@ -141,7 +144,7 @@
       </div>
       <div style="margin-bottom: 1em"><?php
         echo CHtml::activeTextField($profile, 'address'
-            , array('style' => 'font-size: 12pt'));
+            , array('class' => 'input-text'));
         ?></div>
       <div><?php
         echo CHtml::label('Комментарий', 'CustomerProfile_description'
@@ -153,7 +156,7 @@
       <div style="margin-bottom: 1em"><?php
         echo CHtml::activeTextArea($profile, 'description'
             , array(
-          'style' => 'font-size: 12pt',
+          'class' => 'input-text',
           'cols' => 25,
           'rows' => 4,
         ));
@@ -161,7 +164,7 @@
       </div>
       <div style="font-size: 10pt">
         <div class="cufon bold gray"><span class="red">*</span> Поля обязательные для заполнения</div>
-        <div class="cufon bold gray"><span class="red">**</span> Укажите удобное время, для того<br> чтобы мы перезвонили Вам<br> для того чтобы уточнить данные о доставке</div>
+        <div class="cufon bold gray"><span class="red">**</span> Удобное время для того, чтобы <br>мы Вам перезвонили для уточнения <br>данные о доставке</div>
       </div>
     </div>
     <div style="vertical-align: top; width: 290px">
@@ -193,10 +196,10 @@
       ?>
     </div>
   </div>
-  <div class="bold" style="font-size: 26pt; text-align: center">
+  <div class="bold" style="font-size: 26pt; text-align: center ;margin-top: 40px">
     <span class="cufon">Общая сумма заказа: </span><span id="cart-total" class="red"></span>
   </div>
-  <div style="margin-top: 40px; text-align: center">
+  <div style="margin: 40px 0; text-align: center">
     <?php echo CHtml::submitButton('', array('id' => 'cart-submit')); ?>
   </div>
   <?php $this->endWidget() ?>
