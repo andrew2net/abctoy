@@ -25,5 +25,5 @@ if (count($top10)){
   <a class="top10carousel-next" href="#"></a>
 </div>
 </div>
-<div style="text-align: right; line-height: 3"><a href="#">Все товары</a></div>
+<!--<div style="text-align: right; line-height: 3"><a href="#">Все товары</a></div>-->
 <?php } ?>

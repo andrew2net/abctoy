@@ -36,7 +36,6 @@
         $this->widget('zii.widgets.CListView', array(
           'dataProvider' => $product,
           'itemView' => '_item',
-//          'pager'=>array('pages'=>array('params'=>array('texst'=>$search->text))),
           'template' => '{items}{pager}',
             )
         );

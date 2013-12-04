@@ -39,5 +39,5 @@ if (count($end_dates)) {
       <a class="weekcarousel-next" href="#"></a>
     </div>
   </div>
-  <div style="text-align: right; line-height: 3"><a class="red" href="#">Все товары со скидкой</a></div>
+  <!--<div style="text-align: right; line-height: 3"><a class="red" href="#">Все товары со скидкой</a></div>-->
 <?php } ?>

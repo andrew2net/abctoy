@@ -185,9 +185,9 @@ class SiteController extends Controller {
     $groups = Category::model()->roots()->findAll();
     $product = Product::model();
 
-    if (isset($_POST['GiftSelection'])) {
-      $product->sort($_POST['GiftSelection']);
-      $giftSelection->attributes = $_POST['GiftSelection'];
+    if (isset($_GET['GiftSelection'])) {
+      $product->sort($_GET['GiftSelection']);
+      $giftSelection->attributes = $_GET['GiftSelection'];
     }
 
 //    $product->discountOrder();

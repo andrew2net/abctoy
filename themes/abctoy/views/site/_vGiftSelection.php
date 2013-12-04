@@ -6,7 +6,7 @@
 $form = $this->beginWidget('CActiveForm', array(
   'id' => 'giftSelect',
   'action' => '/sort',
-  'method' => 'post',
+  'method' => 'get',
     ));
 ?>
 <div class="blue cufon bold" style="font-size: 16pt; position: relative;
