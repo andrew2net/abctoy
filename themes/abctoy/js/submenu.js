@@ -63,11 +63,16 @@ $('.cart-quantity').change(function() {
   });
 });
 
-$('.cart-item-del').click(function() {
+$('#cart-items').on('click', '.cart-item-del',function() {
   var id = $(this).attr('product');
   $.post('/delitemcart', {
     'id': id,
-  });
+  }, function(data) {
+    $('#cart-items').html(data);
+    calcSumm();
+    Cufon.replace('#cart-items .cufon');
+  }
+  );
 });
 
 $('.cart-quantity').keyup(function() {

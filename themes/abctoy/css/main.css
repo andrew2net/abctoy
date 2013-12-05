@@ -796,6 +796,16 @@ a:hover .item-disc, a:hover .item-price{
   position: relative;
 }
 
+.cart-item-del{
+  font-size: 12pt;
+  text-decoration: underline;
+  color: rgb(51, 153, 204);
+  cursor: pointer;
+}
+.cart-item-del:hover, .cart-item-del:active{
+  color: rgb(0, 153, 255);
+}
+
 .img-container > img{
   position: absolute;
   margin: auto;

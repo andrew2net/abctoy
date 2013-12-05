@@ -444,11 +444,17 @@ class SiteController extends Controller {
   }
 
   public function actionDelItemCart() {
+    Yii::import('application.modules.catalog.models.Product');
+    Yii::import('application.modules.catalog.models.Brand');
+
     if (isset($_POST['id'])) {
       $carts = Cart::model()->cartItem($this->getSession(), $_POST['id'])->findAll();
-      foreach ($carts as $cart) {
-        $cart->delete();
+      foreach ($carts as $item) {
+        $item->delete();
       }
+      $cart = Cart::model()->shoppingCart($this->getSession())
+              ->with('product.brand')->findAll();
+      echo $this->renderPartial('_cartItems', array('cart' => $cart), TRUE);
     }
     Yii::app()->end();
   }

@@ -52,5 +52,5 @@ else {
     <div class="cufon gray strike bold" style="font-size: 16pt; display: inherit"><?php echo $old_price; ?></div>
     <div class="cufon red bold" style="font-size: 26pt"><?php echo number_format($price, 0, '.', ''); ?>.-</div>
   </div>
-  <div><a class="cart-item-del" product="<?php echo $product->product_id ?>" style="font-size: 12pt" href="">Удалить</a></div>
+  <div><span class="cart-item-del" product="<?php echo $product->product_id ?>" style="font-size: 12pt">Удалить</span></div>
 </div>

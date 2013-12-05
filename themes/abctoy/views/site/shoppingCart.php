@@ -11,32 +11,15 @@
   <?php
   $form = $this->beginWidget('CActiveForm');
   ?>
-  <div>
-    <?php
-    $sum = 0;
-    $fl = FALSE;
-    foreach ($cart as $product) {
-      if ($fl) {
-        ?>
-        <div style="border-bottom: 1px solid #DDD; width: 750px"></div>
-        <?php
-      }
-      $fl = TRUE;
-      $discount = $product->product->getActualDiscount();
-      $sum += (is_array($discount) ? $discount['price'] :
-              $product->product->price) * $product->quantity;
-      echo $this->renderPartial('_cartItem', array(
-        'product' => $product,
-        'discount' => $discount));
-    }
-    ?>
+  <div id="cart-items">
+    <?php $this->renderPartial('_cartItems', array('cart' => $cart)); ?>
   </div>
   <div class="bold" style="font-size: 14pt">
     <span class="cufon">Сумма скидки </span><span id="cart-discount" class="cufon"></span>
   </div>
   <div class="bold" style="font-size: 26pt">
     <span class="cufon gray">Общая сумма заказа: </span>
-    <span id="cart-summ" summ="<?php echo $sum; ?>" class="cufon red"><?php echo $sum; ?>.-</span>
+    <span id="cart-summ" class="cufon red"></span>
   </div>
   <div class="cufon gray bold" style="font-size: 26pt; text-align: center; margin: 40px 0">Контактная информация</div>
   <div class="inline-blocks" style="font-size: 12pt">
