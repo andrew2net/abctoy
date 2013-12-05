@@ -74,6 +74,12 @@ $('.cart-quantity').keyup(function() {
   calcSumm();
 });
 
+$('.cart-quantity').change(function() {
+  if (parseFloat(this.value) < 0)
+    this.value = 0;
+  calcSumm();
+});
+
 $('.submit').click(function() {
   $('form').submit();
 });
@@ -104,13 +110,19 @@ function calcSumm() {
   Cufon.replace('#cart-summ, #cart-discount, #delivery-summ, #cart-total');
 }
 
-$('#cart-city').change(function() {
-  $.get('/delivery', {
-    'city': this.value
-  }, function(data) {
-    $('#cart-delivery').html(data);
-    calcSumm();
-  });
+$('#cart-city').typing({
+  start: function(event, $elem) {
+  },
+  stop: function(event, $elem) {
+    var city = $elem.val();
+    $.get('/delivery', {
+      'city': city
+    }, function(data) {
+      $('#cart-delivery').html(data);
+      calcSumm();
+    });
+  },
+  delay: 2000
 });
 
 calcSumm();
@@ -159,6 +171,6 @@ $(function() {
   });
 });
 
-$('#close-add-dialog').click(function (){
+$('#close-add-dialog').click(function() {
   $("#add-prodact-dialog").dialog('close');
 });

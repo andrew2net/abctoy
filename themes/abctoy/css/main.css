@@ -783,6 +783,10 @@ a:hover .item-disc, a:hover .item-price{
 .category a{
   text-decoration: none;
 }
+.category{
+  line-height: 0.8;
+  margin-top: 7px;
+}
 
 .subcategory a{
   color: #666666;

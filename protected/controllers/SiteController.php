@@ -329,6 +329,13 @@ class SiteController extends Controller {
             foreach ($_POST['Cart'] as $q)
               $count_product += $q['quantity'] > 0 ? $q['quantity'] : 0;
             if ($count_product > 0) {
+
+              $delivery = CityDelivery::model()->with('city')->findByPk(array(
+                'delivery_id' => $_POST['Order']['delivery_id'])
+                  , 'city_id=:city', array(':city' => $profile->city));
+              $delivery_summ = is_null($delivery) ? 0 : $delivery->pice;
+
+              $order->delivery_summ = $delivery_summ;
               $order->attributes = $_POST['Order'];
               $order->profile_id = $profile->id;
               $order->status_id = 0;
@@ -354,7 +361,7 @@ class SiteController extends Controller {
               $item->delete();
             $tr->commit();
           }
-          $this->redirect('/');
+          $this->redirect('orderSent');
         } catch (Exception $e) {
           $tr->rollback();
           throw $e;
@@ -369,11 +376,6 @@ class SiteController extends Controller {
       $order->delivery_id = 1;
 
     $payment = Payment::model()->getPaymentList();
-
-//    $payments = array();
-//    foreach ($payment as $value) {
-//      $payments[$value->id] = '<span class="bold">';
-//    }
 
     $this->render('shoppingCart', array(
       'cart' => $cart,
@@ -391,7 +393,7 @@ class SiteController extends Controller {
     }
     Yii::import('application.modules.delivery.models.Delivery');
     $order = new Order;
-    $delivery = Delivery::model()->getDeliveryList($_GET['city']);
+    $delivery = Delivery::model()->getDeliveryList(trim($_GET['city']));
     if (is_array($delivery))
       $order->delivery_id = key($delivery);
     else
@@ -449,6 +451,10 @@ class SiteController extends Controller {
       }
     }
     Yii::app()->end();
+  }
+
+  public function actionOrderSent() {
+    $this->render('orderSent');
   }
 
 }

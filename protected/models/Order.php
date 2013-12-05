@@ -8,6 +8,7 @@
  * @property string $profile_id
  * @property string $coupon_id
  * @property string $delivery_id
+ * @property string $delivery_summ
  * @property string $payment_id
  * @property string $status_id
  * @property string $time
@@ -105,6 +106,7 @@ class Order extends CActiveRecord {
       'profile_phone' => 'Телефон',
       'coupon_id' => 'Купон',
       'delivery_id' => 'Способ доставки',
+      'delivery_summ' => 'Способ доставки',
       'payment_id' => 'Способ оплаты',
       'status_id' => 'Статус',
       'time' => 'Дата',
