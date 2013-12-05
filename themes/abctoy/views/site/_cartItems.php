@@ -19,6 +19,6 @@ if (count($cart) > 0) {
 }
 else {
   ?>
-  <div class="cufon red bold" style="font-size: 26pt; margin: 20px; text-align: center">Корзина незаполнена</div>
+  <div class="cufon red bold" style="font-size: 26pt; margin: 20px; text-align: center">Корзина не заполнена</div>
 
 <?php } ?>

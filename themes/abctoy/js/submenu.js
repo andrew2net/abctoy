@@ -44,7 +44,7 @@ $('.addToCart').click(function(event) {
   },
   function(data) {
     $('#shoppingCart').html(data);
-    $("#add-prodact-dialog").dialog("open");
+    $("#add-product-dialog").dialog("open");
   });
 });
 
@@ -158,7 +158,7 @@ $(document).ready(function() {
 });
 
 $(function() {
-  $("#add-prodact-dialog").dialog({
+  $("#add-product-dialog").dialog({
     autoOpen: false,
     modal: true,
     closeText: "Продолжить",
@@ -178,9 +178,9 @@ $(function() {
 });
 
 $('#close-add-dialog').click(function() {
-  $("#add-prodact-dialog").dialog('close');
+  $("#add-product-dialog").dialog('close');
 });
 
 $('#cart-add-dialog').click(function() {
-  $("#add-prodact-dialog").dialog('close');
+  $("#add-product-dialog").dialog('close');
 });

@@ -1,4 +1,4 @@
-<div id="add-prodact-dialog">
+<div id="add-product-dialog">
   <div class="cufon bold gray">Товар добавлен в корзину</div>
   <div>
     <a id="cart-add-dialog" href="/cart"><span class="blue">Перейти в корзину</span></a>
