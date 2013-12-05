@@ -14,7 +14,7 @@
        margin: 0 0 -15px 20px; background: white; width: 200px; z-index: 1;
        padding: 0 8px">Подбор товара</div>
   <div class="inline-blocks" style="border: #3399cc solid 4px; border-radius: 4px; position: relative">
-    <div style="margin: 20px">
+    <div style="margin: 20px; vertical-align: inherit">
       <?php
       echo $form->label($giftSelection, 'gender', array(
         'class' => 'bold',
@@ -45,7 +45,7 @@
         ?>
       </div>
     </div>
-    <div style="top: -10px; position: relative; height: 150px">
+    <div style="top: -10px; position: relative; height: 150px; vertical-align: inherit">
       <?php
       echo $form->label($giftSelection, 'ageFrom', array(
         'class' => 'bold',
@@ -66,7 +66,7 @@
                'animate' => 'slow',
                'range' => TRUE,
                'min' => 0,
-               'max' => 5,
+               'max' => 10,
                'values' => "js:[{$giftSelection->ageFrom}, {$giftSelection->ageTo}]",
                'create' => 'js:function(event, ui){sliderIniTooltip(this);}',
                'slide' => 'js:function(event, ui){sliderMoveTooltip(ui); $("#GiftSelection_ageFrom").val(ui.values[0]); $("#GiftSelection_ageTo").val(ui.values[1]);}',
@@ -81,7 +81,7 @@
       ));
       ?>
     </div>
-    <div style="margin: 20px 0 0 50px; position: absolute; height: 150px">
+    <div style="margin: 20px 0 0 50px; position: absolute; height: 150px; vertical-align: inherit">
       <?php
       echo $form->label($giftSelection, 'priceFrom', array(
         'class' => 'bold',

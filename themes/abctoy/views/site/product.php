@@ -44,7 +44,7 @@
       <div class="cufon bold" style="font-size: 24pt; margin: 50px 0 20px"><?php echo $product->name; ?></div>
       <div>Артикул: <?php echo $product->article; ?></div>
       <div>Производитель: <?php echo $product->brand->name; ?></div>
-      <div>Возраст: <?php echo $product->age; ?></div>
+      <div>Возраст: <?php echo $product->age. ' - ' . $product->age_to; ?></div>
       <div>Наличие: <?php echo $product->remainder ? 'товар в наличии на складе' : 'товар временно отсутствует'; ?></div>
       <!--<div><?php echo CHtml::link('ДОСТАВКА', $this->createUrl('delivery_payment')); ?> по новосибирску возможна завтра <?php echo $tomorrow; ?></div>-->
       <div class="cufon gray strike bold" style="font-size: 22pt; margin-top: 20px;
@@ -53,7 +53,9 @@
         <div class="cufon bold red" style="font-size: 32pt"><?php echo number_format($price, 0, '.', ''); ?>.-</div>
         <div><?php
           echo CHtml::activeNumberField($productForm, 'quantity'
-              , array('style' => 'width: 1.5em; font-size: 12pt; margin: 0 5px 0 1em'));
+              , array(
+                'style' => 'width: 2em; font-size: 12pt; margin: 0 5px 0 1em',
+                'class'=>'input-number cart-quantity'));
           ?>
           <span style="position: relative; bottom: -5px">шт.</span>
         </div>

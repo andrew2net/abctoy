@@ -131,6 +131,7 @@ $('#cart-city').typing({
 });
 
 calcSumm();
+
 $('#cart-delivery').on('change', 'input[name="Order[delivery_id]"]', function() {
   calcSumm();
 }
@@ -177,5 +178,9 @@ $(function() {
 });
 
 $('#close-add-dialog').click(function() {
+  $("#add-prodact-dialog").dialog('close');
+});
+
+$('#cart-add-dialog').click(function() {
   $("#add-prodact-dialog").dialog('close');
 });

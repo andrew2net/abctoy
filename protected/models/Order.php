@@ -12,6 +12,11 @@
  * @property string $payment_id
  * @property string $status_id
  * @property string $time
+ * @property string $fio
+ * @property string $email
+ * @property string $phone
+ * @property string $city
+ * @property string $address
  *
  * The followings are the available model relations:
  * @property Coupon $coupon
@@ -45,6 +50,7 @@ class Order extends CActiveRecord {
   public $profile_fio;
   public $profile_email;
   public $profile_phone;
+//  public $paiment_name;
 
   public function getDeliveryOptions() {
     $delivery = Delivery::model()->findAll();
@@ -71,11 +77,15 @@ class Order extends CActiveRecord {
     // will receive user inputs.
     return array(
       array('profile_id, delivery_id, payment_id, status_id', 'required'),
-      array('profile_id, delivery_id, payment_id, status_id, coupon_id', 'length', 'max' => 11),
+      array('profile_id, delivery_id, payment_id, status_id, coupon_id, phone', 'length', 'max' => 11),
+      array('delivery_summ', 'numerical'),
+      array('email', 'email'),
+      array('fio, email', 'length', 'max' => 255),
+      array('city', 'length', 'max' => 100),
       array('time', 'safe'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
-      array('id, profile_email, profile_fio, profile_phone, delivery_id, payment_id, status_id, coupon_id, time', 'safe', 'on' => 'search'),
+      array('id, email, profile_email, fio, profile_fio, phone, profile_phone, city, address, delivery_id, payment_id, status_id, coupon_id, time', 'safe', 'on' => 'search'),
     );
   }
 
@@ -99,7 +109,7 @@ class Order extends CActiveRecord {
    */
   public function attributeLabels() {
     return array(
-      'id' => 'ID',
+      'id' => 'Номер',
       'profile_id' => 'Профиль',
       'profile_fio' => 'ФИО',
       'profile_email' => 'E-mail',
@@ -110,6 +120,11 @@ class Order extends CActiveRecord {
       'payment_id' => 'Способ оплаты',
       'status_id' => 'Статус',
       'time' => 'Дата',
+      'fio' => 'ФИО',
+      'email' => 'E-mail',
+      'phone' => 'Телефон',
+      'city' => 'Город',
+      'address' => 'Адрес',
     );
   }
 
@@ -132,11 +147,14 @@ class Order extends CActiveRecord {
     $criteria->with = array('profile', 'delivery', 'payment');
 //    $criteria->together = true;
 
-    $criteria->compare('id', $this->id, true);
+    $criteria->compare('t.id', $this->id, true);
     $criteria->compare('delivery_id', $this->delivery_id, true);
     $criteria->compare('profile.fio', $this->profile_fio, true);
+    $criteria->compare('t.fio', $this->fio, true);
     $criteria->compare('profile.email', $this->profile_email, true);
+    $criteria->compare('t.email', $this->email, true);
     $criteria->compare('profile.phone', $this->profile_phone, true);
+    $criteria->compare('t.phone', $this->phone, true);
     $criteria->compare('coupon_id', $this->coupon_id, true);
     $criteria->compare('status_id', $this->status_id, true);
     $criteria->compare("DATE_FORMAT(time,'%d.%m.%Y %T')", $this->time, true);

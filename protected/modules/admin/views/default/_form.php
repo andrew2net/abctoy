@@ -32,31 +32,31 @@
           echo TbHtml::tag('div', array(
             'id' => 'profile_fio',
             'class' => 'display-field', 'style' => 'width:16em'));
-          echo is_null($model->profile) ? '&nbsp' : $model->profile->fio;
+          echo $model->fio; //is_null($model->profile) ? '&nbsp' : $model->profile->fio;
           echo TbHtml::closeTag('div');
           ?>
         </div>
-        <?php echo TbHtml::activeTextFieldControlGroup($profile, 'email'); ?>
-        <?php echo TbHtml::activeTextFieldControlGroup($profile, 'phone'); ?>
+        <?php echo TbHtml::activeTextFieldControlGroup($model, 'email'); ?>
+        <?php echo TbHtml::activeTextFieldControlGroup($model, 'phone'); ?>
         <?php echo TbHtml::activeDropDownListControlGroup($profile, 'call_time_id', $profile->callTimes); ?>
       </div>
       <div class="inline-blocks">
         <div>
           <?php
-          echo TbHtml::activeLabelEx($profile, 'city');
+          echo TbHtml::activeLabelEx($model, 'city');
           ?>
           <?php
           $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
-            'model' => $profile,
+            'model' => $model,
             'attribute' => 'city',
             'sourceUrl' => '/site/suggestcity',
             'htmlOptions' => array('style' => 'width: 16em')
           ));
           ?>
-          <?php echo TbHtml::error($profile, 'city'); ?>
+          <?php echo TbHtml::error($model, 'city'); ?>
         </div>
         <?php
-        echo TbHtml::activeTextFieldControlGroup($profile, 'address'
+        echo TbHtml::activeTextFieldControlGroup($model, 'address'
             , array('span' => 7));
         ?>
 
@@ -156,9 +156,27 @@
       </tr>
     <?php } ?>
     <tr>
+      <td></td><td></td><td><div style="text-align: right">Стоимость доставки: </div></td>
+      <td>
+        <?php
+        echo TbHtml::activeNumberField($model, 'delivery_summ',array(
+          'id' => 'order-delivery-summ',
+        ));
+//        echo TbHtml::tag('div', array(
+//          'name' => 'order_delivery_summ',
+//          'class' => 'display-field',
+////          'style' => 'width:11.5em',
+//          'id' => 'order-delivery-summ'));
+//        echo $model->delivery_summ;
+//        echo TbHtml::closeTag('div');
+        ?>
+      </td>
+    </tr>
+    <tr>
       <td></td><td></td><td><div style="text-align: right">Итого: </div></td>
       <td>
         <?php
+        $total += $model->delivery_summ;
         echo TbHtml::tag('div', array(
           'name' => 'order_total',
           'class' => 'display-field',
@@ -189,20 +207,19 @@
   function calcSumm() {
     var sum = 0;
     $('.row-price').each(function() {
-      var price = parseInt(this.value);
+      var price = parseFloat(this.value);
       var priceid = this.id;
       var quantityid = priceid.replace('price', 'quantity');
       var quantity = parseInt($('#' + quantityid).val());
       sum += price * quantity;
     });
+    var delivery = parseFloat($('#order-delivery-summ').val());
+    sum += delivery;
     $('#order-total').html(sum);
   }
 
-  $('.row-price').change(function() {
+  $('.row-price, .row-quantity, #order-delivery-summ').change(function() {
     calcSumm();
   });
 
-  $('.row-quantity').change(function() {
-    calcSumm();
-  });
 </script>

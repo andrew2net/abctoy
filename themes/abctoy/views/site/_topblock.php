@@ -22,7 +22,7 @@
     <a href="/contact">
       <div class="cufon lager" style="padding-bottom: 0.4em">Телефон для справок</div>
       <div class="cufon x-lage" style="padding-bottom: 0.2em">
-        <span class="red">(383)</span><span class="blue"> 224</span><span>-</span><span class="green">23</span><span>-</span><span class="yellow">32</span>
+        <span class="red">(383)</span><span class="blue"> 375</span><span>-</span><span class="green">03</span><span>-</span><span class="yellow">22</span>
       </div>
       <div style="text-align: right">
         <div class="cufon gray" style="font-size: medium; padding-bottom: 0.5em">(10:00 - 18:00 пн.-пт.)</div>

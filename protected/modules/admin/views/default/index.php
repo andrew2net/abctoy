@@ -17,24 +17,28 @@ $this->widget('bootstrap.widgets.TbGridView', array(
   'dataProvider' => $model->timeOrderDesc()->search(),
   'filter' => $model,
   'columns' => array(
+    'id',
     'time',
     array(
       'name' => 'status_id',
       'value' => '$data->status',
       'filter' => $model->statuses,
     ),
-    array(
-      'name' => 'profile_fio',
-      'value' => '$data->profile->fio',
-    ),
-    array(
-      'name' => 'profile_email',
-      'value' => '$data->profile->email',
-    ),
-    array(
-      'name' => 'profile_phone',
-      'value' => '$data->profile->phone',
-    ),
+    'fio',
+//    array(
+//      'name' => 'profile_fio',
+//      'value' => '$data->profile->fio',
+//    ),
+    'email',
+//    array(
+//      'name' => 'profile_email',
+//      'value' => '$data->profile->email',
+//    ),
+    'phone',
+//    array(
+//      'name' => 'profile_phone',
+//      'value' => '$data->profile->phone',
+//    ),
     array(
       'name' => 'payment_id',
       'value' => '$data->payment->name',

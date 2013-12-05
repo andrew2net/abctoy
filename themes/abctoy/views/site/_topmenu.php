@@ -4,10 +4,10 @@
     $this->widget('zii.widgets.CMenu', array(
       'items' => array(
         array('label' => 'О компании', 'url' => array('/about')),
-        array('label' => 'Доставка и оплата', 'url' => array('/delivery_payment')),
+        array('label' => 'Доставка', 'url' => array('/delivery')),
+        array('label' => 'Оплата', 'url' => array('/payment')),
         array('label' => 'Гарантии и обмен', 'url' => array('/guarantee')),
         array('label' => 'FAQ', 'url' => array('/faq')),
-        array('label' => 'Контакты', 'url' => array('/contact')),
         array(
           'label' => $this->cartLabel(),
           'url' => array('/cart'),

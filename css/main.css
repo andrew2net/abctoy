@@ -311,3 +311,7 @@ div.search-form
   line-height: 2;
   padding: 0 4px;
 }
+
+#order-grid #Order_id{
+  width: 2em;
+}

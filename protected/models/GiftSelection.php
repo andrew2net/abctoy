@@ -19,10 +19,10 @@ class GiftSelection extends CFormModel {
     parent::init();
     $this->gender = 0;
     $this->ageFrom = 1;
-    $this->ageTo = 4;
+    $this->ageTo = 9;
     $this->availableOnly = 1;
-    $this->priceFrom = 1000;
-    $this->priceTo = 4000;
+    $this->priceFrom = 500;
+    $this->priceTo = 4500;
   }
 
   public function rules() {

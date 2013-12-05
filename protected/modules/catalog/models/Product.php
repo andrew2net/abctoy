@@ -53,8 +53,7 @@ class Product extends CActiveRecord {
     return array(
       array('age, age_to, gender_id, remainder', 'numerical', 'integerOnly' => true),
       array('name, article, brand_id, price', 'required'),
-      array('name', 'length', 'max' => 30),
-      array('img, small_img', 'length', 'max' => 255),
+      array('name, img, small_img', 'length', 'max' => 255),
       array('article', 'length', 'max' => 25),
       array('brand_id', 'length', 'max' => 11),
       array('price', 'length', 'max' => 12),

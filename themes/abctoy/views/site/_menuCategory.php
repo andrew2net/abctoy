@@ -25,11 +25,16 @@
           echo CHtml::closeTag('li');
         }
       }
+      
       $class = 'category';
       if (($category->level - 1) == 1)
         $class .= ' nomarker';
       else
         $class .= ' subcategory';
+      
+      if ($category->id == $group->id)
+        $class .= ' current-category';
+      
       echo CHtml::openTag('li', array('class' => $class));
       echo CHtml::openTag('a', array('href' => $this->createUrl('group', array(
           'id' => $category->id

@@ -95,6 +95,12 @@ body
   color: #6399cd;
   background-color: white;
 }
+.mainmenulink{
+  text-decoration: underline !important;
+}
+.mainmenulink:hover{
+  text-decoration: none !important;
+}
 .submenu{
   position: absolute;
   display: none;
@@ -657,7 +663,7 @@ select{
   font-size: 7.5pt;
 }
 #age_slider:after{
-  content: "5";
+  content: "10";
   position: absolute;
   right: -17px;
   top: -3px;
@@ -781,15 +787,20 @@ a:hover .item-disc, a:hover .item-price{
 }
 
 .category a{
-  text-decoration: none;
+  /*text-decoration: none;*/
 }
 .category{
   line-height: 0.8;
   margin-top: 7px;
+  font-weight: normal;
 }
 
 .subcategory a{
   color: #666666;
+}
+
+.current-category{
+  font-weight: bold;
 }
 
 .img-container{
