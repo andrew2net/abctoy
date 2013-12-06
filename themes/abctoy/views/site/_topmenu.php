@@ -4,7 +4,7 @@
     $this->widget('zii.widgets.CMenu', array(
       'items' => array(
         array('label' => 'О компании', 'url' => array('/about')),
-        array('label' => 'Доставка', 'url' => array('/delivery')),
+        array('label' => 'Доставка', 'url' => array('/deliver')),
         array('label' => 'Оплата', 'url' => array('/payment')),
         array('label' => 'Гарантии и обмен', 'url' => array('/guarantee')),
         array('label' => 'FAQ', 'url' => array('/faq')),
