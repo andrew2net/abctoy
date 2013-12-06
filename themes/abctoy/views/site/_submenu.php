@@ -5,7 +5,7 @@
   <?php
   $categories = $group->children()->findAll();
   foreach ($categories as $category) {
-    echo CHtml::openTag('div');
+    echo CHtml::openTag('div', array('style'=>'vertical-align:top'));
     echo CHtml::openTag('div');
     echo CHtml::link($category->name, $this->createUrl('group'
             , array('id' => $category->id)), array('class' => 'menu-category'));

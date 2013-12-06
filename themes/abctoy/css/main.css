@@ -866,7 +866,6 @@ a:hover .item-disc, a:hover .item-price{
 .add-prodact-alert{
   border: 4px solid #3399cc !important;
   border-radius: 5px;
-  /*background: white;*/
 }
 .add-prodact-alert div{
   text-align: center;
