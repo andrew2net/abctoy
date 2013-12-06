@@ -161,7 +161,6 @@ $(function() {
   $("#add-product-dialog").dialog({
     autoOpen: false,
     modal: true,
-    closeText: "Продолжить",
     draggable: false,
     resizable: false,
     width: 400,

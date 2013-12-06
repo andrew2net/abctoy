@@ -44,7 +44,7 @@
             </div>
             <div class="table-cell">
               <div class="bold" style="height: 2.5em">Звоните</div>
-              <div class="cufon gray bold x-lage" style="height: 1.5em">8 800 913-12-12</div>
+              <!--<div class="cufon gray bold x-lage" style="height: 1.5em">8 800 913-12-12</div>-->
               <div class="cufon gray bold x-lage" style="height: 1.3em">(383) 375-03-22</div>
               <div class="cufon gray bold lager" style="height: 1.5em">г. Новосибирск</div>
               <!--<div class="cufon gray bold lager">Мы в социальных сетях:</div>-->

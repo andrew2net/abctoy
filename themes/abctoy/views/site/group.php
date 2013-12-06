@@ -37,7 +37,7 @@
 //      'style' => 'font-size: 16pt; margin: 20px 0; text-decoration: none'
     )
   ));
-  echo CHtml::hiddenField('currentGroup', $group->id, array('id'=>'currentGroup'));
+  echo CHtml::hiddenField('currentGroup', $group->id, array('id' => 'currentGroup'));
   ?>
   <div class="inline-blocks">
     <div style="width: 180px; margin-right: 6px; float: left">
@@ -88,10 +88,11 @@
             )
         );
       }
-      else
+      else {
         $this->renderPartial('_recommended', array(
           'group' => $group,
           'product' => $product_data,));
+      }
       ?>
 
     </div>
@@ -99,3 +100,4 @@
   </div>
 </div>
 <?php $this->renderPartial('_footer', array('groups' => $groups)); ?>
+<?php $this->renderPartial('_addProductModal'); ?>
