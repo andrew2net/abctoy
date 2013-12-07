@@ -316,6 +316,14 @@ class Product extends CActiveRecord {
     return $this;
   }
 
+  public function searchCategory($id) {
+    $this->subCategory($id)->discountOrder();
+    return new CActiveDataProvider($this, array(
+      'criteria' => $this->searchCriteria(),
+//      'pagination' => array('pageSize' => 12),
+    ));
+  }
+
   public function subCategory($id) {
     $category = Category::model()->findByPk($id);
     $descendants = $category->descendants()->findAll(array('select' => 'id'));
@@ -387,7 +395,7 @@ class Product extends CActiveRecord {
 
     if (isset($sort['availableOnly']) && $sort['availableOnly'])
       $this->availableOnly();
-    
+
     $this->age($sort['ageFrom'], $sort['ageTo']);
 
     $this->price($sort['priceFrom'], $sort['priceTo']);

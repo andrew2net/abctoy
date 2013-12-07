@@ -40,11 +40,14 @@ else {
   </div>
   <div style="margin: 0 40px"><?php
     echo CHtml::activeNumberField($product, "[$product->product_id]quantity", array(
-      'style' => 'width: 1.8em; font-size: 16pt; border:1px dashed #BBB;border-radius:3px',
+      'style' => 'width: 1.5em; font-size: 16pt; border:1px dashed #BBB;border-radius:3px',
       'class' => 'cart-quantity input-number',
       'price' => $price,
       'disc' => $disc,
-      'product' => $product->product_id,));
+      'product' => $product->product_id,
+      'max'=>9,
+      'maxlength'=>1,
+      ));
     ?>
     <span style="position: relative; top: 5px; font-size: 12pt"> шт.</span>
   </div>

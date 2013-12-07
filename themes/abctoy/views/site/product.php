@@ -32,7 +32,7 @@
   }
   $form = $this->beginWidget('CActiveForm');
   ?>
-  <div class="inline-blocks">
+  <div class="inline-blocks" style="margin-top: 20px">
     <div style="position: relative">
       <div class="<?php echo empty($percent) ? '' : 'discount-label-big'; ?>"><?php echo $percent; ?></div>
       <div class="img-container" style="width: 450px; height: 450px">
@@ -69,7 +69,7 @@
       </div>
       <div>
         <div style="text-align: center; width: 168px; float: right; font-size: 11pt; margin-top: 5px">
-          <a id="buy-one-click" product="<?php echo $product->id; ?>" href="#">Купить в 1 клик</a>
+          <!--<a id="buy-one-click" product="<?php echo $product->id; ?>" href="#">Купить в 1 клик</a>-->
         </div>
       </div>
     </div>

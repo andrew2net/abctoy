@@ -2,7 +2,7 @@
 /* @var $search Search */
 /* @var $giftSelection GiftSelection */
 /* @var $groups[] Category */
-/* @var $product_data Product */
+/* @var $product Product */
 /* @var $group Category */
 /* @var $categories[] Category */
 ?>
@@ -54,44 +54,56 @@
     <div style="width: 760px">
 
       <?php
+      Yii::import('application.modules.catalog.models.Brand');
       Yii::import('application.modules.catalog.models.Product');
       Yii::import('application.modules.discount.models.Discount');
-      $discount_products = Product::model()->subCategory($group->id)
-              ->discountOrder()->findAll(array('limit' => 4));
-      if (count($discount_products) > 2) {
-        ?>
-        <div class="inline-blocks">
-          <div style="width: 100%">
-            <div class="inline-blocks right">
-              <div class="icon-dicount"></div>
-              <div class="cufon red bold" style="font-size: 20pt; position: relative; padding: 0 10px">Товары со скидкой</div>
+      if ($group->level < 3) {
+        $discount_products = Product::model()->subCategory($group->id)
+                ->discountOrder()->findAll(array('limit' => 4, 'having'=>'percent>0'));
+        if (count($discount_products) > 2) {
+          ?>
+          <div class="inline-blocks">
+            <div style="width: 100%">
+              <div class="inline-blocks right">
+                <div class="icon-dicount"></div>
+                <div class="cufon red bold" style="font-size: 20pt; position: relative; padding: 0 10px">Товары со скидкой</div>
+              </div>
             </div>
           </div>
-        </div>
-        <div style="margin-top: 20px">
-          <?php
-          foreach ($discount_products as $discount_product)
-            $this->renderPartial('_item', array('data' => $discount_product));
-          ?>
-          <!--<div style="text-align: right; line-height: 3"><a class="red" href="#">Все товары со скидкой</a></div>-->
-        </div>
-      <?php } ?>
+          <div style="margin-top: 20px">
+            <?php
+            foreach ($discount_products as $discount_product)
+              $this->renderPartial('_item', array('data' => $discount_product));
+            ?>
+            <!--<div style="text-align: right; line-height: 3"><a class="red" href="#">Все товары со скидкой</a></div>-->
+          </div>
+        <?php
+        }
+      }
+      ?>
 
       <?php
       if ($group->level > 1) {
+        if ($group->level > 2)
+          $pagination = array('pageSize' => 16);
+        else
+          $pagination = array('pageSize' => 12);
+        $data = $product->searchCategory($group->id);
+        $data->setPagination($pagination);
         $this->widget('ListView', array(
-          'dataProvider' => $product_data,
+          'dataProvider' => $data,
           'itemView' => '_item',
-          'template' => '{sorter}{items}{pager}',
+          'template' => '{sorter}{pager}{items}{pager}',
           'sorterHeader' => 'Сортировать:',
-          'sortableAttributes' => array('price')
+          'sortableAttributes' => array('price'),
+          'htmlOptions' => array('style' => 'margin-top:30px'),
             )
         );
       }
       else {
         $this->renderPartial('_recommended', array(
           'group' => $group,
-          'product' => $product_data,));
+          'product' => $product,));
       }
       ?>
 

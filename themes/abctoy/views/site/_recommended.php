@@ -1,3 +1,6 @@
+<?php
+/* @var $product Product */
+?>
 <div class="inline-blocks" style="margin: 20px 0">
   <div <?php echo (isset($group) ? 'style="width: 100%"' : ''); ?>>
     <div class="inline-blocks <?php echo (isset($group) ? 'right' : ''); ?>">
@@ -17,11 +20,16 @@
 </div>
 <div style="margin-bottom: 30px">
   <?php
-  $products = $product->getData();
+  if (isset($group)) {
+    $product->subCategory($group->id)->discountOrder();
+    $products = $product->findAll(array('limit' => 12));
+  }
+  else
+    $products = $product->discountOrder()->findAll(array('limit' => 15));
   foreach ($products as $value) {
     ?>
     <div style="float: left">
-      <?php $this->renderPartial('_item', array('data' => $value)); ?>
+    <?php $this->renderPartial('_item', array('data' => $value)); ?>
     </div>
-  <?php } ?>
+<?php } ?>
 </div>

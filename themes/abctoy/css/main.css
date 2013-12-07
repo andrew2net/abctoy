@@ -95,12 +95,7 @@ body
   color: #6399cd;
   background-color: white;
 }
-.mainmenulink{
-  text-decoration: underline !important;
-}
-.mainmenulink:hover{
-  text-decoration: none !important;
-}
+
 .submenu{
   position: absolute;
   display: none;
@@ -383,7 +378,7 @@ blue-light{
 .items{
   display: block;
   /*width: 960px;*/
-  margin: 0 auto;
+  margin: 10px auto;
 }
 
 .item{
@@ -787,10 +782,13 @@ a:hover .item-disc, a:hover .item-price{
 }
 
 .category a{
-  /*text-decoration: none;*/
+  text-decoration: none;
+}
+.category a:hover{
+  text-decoration: underline;
 }
 .category{
-  line-height: 0.8;
+  line-height: 1;
   margin-top: 7px;
   font-weight: normal;
 }

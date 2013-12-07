@@ -2,7 +2,7 @@
 
 <div class="inline-blocks" style="margin: 5px 0">
   <div>
-    <a href="/delivery_payment">
+    <a href="/deliver">
       <div class="icon-delivery-small"></div>
     </a>
   </div>
@@ -12,7 +12,7 @@
 </div>
 <div class="inline-blocks" style="margin: 5px 0">
   <div>
-    <a href="/delivery_payment">
+    <a href="/payment">
       <div class="icon-payment-small"></div>
     </a>
   </div>
@@ -22,7 +22,7 @@
 </div>
 <div class="inline-blocks">
   <div>
-    <a href="/about">
+    <a href="/guarantee">
       <div class="icon-guarantee-small" style="position: relative"></div>
     </a>
   </div>

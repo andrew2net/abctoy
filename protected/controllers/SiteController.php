@@ -51,12 +51,12 @@ class SiteController extends Controller {
     $giftSelection = new GiftSelection;
     $groups = Category::model()->roots()->findAll();
 
-    $product = Product::model()->discountOrder()->recommended(15);
-    $product_data = new CActiveDataProvider('Product'
-        , array('criteria' => $product->getDbCriteria()));
+    $product = Product::model();//->discountOrder();
+//    $product_data = new CActiveDataProvider('Product'
+//        , array('criteria' => $product->getDbCriteria()));
 
     $this->render('index', array(
-      'product' => $product_data,
+      'product' => $product,
       'search' => $searc,
       'giftSelection' => $giftSelection,
       'groups' => $groups,
@@ -138,14 +138,15 @@ class SiteController extends Controller {
     $group = Category::model()->findByPk($id);
     $searc = new Search;
     $giftSelection = new GiftSelection;
-    $product = Product::model()->subCategory($id)->discountOrder();
-    if ($group->level == 1)
-      $product->recommended(12);
-    $product_data = new CActiveDataProvider('Product'
-        , array('criteria' => $product->getDbCriteria()));
+    $product = Product::model();//->subCategory($id)->discountOrder();
+//    if ($group->level == 1)
+//      $product->recommended(12);
+//    $product_data = new CActiveDataProvider($product
+//        'Product'
+//        , array('criteria' => $product->getDbCriteria()));
 
     $this->render('group', array(
-      'product_data' => $product_data,
+      'product' => $product,
       'search' => $searc,
       'giftSelection' => $giftSelection,
       'groups' => $groups,

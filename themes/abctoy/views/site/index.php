@@ -1,6 +1,7 @@
 <?php
 /* @var $search Search */
 /* @var $giftSelection GiftSelection */
+/* @var $product Product */
 /* @var $groups array */
 ?>
 <?php
