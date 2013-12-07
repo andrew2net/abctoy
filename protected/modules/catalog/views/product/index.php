@@ -162,6 +162,10 @@ $this->widget('bootstrap.widgets.TbModal', array(
       $('#uploadProgress .bar').css('width', '0%');
       if (data)
         alert('Ошибка загрузки: ' + data);
+      jQuery('#product-grid').yiiGridView('update', {
+        type: 'POST',
+        url: jQuery(this).attr('href')
+      });
     }
 
     $('#cancelUpload, #productUploadModel .close').click(function() {
