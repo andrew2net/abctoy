@@ -199,18 +199,8 @@ class ProductController extends Controller {
   }
 
   public function actionProductUpload() {
-    $importData = new ImportFile;
-    if (isset($_POST['ImportFile'])) {
-      require_once (Yii::getPathOfAlias('ext.Excel') . '/excel_reader2.php');
-      $importData->attributes = $_POST['ImportFile'];
-      $importData->productFile = CUploadedFile::getInstance($importData, 'productFile');
-      $importFilePath = Yii::getPathOfAlias('webroot.uploads') . DIRECTORY_SEPARATOR .
-          $_FILES['ImportFile']['name']['productFile'];
-      $importData->productFile->saveAs($importFilePath);
-      $data = new Spreadsheet_Excel_Reader($importFilePath, FALSE);
-      $sheet = 0;
-      $rows = $data->rowcount($sheet);
-      $rows = 50; //2091;
+
+    if (isset($_POST['data'])) {
       $productImagePath = Yii::getPathOfAlias('webroot.productimages') .
           DIRECTORY_SEPARATOR;
       $quotes = array(
@@ -232,51 +222,63 @@ class ProductController extends Controller {
         "\xe2\x82\x11" => "-",
         "\xe2\x82\x12" => "-",
       );
-      
-      for ($index = 2; $index < $rows; $index++) {
-        $brand_name = strtr($data->val($index, 'B', $sheet), $quotes);
+
+      foreach ($_POST['data'] as $value) {
+        $data = str_getcsv($value, ';');
+        if (count($data) != 13) {
+          echo mb_substr($data[0], 0, 50, 'utf-8');
+          Yii::app()->end();
+        }
+        $brand_name = strtr($data[1], $quotes);
         $brand = Brand::model()->findByAttributes(array('name' => $brand_name));
         if (is_null($brand)) {
           $brand = new Brand;
           $brand->name = $brand_name;
           $brand->save();
         }
-        $group_name = strtr($data->val($index, 'H', $sheet), $quotes);
+        $group_name = strtr($data[7], $quotes);
         $group = Category::model()->findByAttributes(array(
           'name' => $group_name), 'level=1');
-//        if (is_null($group)) {
-//          $group = new Category;
-//          $group->name = $group_name;
-//          $group->saveNode();
-//        }
+        if (is_null($group)) {
+          $group = new Category;
+          $group->name = $group_name;
+          $group->saveNode();
+        }
 
-        $category_name = strtr($data->val($index, 'G', $sheet), $quotes);
+        $category_name = strtr($data[6], $quotes);
         $category = Category::model()->findByAttributes(array(
           'name' => $category_name), 'level=2');
-//        if (is_null($category)) {
-//          $category = new Category;
-//          $category->name = $category_name;
-//          $category->appendTo($group);
-//        }
-        $subcategory_name = strtr($data->val($index, 'F', $sheet), $quotes);
-        $subcategory = Category::model()->findByAttributes(array(
-          'name' => $subcategory_name), 'level=3');
-//        if (is_null($subcategory)) {
-//          $subcategory = new Category;
-//          $subcategory->name = $subcategory_name;
-//          $subcategory->appendTo($category);
-//        }
-        $name = strtr($data->val($index, 'A', $sheet), $quotes);
-        $age = (string) $data->val($index, 'K', $sheet);
+        if (is_null($category)) {
+          $category = new Category;
+          $category->name = $category_name;
+          $category->appendTo($group);
+        }
+        $subcategory_name = strtr($data[5], $quotes);
+        if ($data[2] == 'Т3453') {
+          $d = $data[2];
+        }
+        try {
+          $subcategory = Category::model()->findByAttributes(array(
+            'name' => $subcategory_name), 'level = 3');
+        } catch (Exception $e) {
+          $e;
+        }
+        if (is_null($subcategory)) {
+          $subcategory = new Category;
+          $subcategory->name = $subcategory_name;
+          $subcategory->appendTo($category);
+        }
+        $name = strtr($data[0], $quotes);
+        $age = (string) $data[10];
         $ages = split(' ', $age);
         $productData = array(
           'name' => $name,
-          'article' => (string) $data->val($index, 'C', $sheet),
+          'article' => $data[2],
           'brand_id' => (int) $brand->id,
-          'gender_id' => $data->val($index, 'L', $sheet),
-          'remainder' => (int) $data->val($index, 'I', $sheet),
-          'description' => $data->val($index, 'M', $sheet),
-          'price' => (float) $data->val($index, 'J', $sheet),
+          'gender_id' => $data[11],
+          'remainder' => $data[8],
+          'description' => $data[12],
+          'price' => $data[9],
           'age' => $ages[0],
           'age_to' => isset($ages[1]) ? $ages[1] : '',
           'show_me' => 1,
@@ -286,11 +288,7 @@ class ProductController extends Controller {
         if (is_null($product)) {
           $product = new Product;
           $product->attributes = $productData;
-          try {
           $product->save(FALSE);
-          }catch (Exception $e){
-            continue;
-          }
         }
         $product_category = ProductCategory::model()->findByAttributes(array(
           'product_id' => $product->id, 'category_id' => $subcategory->id));
@@ -301,37 +299,47 @@ class ProductController extends Controller {
           $product_category->save();
         }
 
-//        try {
-//          $imageUrl = $data->val($index, 'D', $sheet);
-//          $ext = substr(basename($imageUrl), strrpos($imageUrl, '.', -1));
-//          $productData['img'] = '/productimages/' . $product->id . $ext;
-//          $ch = curl_init($imageUrl);
-//          $fp = fopen($productImagePath . $product->id . $ext, 'w+');
-//          curl_setopt($ch, CURLOPT_FILE, $fp);
-//          curl_setopt($ch, CURLOPT_HEADER, 0);
-//          curl_exec($ch);
-//          fclose($fp);
-//
-//          $smallImgUrl = $data->val($index, 'E', $sheet);
-//          $small_ext = substr($smallImgUrl, strrpos($smallImgUrl, '.', -1));
-//          $productData['small_img'] = '/productimages/'
-//              . $product->id . 's' . $small_ext;
-//          $sfp = fopen($productImagePath . $product->id . 's' . $small_ext, 'w+');
-//          curl_setopt($ch, CURLOPT_URL, $smallImgUrl);
-//          curl_setopt($ch, CURLOPT_FILE, $sfp);
-//          curl_exec($ch);
-//          curl_close($ch);
-//          fclose($sfp);
-//        } catch (Exception $e) {
-//          Yii::trace($product->article . '; ' . $product->name, 'error');
-//        }
+        if ($_POST['uploadImage'] == 'true') {
+          try {
+            $imageUrl = $data[3];
+            $ext = substr(basename($imageUrl), strrpos($imageUrl, '.', -1));
+            $productData['img'] = '/productimages/' . $product->id . $ext;
+            $ch = curl_init($imageUrl);
+            $fp = fopen($productImagePath . $product->id . $ext, 'w+');
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_exec($ch);
+            fclose($fp);
+
+            $smallImgUrl = $data[4];
+            $small_ext = substr($smallImgUrl, strrpos($smallImgUrl, '.', -1));
+            $productData['small_img'] = '/productimages/'
+                . $product->id . 's' . $small_ext;
+            $sfp = fopen($productImagePath . $product->id . 's' . $small_ext, 'w+');
+            curl_setopt($ch, CURLOPT_URL, $smallImgUrl);
+            curl_setopt($ch, CURLOPT_FILE, $sfp);
+            curl_exec($ch);
+            curl_close($ch);
+            fclose($sfp);
+          } catch (Exception $e) {
+            Yii::trace($product->article . '; ' . $product->name, 'error');
+          }
+        }
         $product->attributes = $productData;
-        $product->img = $productData['img'];
-        $product->small_img = $productData['small_img'];
+        if ($_POST['uploadImage'] == 'true') {
+          $product->img = $productData['img'];
+          $product->small_img = $productData['small_img'];
+        }
+
         $product->save(FALSE);
       }
+      echo 'ok';
     }
-    $this->redirect('index');
+    else {
+      echo 'error';
+    }
+    Yii::app()->end();
   }
 
 }
+

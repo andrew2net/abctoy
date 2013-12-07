@@ -20,11 +20,12 @@
             <div class="table-cell footer-menu">
               <div class="bold">ABC toy</div>
               <div><a href="/about">О компании</a></div>
-              <div><a href="/delivery_payment">Доставка и оплата</a></div>
+              <div><a href="/deliver">Доставка</a></div>
+              <div><a href="/payment">Оплата</a></div>
               <div><a href="/guarantee">Гарантии и обмен</a></div>
               <div><a href="/faq">FAQ</a></div>
-              <div><a href="/contact">Контакты</a></div>
-              <div><a href="#">Наши преимущества</a></div>
+              <!--<div><a href="/contact">Контакты</a></div>-->
+              <!--<div><a href="#">Наши преимущества</a></div>-->
             </div>
             <div class="table-cell footer-menu">
               <div class="bold">Товар</div>
@@ -35,13 +36,13 @@
                     , $this->createUrl('group', array('id'=>$group->id))); ?></div>
               <?php } ?>
             </div>
-            <div class="table-cell footer-menu">
+<!--            <div class="table-cell footer-menu">
               <div class="bold">Акции</div>
               <div><a href="#">Скидка недели</a></div>
               <div><a href="#">ТОП 10 подарков</a></div>
               <div><a href="#">Вам рекомендовано</a></div>
               <div><a href="#">Бренды</a></div>
-            </div>
+            </div>-->
             <div class="table-cell">
               <div class="bold" style="height: 2.5em">Звоните</div>
               <!--<div class="cufon gray bold x-lage" style="height: 1.5em">8 800 913-12-12</div>-->

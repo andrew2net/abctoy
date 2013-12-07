@@ -10,11 +10,11 @@ $brands = Brand::model()->withImage()->findAll();
     <ul>
       <?php foreach ($brands as $value) { ?>
         <li style="padding: 0 10px; height: 150px; width: 200px; position: relative">
-          <a href="#">
+          <!--<a href="#">-->
             <img style="position: absolute; margin: auto; top: 0; bottom: 0; 
                  right: 0; left: 0; max-height: 130px; max-width: 180px" 
                  src="<?php echo $value->img; ?>" />
-          </a>
+          <!--</a>-->
         </li>
       <?php } ?>
     </ul>

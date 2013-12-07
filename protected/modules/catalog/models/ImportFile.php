@@ -16,7 +16,7 @@ class ImportFile extends CFormModel {
 
   public function rules() {
     return array(
-      array('productFile', 'file', 'types' => 'xls'),
+      array('productFile', 'file', 'types' => 'csv'),
     );
   }
 
