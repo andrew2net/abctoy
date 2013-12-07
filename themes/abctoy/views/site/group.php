@@ -60,7 +60,7 @@
       if ($group->level < 3) {
         $discount_products = Product::model()->subCategory($group->id)
                 ->discountOrder()->findAll(array('limit' => 4, 'having'=>'percent>0'));
-        if (count($discount_products) > 2) {
+        if (count($discount_products) > 1) {
           ?>
           <div class="inline-blocks">
             <div style="width: 100%">
