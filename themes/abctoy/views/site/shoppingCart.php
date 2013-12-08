@@ -9,7 +9,7 @@
   <?php $this->renderPartial('_shoppingCartTopBlock'); ?>
   <div class="cufon gray bold" style="font-size: 28pt; margin: 20px 0">Ваша корзина</div>
   <?php
-  $form = $this->beginWidget('CActiveForm');
+  $form = $this->beginWidget('CActiveForm', array('id'=>'item-submit'));
   ?>
   <div id="cart-items">
     <?php $this->renderPartial('_cartItems', array('cart' => $cart)); ?>

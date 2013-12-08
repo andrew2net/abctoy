@@ -25,10 +25,14 @@ else {
 }
 $href_params = array('id' => $data->id);
 ?>
-<?php if (isset($index) && $index == 0) echo CHtml::hiddenField('currentPage', $widget->dataProvider->getPagination()->getCurrentPage()); ?>
+<?php
+if (isset($index) && $index == 0)
+  echo CHtml::hiddenField('currentPage', $widget->dataProvider->getPagination()->getCurrentPage());
+echo CHtml::hiddenField('url', Yii::app()->request->url);
+?>
 <div class="helper"></div>
 <div class="item" title="<?php echo$data->name; ?>">
-  <a <?php echo isset($index) ? 'class="item-link" page="' . $page . '"' : ''; ?> href="<?php echo $this->createUrl('product', $href_params); ?>">
+  <a class="item-link" href="<?php echo $this->createUrl('product', $href_params); ?>">
     <div class="<?php echo $item; ?>">
       <div class="<?php echo empty($percent) ? '' : 'discount-label'; ?>"><?php echo $percent; ?></div>
       <!--<div class="<?php echo $glass; ?>"></div>-->

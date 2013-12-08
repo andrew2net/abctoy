@@ -3,6 +3,7 @@
 ?>
 <?php
 if (count($cart) > 0) {
+  echo CHtml::hiddenField('url', Yii::app()->request->url);
   $fl = FALSE;
   foreach ($cart as $product) {
     if ($fl) {

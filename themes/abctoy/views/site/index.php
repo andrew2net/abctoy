@@ -29,11 +29,16 @@ $this->renderPartial('_topmenu');
     'giftSelection' => $giftSelection,
     'groups' => $groups,
   ));
+  echo CHtml::beginForm('', 'post', array('id' => 'item-submit'));
+  echo CHtml::hiddenField('url', Yii::app()->request->url);
   ?>
   <?php $this->renderPartial('_weekDiscount'); ?>
   <?php $this->renderPartial('_top10'); ?>
-  <?php $this->renderPartial('_recommended', array('product' => $product)); ?>
-  <?php $this->renderPartial('_brands'); ?>
+  <?php
+  $this->renderPartial('_recommended', array('product' => $product));
+  echo CHtml::endForm();
+  ?>
+<?php $this->renderPartial('_brands'); ?>
   <div style="margin: 30px 10px">
     <div class="blue bold" style="font-size: 14pt; margin: 15px 0 10px">Рады вас приветствовать в интернет-магазине детских товаров и игрушек!</div>
     <div>ABC-toy – это интернет-магазин игрушек, который выбирают продвинутые родители. К вашему вниманию предложен широкий ассортимент детских товаров для досуга, отдыха или учебы подрастающего ребенка. У нас вы сможете приобрести подарок ребенку любого возраста и вкусовых предпочтений.</div>
@@ -52,6 +57,6 @@ $this->renderPartial('_topmenu');
     <div>Главной особенностью интернет-магазина ABC-toy является собственный большой склад в Новосибирске. Благодаря ему все предлагаемые на сайте игрушки всегда есть в наличии. Мы работает напрямую с поставщиками, которые гарантируют высокое качество продукции. ABC-toy сотрудничает с такими поставщиками как: 
       <p>ТМ ВЕСЕЛЫЙ ПОВАР, Биплант, Бомик, БрикНик, Бондибон, Крона, Лесная сказка, МДИ, ОКСВА, Принцесса, Пелси, Пома, Развивашки, Росмэн, РУ-ТОЙЗ, Томик, ADEX, Castorland, COGO, DOLU, Edushape, ERPA, Halilit, Modular, RNToys, Scotchi, Yookidoo.</p></div>
   </div>
-  <?php $this->renderPartial('_addProductModal'); ?>
+<?php $this->renderPartial('_addProductModal'); ?>
 </div><!-- page -->
 <?php $this->renderPartial('_footer', array('groups' => $groups)); ?>

@@ -35,16 +35,19 @@ $this->pageTitle = Yii::app()->name . ' - Подбор подарка';
     <div style="width: 760px">
       <div style="margin-top: 20px">
         <?php
+        echo CHtml::beginForm('', 'post', array('id' => 'item-submit'));
+        echo CHtml::hiddenField('url', Yii::app()->request->url);
         $this->widget('zii.widgets.CListView', array(
           'dataProvider' => $product,
           'itemView' => '_item',
-          'template' => '{items}{pager}',
+          'template' => '{pager}{items}{pager}',
             )
         );
+        echo CHtml::endForm();
         ?>
       </div>
     </div>
   </div>
 </div>
 <?php $this->renderPartial('_footer', array('groups' => $groups)); ?>
-
+<?php $this->renderPartial('_addProductModal'); ?>

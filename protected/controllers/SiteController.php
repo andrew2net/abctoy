@@ -176,8 +176,10 @@ class SiteController extends Controller {
     );
     if (isset($_POST['currentPage']))
       $params['page'] = $_POST['currentPage'];
-    if (isset($_POST['currentGroup']))
-      $params['group'] = $_POST['currentGroup'];
+//    if (isset($_POST['currentCategory']))
+//      $params['currentCategory'] = $_POST['currentCategory'];
+    if (isset($_POST['url']))
+      $params['url'] = $_POST['url'];
 
     $this->render('product', $params);
   }

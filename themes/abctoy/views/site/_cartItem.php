@@ -31,7 +31,7 @@ else {
   </div>
   <div style="font-size: 12pt; margin: 0 40px; width: 200px">
     <div>
-      <a href="<?php echo $this->createUrl('product', array('id' => $product->product_id)); ?>">
+      <a class="item-link" href="<?php echo $this->createUrl('product', array('id' => $product->product_id)); ?>">
         <?php echo $product->product->name; ?>
       </a>
     </div>

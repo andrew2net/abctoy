@@ -34,6 +34,7 @@ $('#categoryOnly').change(function() {
 
 $('.addToCart').click(function(event) {
   event.preventDefault();
+  event.stopPropagation();
   var id = $(this).attr('product');
   var quantity = $('#ProductForm_quantity').val();
   if (!quantity)

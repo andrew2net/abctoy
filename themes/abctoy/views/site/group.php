@@ -36,6 +36,10 @@
       'class' => 'cufon green bold breadcrumbs',
     )
   ));
+  $currentGroup = $group;
+  while (!$currentGroup->isRoot())
+    $currentGroup = $currentGroup->getParent();
+  echo CHtml::hiddenField('currentGroup', $currentGroup->id);
   ?>
   <div class="inline-blocks">
     <div style="width: 180px; margin-right: 6px; float: left">
@@ -56,7 +60,8 @@
       Yii::import('application.modules.catalog.models.Product');
       Yii::import('application.modules.discount.models.Discount');
       echo CHtml::beginForm('', 'post', array('id' => 'item-submit'));
-      echo CHtml::hiddenField('currentGroup', $group->id); //, array('id' => 'currentGroup'));
+      echo CHtml::hiddenField('url', Yii::app()->request->url); //, array('id' => 'currentGroup'));
+//      echo CHtml::hiddenField('currentCategory', $group->id); //, array('id' => 'currentGroup'));
       if ($group->level < 3) {
         $discount_products = Product::model()->subCategory($group->id)
                 ->discountOrder()->findAll(array('limit' => 4, 'having' => 'percent>0'));
@@ -101,9 +106,6 @@
             'sorterHeader' => 'Сортировать:',
             'sortableAttributes' => array('price'),
             'htmlOptions' => array('style' => 'margin-top:30px'),
-            'viewData' => array(
-              'page' => $data->pagination->currentPage,
-            ),
               )
           );
         }

@@ -41,18 +41,11 @@
     </div>
     <div class="helper"></div>
     <div style="margin: 20px 0 20px 20px; height: 450px; vertical-align: top; line-height: 1.8; width: 470px">
-      <?php if (isset($page)) { ?>
-        <div style="text-align: right">
-          <?php
-          $url =$this->createUrl('group',array('id' => $group));
-          echo CHtml::link('Назад', $url, array(
-            'submit' => $url,
-            'params' => array('currentPage' => $page),
-          ));
-          ?>
-          <!--<a href="<?php echo $this->createUrl('group', array('id' => $group, 'page' => $page)); ?>">Назад</a>-->
-        </div>
-<?php } ?>
+      <div style="text-align: right">
+        <?php
+        echo CHtml::link('Назад', $url);
+        ?>
+      </div>
       <div class="cufon bold" style="font-size: 24pt; margin: 50px 0 20px"><?php echo $product->name; ?></div>
       <div>Артикул: <?php echo $product->article; ?></div>
       <div>Производитель: <?php echo $product->brand->name; ?></div>
@@ -94,6 +87,7 @@
     <div class="cufon bold gray" style="font-size: 24pt">Описание</div>
     <div style="margin: 20px 0 40px"><?php echo $product->description; ?></div>
   </div>
-<?php $this->endWidget(); ?>
+  <?php $this->endWidget(); ?>
 </div>
 <?php $this->renderPartial('_footer', array('groups' => $groups)); ?>
+<?php $this->renderPartial('_addProductModal'); ?>
