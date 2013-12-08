@@ -11,6 +11,7 @@ $cs->registerScriptFile('/js/jcarousel.skeleton.js', CClientScript::POS_END);
 $cs->registerScriptFile('/js/countdown.clock.js', CClientScript::POS_END);
 $cs->registerScriptFile('/js/moment.min.js', CClientScript::POS_HEAD);
 $cs->registerScriptFile('/js/slider.tooltip.js', CClientScript::POS_HEAD);
+$this->pageTitle = 'Детские товары и игрушки купить по низкой цене в интернет-магазине игрушек '.Yii::app()->name;
 
 $this->renderPartial('_topmenu');
 ?>
