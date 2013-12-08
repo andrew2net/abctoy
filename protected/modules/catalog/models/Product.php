@@ -380,7 +380,7 @@ class Product extends CActiveRecord {
     $this->discountOrder();
     $this->getDbCriteria()->mergeWith(
         array(
-          'having' => "dprice BETWEEN :min AND :max",
+          'having' => "dprice BETWEEN :min AND :max OR dprice>=:min AND :max=5000",
           'params' => array(':min' => $min, ':max' => $max),
     ));
     return $this;

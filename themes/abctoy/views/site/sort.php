@@ -35,15 +35,22 @@ $this->pageTitle = Yii::app()->name . ' - Подбор подарка';
     <div style="width: 760px">
       <div style="margin-top: 20px">
         <?php
-        echo CHtml::beginForm('', 'post', array('id' => 'item-submit'));
-        echo CHtml::hiddenField('url', Yii::app()->request->url);
-        $this->widget('zii.widgets.CListView', array(
-          'dataProvider' => $product,
-          'itemView' => '_item',
-          'template' => '{pager}{items}{pager}',
-            )
-        );
-        echo CHtml::endForm();
+        if ($product->getItemCount() > 0) {
+          echo CHtml::beginForm('', 'post', array('id' => 'item-submit'));
+          echo CHtml::hiddenField('url', Yii::app()->request->url);
+          $this->widget('zii.widgets.CListView', array(
+            'dataProvider' => $product,
+            'itemView' => '_item',
+            'template' => '{pager}{items}{pager}',
+              )
+          );
+          echo CHtml::endForm();
+        }
+        else {
+          ?>
+          <div class="cufon blue bold" style="font-size: 26pt; text-align: center;margin-top: 40px">По заданным параметрам товар не найден</div>
+          <?php
+        }
         ?>
       </div>
     </div>
