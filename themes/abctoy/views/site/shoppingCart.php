@@ -21,6 +21,11 @@
     <span class="cufon gray">Общая сумма заказа: </span>
     <span id="cart-summ" class="cufon red"></span>
   </div>
+  <div class="bold" style="font-size: 14pt">
+    <span class="cufon red">*</span>
+    <span class="cufon"> Минимальная сумма заказа </span>
+    <span class="cufon red">1500р.</span>
+  </div>
   <div class="cufon gray bold" style="font-size: 26pt; text-align: center; margin: 40px 0">Контактная информация</div>
   <div class="inline-blocks" style="font-size: 12pt">
     <div style="vertical-align: top; width: 290px">
@@ -162,5 +167,5 @@
   <div style="margin: 40px 0; text-align: center">
     <?php echo CHtml::submitButton('', array('id' => 'cart-submit')); ?>
   </div>
-  <?php $this->endWidget() ?>
+  <?php $this->endWidget(); ?>
 </div>

@@ -51,7 +51,7 @@ class SiteController extends Controller {
     $giftSelection = new GiftSelection;
     $groups = Category::model()->roots()->findAll();
 
-    $product = Product::model();//->discountOrder();
+    $product = Product::model(); //->discountOrder();
 //    $product_data = new CActiveDataProvider('Product'
 //        , array('criteria' => $product->getDbCriteria()));
 
@@ -138,7 +138,7 @@ class SiteController extends Controller {
     $group = Category::model()->findByPk($id);
     $searc = new Search;
     $giftSelection = new GiftSelection;
-    $product = Product::model();//->subCategory($id)->discountOrder();
+    $product = Product::model(); //->subCategory($id)->discountOrder();
 //    if ($group->level == 1)
 //      $product->recommended(12);
 //    $product_data = new CActiveDataProvider($product
@@ -329,10 +329,19 @@ class SiteController extends Controller {
         try {
           if (isset($_POST['Cart'])) {
             $count_product = 0;
-            foreach ($_POST['Cart'] as $q)
-              $count_product += $q['quantity'] > 0 ? $q['quantity'] : 0;
-            if ($count_product > 0) {
-
+            $summ = 0;
+            foreach ($_POST['Cart'] as $k => $q) {
+              $quantity = $q['quantity'] > 0 ? $q['quantity'] : 0;
+              $count_product += $quantity;
+              $product = Product::model()->findByPk($k);
+              $discount = $product->getActualDiscount();
+              if (is_array($discount))
+                $price = $discount['price'];
+              else
+                $price = $product->price;
+              $summ += $quantity * $price;
+            }
+            if ($summ >= 1500) {
               $delivery = CityDelivery::model()->with('city')->findByAttributes(array(
                 'delivery_id' => $_POST['Order']['delivery_id'])
                   , 'city.name=:city', array(':city' => $profile->city));
@@ -365,12 +374,13 @@ class SiteController extends Controller {
                     $order_product->save();
                   }
                 }
+
+              foreach ($cart as $item)
+                $item->delete();
+              $tr->commit();
+              $this->redirect('orderSent');
             }
-            foreach ($cart as $item)
-              $item->delete();
-            $tr->commit();
           }
-          $this->redirect('orderSent');
         } catch (Exception $e) {
           $tr->rollback();
           throw $e;

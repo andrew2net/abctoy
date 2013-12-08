@@ -359,7 +359,7 @@ class Product extends CActiveRecord {
   public function gender($id) {
     $this->getDbCriteria()->mergeWith(
         array(
-          'condition' => "t.gender_id=:id",
+          'condition' => "t.gender_id=:id OR t.gender_id=0",
           'params' => array(':id' => $id),
         )
     );

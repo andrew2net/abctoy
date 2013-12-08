@@ -59,7 +59,7 @@
       Yii::import('application.modules.discount.models.Discount');
       if ($group->level < 3) {
         $discount_products = Product::model()->subCategory($group->id)
-                ->discountOrder()->findAll(array('limit' => 4, 'having'=>'percent>0'));
+                ->discountOrder()->findAll(array('limit' => 4, 'having' => 'percent>0'));
         if (count($discount_products) > 1) {
           ?>
           <div class="inline-blocks">
@@ -77,7 +77,7 @@
             ?>
             <!--<div style="text-align: right; line-height: 3"><a class="red" href="#">Все товары со скидкой</a></div>-->
           </div>
-        <?php
+          <?php
         }
       }
       ?>
@@ -90,15 +90,19 @@
           $pagination = array('pageSize' => 12);
         $data = $product->searchCategory($group->id);
         $data->setPagination($pagination);
-        $this->widget('ListView', array(
-          'dataProvider' => $data,
-          'itemView' => '_item',
-          'template' => '{sorter}{pager}{items}{pager}',
-          'sorterHeader' => 'Сортировать:',
-          'sortableAttributes' => array('price'),
-          'htmlOptions' => array('style' => 'margin-top:30px'),
-            )
-        );
+        if ($data->getItemCount() > 0) {
+          $this->widget('ListView', array(
+            'dataProvider' => $data,
+            'itemView' => '_item',
+            'template' => '{sorter}{pager}{items}{pager}',
+            'sorterHeader' => 'Сортировать:',
+            'sortableAttributes' => array('price'),
+            'htmlOptions' => array('style' => 'margin-top:30px'),
+              )
+          );
+        }else { ?>
+      <div class="cufon blue bold" style="font-size: 26pt; text-align: center;margin-top: 40px">Товар отсутствуе</div>
+        <?php }
       }
       else {
         $this->renderPartial('_recommended', array(

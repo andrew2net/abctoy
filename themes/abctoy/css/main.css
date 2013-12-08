@@ -116,6 +116,9 @@ body
   color: #666666;
   line-height: 2;
 }
+.submenu .menu-category:hover, .submenu .menu-subcategory:hover{
+  text-decoration: underline;
+}
 .submenu .menu-category{
   font-size: 10pt;
   font-weight: bold;
