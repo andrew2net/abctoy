@@ -7,14 +7,14 @@
 ?>
 <div class="container" id="page" style="margin-top: 0">
   <?php $this->renderPartial('_shoppingCartTopBlock'); ?>
-  <div class="cufon gray bold" style="font-size: 28pt; margin-top: 20px">Ваша корзина</div>
+  <div class="cufon gray bold" style="font-size: 28pt; margin: 20px 0">Ваша корзина</div>
   <?php
   $form = $this->beginWidget('CActiveForm');
   ?>
   <div id="cart-items">
     <?php $this->renderPartial('_cartItems', array('cart' => $cart)); ?>
   </div>
-  <div class="bold" style="font-size: 14pt">
+  <div class="bold" style="font-size: 14pt; margin-top: 30px">
     <span class="cufon">Сумма скидки </span><span id="cart-discount" class="cufon"></span>
   </div>
   <div class="bold" style="font-size: 26pt">
