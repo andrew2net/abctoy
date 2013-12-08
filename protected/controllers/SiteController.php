@@ -138,7 +138,7 @@ class SiteController extends Controller {
     $group = Category::model()->findByPk($id);
     $searc = new Search;
     $giftSelection = new GiftSelection;
-    $product = Product::model(); 
+    $product = Product::model();
 
     $params = array(
       'product' => $product,
@@ -333,22 +333,23 @@ class SiteController extends Controller {
       $profile->attributes = $_POST['CustomerProfile'];
       if ($profile->save()) {
         $tr = $order->dbConnection->beginTransaction();
-        try {
-          if (isset($_POST['Cart'])) {
-            $count_product = 0;
-            $summ = 0;
-            foreach ($_POST['Cart'] as $k => $q) {
-              $quantity = $q['quantity'] > 0 ? $q['quantity'] : 0;
-              $count_product += $quantity;
-              $product = Product::model()->findByPk($k);
-              $discount = $product->getActualDiscount();
-              if (is_array($discount))
-                $price = $discount['price'];
-              else
-                $price = $product->price;
-              $summ += $quantity * $price;
-            }
-            if ($summ >= 1500) {
+        if (isset($_POST['Cart'])) {
+          $count_product = 0;
+          $summ = 0;
+          foreach ($_POST['Cart'] as $k => $q) {
+            $quantity = $q['quantity'] > 0 ? $q['quantity'] : 0;
+            $count_product += $quantity;
+            $product = Product::model()->findByPk($k);
+            $discount = $product->getActualDiscount();
+            if (is_array($discount))
+              $price = $discount['price'];
+            else
+              $price = $product->price;
+            $summ += $quantity * $price;
+          }
+          $fl = FALSE;
+          if ($summ >= 1500) {
+            try {
               $delivery = CityDelivery::model()->with('city')->findByAttributes(array(
                 'delivery_id' => $_POST['Order']['delivery_id'])
                   , 'city.name=:city', array(':city' => $profile->city));
@@ -385,12 +386,37 @@ class SiteController extends Controller {
               foreach ($cart as $item)
                 $item->delete();
               $tr->commit();
-              $this->redirect('orderSent');
+
+              $message = new YiiMailMessage('Ваш заказ');
+              $message->view = 'confirmOrder';
+              $params = array(
+                'profile' => $profile,
+                'order' => $order,
+              );
+              $message->setBody($params, 'text/html');
+              $message->setFrom(Yii::app()->params['infoEmail']);
+              $message->setTo(array($profile->email=>$profile->fio));
+              Yii::app()->mail->send($message);
+
+              $message = new YiiMailMessage('Оповещение о заказе');
+              $message->view = 'notifyOrder';
+              $params = array(
+                'profile' => $profile,
+                'order' => $order,
+              );
+              $message->setBody($params, 'text/html');
+              $message->setFrom(Yii::app()->params['infoEmail']);
+              $message->setTo(array(Yii::app()->params['adminEmail']));
+              Yii::app()->mail->send($message);
+
+              $fl = TRUE;
+            } catch (Exception $e) {
+              $tr->rollback();
+              throw $e;
             }
+            if ($fl)
+              $this->redirect('orderSent');
           }
-        } catch (Exception $e) {
-          $tr->rollback();
-          throw $e;
         }
       }
     }

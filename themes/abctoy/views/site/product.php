@@ -43,7 +43,8 @@
     <div style="margin: 20px 0 20px 20px; height: 450px; vertical-align: top; line-height: 1.8; width: 470px">
       <div style="text-align: right">
         <?php
-        echo CHtml::link('Назад', $url);
+        if (isset($url))
+          echo CHtml::link('Назад', $url);
         ?>
       </div>
       <div class="cufon bold" style="font-size: 24pt; margin: 50px 0 20px"><?php echo $product->name; ?></div>
