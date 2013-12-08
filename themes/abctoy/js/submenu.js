@@ -97,6 +97,13 @@ $('.submit').click(function() {
   $('form').submit();
 });
 
+$('#item-submit').on('click', '.item-link', function(event) {
+  event.preventDefault();
+  var action = this.pathname;
+  $('#item-submit').attr('action', action);
+  $('#item-submit').submit();
+});
+
 function calcSumm() {
   var cartSumm = 0;
   var discountSumm = 0;

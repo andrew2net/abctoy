@@ -19,7 +19,7 @@
     </a>
   </div>
   <div class="table-cell bold" style="width: 19%">
-    <a href="/contact">
+    <!--<a href="/contact">-->
       <div class="cufon lager" style="padding-bottom: 0.4em">Телефон для справок</div>
       <div class="cufon x-lage" style="padding-bottom: 0.2em">
         <span class="red">(383)</span><span class="blue"> 375</span><span>-</span><span class="green">03</span><span>-</span><span class="yellow">22</span>
@@ -29,6 +29,6 @@
       </div>
       <div class="gray lager">г. Новосибирск</div>
       <!--<div><a href="#" class="gray uderline-dashed">я в другом городе</a></div>-->
-    </a>  
+    <!--</a>-->  
   </div>
 </div>

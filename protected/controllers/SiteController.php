@@ -138,20 +138,19 @@ class SiteController extends Controller {
     $group = Category::model()->findByPk($id);
     $searc = new Search;
     $giftSelection = new GiftSelection;
-    $product = Product::model(); //->subCategory($id)->discountOrder();
-//    if ($group->level == 1)
-//      $product->recommended(12);
-//    $product_data = new CActiveDataProvider($product
-//        'Product'
-//        , array('criteria' => $product->getDbCriteria()));
+    $product = Product::model(); 
 
-    $this->render('group', array(
+    $params = array(
       'product' => $product,
       'search' => $searc,
       'giftSelection' => $giftSelection,
       'groups' => $groups,
       'group' => $group,
-    ));
+    );
+    if (isset($_POST['currentPage']))
+      $params['page'] = $_POST['currentPage'];
+
+    $this->render('group', $params);
   }
 
   public function actionProduct($id) {
@@ -168,12 +167,19 @@ class SiteController extends Controller {
       $this->addToCart($_GET['id'], $_POST['ProductForm']['quantity']);
       $this->redirect('/cart');
     }
-    $this->render('product', array(
+
+    $params = array(
       'search' => $search,
       'groups' => $groups,
       'product' => $product,
       'productForm' => $productForm,
-    ));
+    );
+    if (isset($_POST['currentPage']))
+      $params['page'] = $_POST['currentPage'];
+    if (isset($_POST['currentGroup']))
+      $params['group'] = $_POST['currentGroup'];
+
+    $this->render('product', $params);
   }
 
   public function actionSort() {
@@ -191,7 +197,6 @@ class SiteController extends Controller {
       $giftSelection->attributes = $_GET['GiftSelection'];
     }
 
-//    $product->discountOrder();
     $product_data = new CActiveDataProvider($product
         , array('pagination' => array('pageSize' => 20),
     ));

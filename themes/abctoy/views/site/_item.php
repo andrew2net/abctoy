@@ -1,5 +1,5 @@
 <?php
-/* @var $data Product */
+/* @var $data CActiveDataProvider */
 ?>
 <?php
 $discount = $data->getActualDiscount();
@@ -23,15 +23,17 @@ else {
   $item = 'green-item';
   $button = 'green-item-bt';
 }
+$href_params = array('id' => $data->id);
 ?>
+<?php if (isset($index) && $index == 0) echo CHtml::hiddenField('currentPage', $widget->dataProvider->getPagination()->getCurrentPage()); ?>
 <div class="helper"></div>
 <div class="item" title="<?php echo$data->name; ?>">
-  <a href="<?php echo $this->createUrl('product', array('id'=>$data->id)); ?>">
+  <a <?php echo isset($index) ? 'class="item-link" page="' . $page . '"' : ''; ?> href="<?php echo $this->createUrl('product', $href_params); ?>">
     <div class="<?php echo $item; ?>">
       <div class="<?php echo empty($percent) ? '' : 'discount-label'; ?>"><?php echo $percent; ?></div>
       <!--<div class="<?php echo $glass; ?>"></div>-->
       <div class="item-img"><img src="<?php echo $data->small_img; ?>"></div>
-      <div class="item-name"><?php echo mb_strlen($data->name, 'utf-8')>30 ? mb_substr($data->name, 0, 25, 'utf-8') . '...' : $data->name; ?></div>
+      <div class="item-name"><?php echo mb_strlen($data->name, 'utf-8') > 30 ? mb_substr($data->name, 0, 25, 'utf-8') . '...' : $data->name; ?></div>
       <div class="item-rest <?php echo $remainder_class; ?>"><?php echo $remainder; ?></div>
       <div class="item-disc"><?php echo $old_price; ?></div>
       <div class="cufon item-price"><?php echo $price; ?>.-</div>

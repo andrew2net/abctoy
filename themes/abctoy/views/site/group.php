@@ -34,10 +34,8 @@
     'separator' => ' / ',
     'htmlOptions' => array(
       'class' => 'cufon green bold breadcrumbs',
-//      'style' => 'font-size: 16pt; margin: 20px 0; text-decoration: none'
     )
   ));
-  echo CHtml::hiddenField('currentGroup', $group->id, array('id' => 'currentGroup'));
   ?>
   <div class="inline-blocks">
     <div style="width: 180px; margin-right: 6px; float: left">
@@ -57,6 +55,8 @@
       Yii::import('application.modules.catalog.models.Brand');
       Yii::import('application.modules.catalog.models.Product');
       Yii::import('application.modules.discount.models.Discount');
+      echo CHtml::beginForm('', 'post', array('id' => 'item-submit'));
+      echo CHtml::hiddenField('currentGroup', $group->id); //, array('id' => 'currentGroup'));
       if ($group->level < 3) {
         $discount_products = Product::model()->subCategory($group->id)
                 ->discountOrder()->findAll(array('limit' => 4, 'having' => 'percent>0'));
@@ -84,25 +84,34 @@
 
       <?php
       if ($group->level > 1) {
+        $pagination = array();
+        if (isset($page))
+          $pagination['currentPage'] = $page;
         if ($group->level > 2)
-          $pagination = array('pageSize' => 16);
+          $pagination['pageSize'] = 16;
         else
-          $pagination = array('pageSize' => 12);
+          $pagination['pageSize'] = 12;
         $data = $product->searchCategory($group->id);
         $data->setPagination($pagination);
         if ($data->getItemCount() > 0) {
-          $this->widget('ListView', array(
+          $widget = $this->widget('ListView', array(
             'dataProvider' => $data,
             'itemView' => '_item',
             'template' => '{sorter}{pager}{items}{pager}',
             'sorterHeader' => 'Сортировать:',
             'sortableAttributes' => array('price'),
             'htmlOptions' => array('style' => 'margin-top:30px'),
+            'viewData' => array(
+              'page' => $data->pagination->currentPage,
+            ),
               )
           );
-        }else { ?>
-      <div class="cufon blue bold" style="font-size: 26pt; text-align: center;margin-top: 40px">Товар отсутствуе</div>
-        <?php }
+        }
+        else {
+          ?>
+          <div class="cufon blue bold" style="font-size: 26pt; text-align: center;margin-top: 40px">Товар отсутствуе</div>
+          <?php
+        }
       }
       else {
         $this->renderPartial('_recommended', array(
@@ -110,7 +119,7 @@
           'product' => $product,));
       }
       ?>
-
+      <?php echo CHtml::endForm(); ?>
     </div>
 
   </div>
