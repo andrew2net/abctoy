@@ -1,3 +1,4 @@
+<?php $this->pageTitle = Yii::app()->name . ' - Заказ отправлен'; ?>
 <div class="container" id="page" style="margin-top: 0">
   <?php $this->renderPartial('_shoppingCartTopBlock'); ?>
   <div class="cufon gray bold" style="font-size: 26pt; margin-top: 30px">Ваша заказ отправлен на обработку менеджеру.</div>

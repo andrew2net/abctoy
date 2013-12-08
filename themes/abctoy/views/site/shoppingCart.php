@@ -4,6 +4,7 @@
 /* @var $order Order */
 /* @var $delivery array */
 /* @var $payment Payment */
+$this->pageTitle = Yii::app()->name . ' - Корзина';
 ?>
 <div class="container" id="page" style="margin-top: 0">
   <?php $this->renderPartial('_shoppingCartTopBlock'); ?>

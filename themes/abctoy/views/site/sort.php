@@ -8,7 +8,7 @@
 $cs = Yii::app()->getClientScript();
 $cs->registerScriptFile('/js/slider.tooltip.js', CClientScript::POS_HEAD);
 
-$this->pageTitle = Yii::app()->name . ' - Подбор подарка';
+$this->pageTitle = Yii::app()->name . ' - Подбор товара';
 ?>
 <?php $this->renderPartial('_topmenu'); ?>
 
