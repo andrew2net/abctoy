@@ -23,7 +23,7 @@
               <div><a href="/deliver">Доставка</a></div>
               <div><a href="/payment">Оплата</a></div>
               <div><a href="/guarantee">Гарантии и обмен</a></div>
-              <div><a href="/faq">FAQ</a></div>
+              <div><a href="/faq">Где лучше покупать игрушки?</a></div>
               <!--<div><a href="/contact">Контакты</a></div>-->
               <!--<div><a href="#">Наши преимущества</a></div>-->
             </div>

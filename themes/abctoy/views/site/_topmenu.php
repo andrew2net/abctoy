@@ -7,7 +7,7 @@
         array('label' => 'Доставка', 'url' => array('/deliver')),
         array('label' => 'Оплата', 'url' => array('/payment')),
         array('label' => 'Гарантии и обмен', 'url' => array('/guarantee')),
-        array('label' => 'FAQ', 'url' => array('/faq')),
+        array('label' => 'Где лучше покупать игрушки?', 'url' => array('/faq')),
         array(
           'label' => $this->cartLabel(),
           'url' => array('/cart'),
