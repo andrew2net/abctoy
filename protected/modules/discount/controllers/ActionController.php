@@ -95,7 +95,7 @@ class ActionController extends Controller {
       if ($model->save()) {
         if ($model->type_id == 1) {
           Yii::import('application.modules.catalog.models.Product');
-          $pos = strripos($_POST['product'], ',');
+          $pos = strpos($_POST['product'], ',');
           if ($pos)
             $article = substr($_POST['product'], 0, $pos);
           else
