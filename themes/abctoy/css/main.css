@@ -111,10 +111,14 @@ body
   min-height: 300px;
   vertical-align: top;
 }
+.submenu > div > div {
+  margin-bottom: 0.6em;
+}
+
 .submenu .menu-category, .submenu .menu-subcategory{
   text-decoration: none;
   color: #666666;
-  line-height: 2;
+  /*line-height: 2;*/
 }
 .submenu .menu-category:hover, .submenu .menu-subcategory:hover{
   text-decoration: underline;
