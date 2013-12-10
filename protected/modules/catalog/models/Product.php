@@ -306,6 +306,14 @@ class Product extends CActiveRecord {
     ));
   }
 
+  public function brandFilter($id) {
+    $this->getDbCriteria()->mergeWith(array(
+      'condition' => 'brand_id=:id',
+      'params' => array(':id' => $id),
+    ));
+    return $this;
+  }
+
   public function recommended($limit = NULL) {
     if (!is_null($limit))
       $this->getDbCriteria()->mergeWith(array(

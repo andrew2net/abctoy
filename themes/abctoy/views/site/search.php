@@ -2,6 +2,7 @@
 /* @var $product CActiveDataProvider */
 /* @var $groups[] Category */
 /* @var $search Search */
+/* @var $brand Brand */
 ?>
 <?php $this->pageTitle = Yii::app()->name . ' - Поиск: ' . $search->text; ?>
 <?php $this->renderPartial('_topmenu'); ?>
@@ -15,8 +16,20 @@
   ));
   ?>
   <div style="margin: 20px 0">
-    <span class="cufon green bold" style="font-size: 18pt">Вы искали: </span>
-    <span class="cufon" style="font-size: 18pt"><?php echo $search->text; ?></span>
+    <?php
+    if (isset($brand)) {
+      $notfind = 'Товар отсутствуе';
+      ?>
+      <span class="cufon green bold" style="font-size: 18pt">Бренд: </span>
+      <span class="cufon" style="font-size: 18pt"><?php echo $brand->name; ?></span>
+      <?php
+    }
+    else {
+      $notfind = 'По вашему запросу товар не найден';
+      ?>
+      <span class="cufon green bold" style="font-size: 18pt">Вы искали: </span>
+      <span class="cufon" style="font-size: 18pt"><?php echo $search->text; ?></span>
+    <?php } ?>
   </div>
   <div class="inline-blocks">
     <div style="width: 180px; margin-right: 6px; float: left">
@@ -32,18 +45,19 @@
       <div style="margin-top: 20px">
         <?php
         if ($product->getItemCount() > 0) {
-        echo CHtml::beginForm('', 'post', array('id' => 'item-submit'));
-        echo CHtml::hiddenField('url', Yii::app()->request->url);
-        $this->widget('zii.widgets.CListView', array(
-          'dataProvider' => $product,
-          'itemView' => '_item',
-          'template' => '{pager}{items}{pager}',
-            )
-        );
-        echo CHtml::endForm();
-        }else {
+          echo CHtml::beginForm('', 'post', array('id' => 'item-submit'));
+          echo CHtml::hiddenField('url', Yii::app()->request->url);
+          $this->widget('zii.widgets.CListView', array(
+            'dataProvider' => $product,
+            'itemView' => '_item',
+            'template' => '{pager}{items}{pager}',
+              )
+          );
+          echo CHtml::endForm();
+        }
+        else {
           ?>
-          <div class="cufon blue bold" style="font-size: 26pt; text-align: center;margin-top: 40px">По вашему запросу товар не найден</div>
+          <div class="cufon blue bold" style="font-size: 26pt; text-align: center;margin-top: 40px"><?php echo $notfind; ?></div>
           <?php
         }
         ?>
