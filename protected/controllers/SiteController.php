@@ -486,7 +486,10 @@ class SiteController extends Controller {
               $tr->rollback();
               throw $e;
             }
+<<<<<<< HEAD
             if ($fl) {
+=======
+>>>>>>> 
               if (Yii::app()->user->isGuest) {
                 $user = User::model()->findByAttributes(array(
                   'username' => $profile->email));
@@ -503,6 +506,9 @@ class SiteController extends Controller {
                     Yii::app()->user->login($identity, 3600 * 24 * 7);
                   }
                 }
+<<<<<<< HEAD
+=======
+>>>>>>> 
               }
               $this->redirect('orderSent');
             }
