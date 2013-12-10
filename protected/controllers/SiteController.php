@@ -487,6 +487,23 @@ class SiteController extends Controller {
               throw $e;
             }
             if ($fl) {
+              if (Yii::app()->user->isGuest) {
+                $user = User::model()->findByAttributes(array(
+                  'username' => $profile->email));
+                if (is_null($user)) {
+                  $user = new User;
+                  $user->username = $profile->email;
+                  $soucePassword = $this->generate_password();
+                  $user->password = UserModule::encrypting($soucePassword);
+                  $user->superuser = 0;
+                  $user->status = User::STATUS_ACTIVE;
+                  if ($user->save()) {
+                    $identity = new UserIdentity($model->username, $soucePassword);
+                    $identity->authenticate();
+                    Yii::app()->user->login($identity, 3600 * 24 * 7);
+                  }
+                }
+              }
               $this->redirect('orderSent');
             }
           }
