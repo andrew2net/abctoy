@@ -486,10 +486,7 @@ class SiteController extends Controller {
               $tr->rollback();
               throw $e;
             }
-<<<<<<< HEAD
             if ($fl) {
-=======
->>>>>>> 
               if (Yii::app()->user->isGuest) {
                 $user = User::model()->findByAttributes(array(
                   'username' => $profile->email));
@@ -506,12 +503,11 @@ class SiteController extends Controller {
                     Yii::app()->user->login($identity, 3600 * 24 * 7);
                   }
                 }
-<<<<<<< HEAD
-=======
->>>>>>> 
               }
               $this->redirect('orderSent');
             }
+              }
+            $this->redirect('orderSent');
           }
         }
       }
@@ -615,6 +611,7 @@ class SiteController extends Controller {
     $this->render('orderSent');
   }
 
+<<<<<<< HEAD
   public function actionCoupon() {
     if (isset($_GET['coupon'])) {
       Yii::import('application.modules.discount.models.Coupon');
@@ -627,6 +624,20 @@ class SiteController extends Controller {
       echo json_encode($data);
     }
     Yii::app()->end();
+=======
+  private function generate_password($length = '') {
+    $str = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_0123456789';
+    $max = strlen($str);
+    $length = @round($length);
+    if (empty($length)) {
+      $length = rand(8, 12);
+    }
+    $password = '';
+    for ($i = 0; $i < $length; $i++) {
+      $password.=$str{rand(0, $max - 1)};
+    }
+    return $password;
+>>>>>>> 
   }
 
 }
