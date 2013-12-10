@@ -516,18 +516,4 @@ class SiteController extends Controller {
     $this->render('orderSent');
   }
 
-  private function generate_password($length = '') {
-    $str = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_0123456789';
-    $max = strlen($str);
-    $length = @round($length);
-    if (empty($length)) {
-      $length = rand(8, 12);
-    }
-    $password = '';
-    for ($i = 0; $i < $length; $i++) {
-      $password.=$str{rand(0, $max - 1)};
-    }
-    return $password;
-  }
-
 }
