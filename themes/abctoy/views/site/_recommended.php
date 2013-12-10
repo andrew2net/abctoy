@@ -21,11 +21,11 @@
 <div style="margin-bottom: 30px">
   <?php
   if (isset($group)) {
-    $product->subCategory($group->id)->discountOrder();
+    $product->availableOnly()->subCategory($group->id)->discountOrder();
     $products = $product->findAll(array('limit' => 12));
   }
   else
-    $products = $product->discountOrder()->findAll(array('limit' => 15));
+    $products = $product->availableOnly()->discountOrder()->findAll(array('limit' => 15));
   foreach ($products as $value) {
     ?>
     <div style="float: left">

@@ -1,7 +1,7 @@
 <?php
 Yii::import('application.modules.catalog.models.Top10');
 Yii::import('application.modules.catalog.models.Product');
-$top10 = Product::model()->top()->findAll();
+$top10 = Product::model()->availableOnly()->top()->findAll();
 if (count($top10)){
 ?>
 

@@ -63,7 +63,7 @@
       echo CHtml::hiddenField('url', Yii::app()->request->url); //, array('id' => 'currentGroup'));
 //      echo CHtml::hiddenField('currentCategory', $group->id); //, array('id' => 'currentGroup'));
       if ($group->level < 3) {
-        $discount_products = Product::model()->subCategory($group->id)
+        $discount_products = Product::model()->subCategory($group->id)->availableOnly()
                 ->discountOrder()->findAll(array('limit' => 4, 'having' => 'percent>0'));
         if (count($discount_products) > 1) {
           ?>

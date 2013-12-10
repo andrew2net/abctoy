@@ -218,12 +218,15 @@ class Discount extends CActiveRecord {
         'condition' => "type_id=0 AND actual=1 AND (begin_date<='" . $date .
         "' OR begin_date='0000-00-00') AND (end_date>='" . $date .
         "' OR end_date='0000-00-00')",
-        'with' => array('product'),
+        'with' => array(
+          'product' 
+          ),
         'with' => array(
           'category' => array(
             'with' => 'product',
           ),
         ),
+        'together' => TRUE,
       ),
     ));
   }

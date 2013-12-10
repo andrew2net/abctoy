@@ -271,7 +271,7 @@ class Product extends CActiveRecord {
         ),
         'condition' => "show_me=1",
       ),
-      'availableOnly' => array('condition' => "remainder>0",),
+      'availableOnly' => array('condition' => "remainder>0 AND remainder IS NOT NULL",),
       'discountOrder' => array(
         'with' => array(
           'category' => array(
@@ -317,7 +317,7 @@ class Product extends CActiveRecord {
   }
 
   public function searchCategory($id) {
-    $this->subCategory($id)->discountOrder();
+    $this->availableOnly()->subCategory($id)->discountOrder();
     return new CActiveDataProvider($this, array(
       'criteria' => $this->searchCriteria(),
 //      'pagination' => array('pageSize' => 12),
