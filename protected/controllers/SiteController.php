@@ -395,7 +395,7 @@ class SiteController extends Controller {
               );
               $message->setBody($params, 'text/html');
               $message->setFrom(Yii::app()->params['infoEmail']);
-              $message->setTo(array($profile->email=>$profile->fio));
+              $message->setTo(array($profile->email => $profile->fio));
               Yii::app()->mail->send($message);
 
               $message = new YiiMailMessage('Оповещение о заказе');
@@ -414,8 +414,27 @@ class SiteController extends Controller {
               $tr->rollback();
               throw $e;
             }
-            if ($fl)
+            if ($fl) {
+//              if (Yii::app()->user->isGuest) {
+//                $user = User::model()->findByAttributes(array(
+//                  'username' => $profile->email));
+//                if (is_null($user)) {
+//                  $user = new User;
+//                  $user->username = $profile->email;
+//                  $soucePassword = $this->generate_password();
+//                  $user->password = UserModule::encrypting($soucePassword);
+//                  $user->superuser = 0;
+//                  $user->status = User::STATUS_ACTIVE;
+//                  if ($user->save()) {
+//                    $identity = new UserIdentity($model->username, $soucePassword);
+//                    $identity->authenticate();
+//                    Yii::app()->user->login($identity, 3600 * 24 * 7);
+//                  }
+//                }
+//                
+//              }
               $this->redirect('orderSent');
+            }
           }
         }
       }
@@ -513,6 +532,20 @@ class SiteController extends Controller {
 
   public function actionOrderSent() {
     $this->render('orderSent');
+  }
+
+  private function generate_password($length = '') {
+    $str = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_0123456789';
+    $max = strlen($str);
+    $length = @round($length);
+    if (empty($length)) {
+      $length = rand(8, 12);
+    }
+    $password = '';
+    for ($i = 0; $i < $length; $i++) {
+      $password.=$str{rand(0, $max - 1)};
+    }
+    return $password;
   }
 
 }

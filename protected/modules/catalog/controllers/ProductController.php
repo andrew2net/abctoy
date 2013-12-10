@@ -86,14 +86,14 @@ class ProductController extends Controller {
           if ($model->isNewRecord)
             if (!$model->save())
               return;
+          if (strlen($old_img) > 0 && file_exists($old_file))
+            unlink($old_file);
           $ext = substr($_POST['Product'][$img], strrpos($_POST['Product'][$img], '.'));
           $img_name = $model->id . ($img == 'img' ? '' : 's') . $ext;
           $file_name = Yii::getPathOfAlias('webroot') . '/productimages/' . $img_name;
           rename(Yii::getPathOfAlias('webroot') . $_POST['Product'][$img], $file_name);
         }
       }
-      if (strlen($old_img) > 0 && file_exists($old_file))
-        unlink($old_file);
       if (isset($file_name))
         $model->$img = '/productimages/' . basename($file_name);
       else
