@@ -4,7 +4,10 @@
 /* @var $search Search */
 /* @var $brand Brand */
 ?>
-<?php $this->pageTitle = Yii::app()->name . ' - Поиск: ' . $search->text; ?>
+<?php
+$title = (isset($brand) ? ' - Бренд: ' . $brand->name : ' - Поиск: ' . $search->text);
+$this->pageTitle = Yii::app()->name . $title;
+?>
 <?php $this->renderPartial('_topmenu'); ?>
 
 <div class="container" id="page">
