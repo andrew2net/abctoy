@@ -10,12 +10,23 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
   <?php $this->renderPartial('_shoppingCartTopBlock'); ?>
   <div class="cufon gray bold" style="font-size: 28pt; margin: 20px 0">Ваша корзина</div>
   <?php
-  $form = $this->beginWidget('CActiveForm', array('id'=>'item-submit'));
+  $form = $this->beginWidget('CActiveForm', array('id' => 'item-submit'));
   ?>
   <div id="cart-items">
     <?php $this->renderPartial('_cartItems', array('cart' => $cart)); ?>
   </div>
-  <div class="bold" style="font-size: 14pt; margin-top: 30px">
+  <div style="font-size: 18pt; margin: 30px 0 10px">
+    <span class="cufon">КУПОН </span><?php
+    echo CHtml::textField('coupon', '', array(
+      'maxlength' => 8,
+      'style' => 'width:5em; padding: 0 7px 0 5px; font-size: 16pt; border:1px dashed #BBB;border-radius:3px',
+      'type_id' => '',
+      'discount' => '',
+    ));
+    ?>
+    <span id="discount-text" style="font-size: small"></span>
+  </div>
+  <div class="bold" style="font-size: 14pt">
     <span class="cufon">Сумма скидки </span><span id="cart-discount" class="cufon"></span>
   </div>
   <div class="bold" style="font-size: 26pt">

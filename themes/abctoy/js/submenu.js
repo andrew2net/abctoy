@@ -153,6 +153,31 @@ $('#cart-city').typing({
   delay: 2000
 });
 
+$('#coupon').typing({
+  start: function(event, $elem) {
+  },
+  stop: function(event, $elem) {
+    var code = $elem.val();
+    $elem.attr('type_id', '');
+    $elem.attr('discount', '');
+    if (code.length == 6) {
+      $.get('/coupon', {
+        coupon: code
+      }, function(data) {
+        var discount = JSON.parse(data);
+        $elem.attr('type_id', discount.type.toString());
+        $elem.attr('discount', discount.discount.toString());
+        $('#discount-text').html('Скидка ' + discount.discount.toString());
+      });
+    } else if (code.length > 0)
+      $('#discount-text').html('Неверный код купона');
+    else
+      $('#discount-text').html('');
+    calcSumm();
+  },
+  delay: 500
+});
+
 calcSumm();
 
 $('#cart-delivery').on('change', 'input[name="Order[delivery_id]"]', function() {

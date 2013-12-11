@@ -544,4 +544,12 @@ class SiteController extends Controller {
     $this->render('orderSent');
   }
 
+  public function actionCoupon() {
+    if (isset($_GET)) {
+      $data = array('type' => 0, 'discount' => 10);
+      echo json_encode($data);
+    }
+    Yii::app()->end();
+  }
+
 }
