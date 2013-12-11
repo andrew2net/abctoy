@@ -60,11 +60,11 @@
         <div><?php
           echo CHtml::activeNumberField($productForm, 'quantity'
               , array(
-            'style' => 'width: 1.6em; font-size: 12pt; margin: 0 5px 0 1em',
+            'style' => 'width: 2em; font-size: 12pt; margin: 0 5px 0 1em',
             'class' => 'input-number cart-quantity',
-            'max' => 9,
+            'max' => 99,
             'min' => 0,
-            'maxlength' => 1,
+            'maxlength' => 2,
           ));
           ?>
           <span style="position: relative; bottom: -5px">шт.</span>

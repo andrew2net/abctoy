@@ -85,8 +85,15 @@ $(document).on('click', '.cart-item-del', function() {
 
 var cartQuantity;
 $(document).on('keyup', '.cart-quantity', function(event) {
-  if (parseInt(this.value) > 9)
-    this.value = cartQuantity;
+  if (this.value.length > 0) {
+    var value = parseInt(this.value);
+    if (value > 99)
+      this.value = cartQuantity;
+    else
+      this.value = value;
+  }
+  else
+    this.value = 0;
   calcSumm();
 });
 
