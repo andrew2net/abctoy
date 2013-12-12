@@ -8,7 +8,7 @@
     <div><a href="/payment"><div class="icon-payment" style="position: relative; top: -15px"></div></a></div>
     <div style="position: relative; top: -15px; font-size: 14pt; width: 200px">Удобные способы оплаты</div>
     <div><a href="/guarantee"><div class="icon-guarantee" style="position: relative; top: -15px"></div></a></div>
-    <div style="position: relative; top: -15px; font-size: 14pt; width: 200px">Гарантия на товар в течении года</div>
+    <div style="position: relative; top: -15px; font-size: 14pt; width: 200px">Гарантия на товар в течение года</div>
   </div>
 </div>
 <div style="text-align: right; position: relative; height: 2em; line-height: 2; margin-bottom: 10px">
