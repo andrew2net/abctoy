@@ -226,7 +226,7 @@ class ProductController extends Controller {
       foreach ($_POST['data'] as $value) {
         $data = str_getcsv($value, ';');
         $count = count($data);
-        if ($count != 13 && $count != 6) {
+        if ($count != 13 && $count != 6 && $count != 8) {
           echo mb_substr($data[0], 0, 50, 'utf-8');
           Yii::app()->end();
         }
