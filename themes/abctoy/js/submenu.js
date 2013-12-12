@@ -32,7 +32,7 @@ $('#categoryOnly').change(function() {
     $('#GiftCategory').val('');
 });
 
-$('.addToCart').click(function(event) {
+$(document).on('click','.addToCart', function(event) {
   event.preventDefault();
   event.stopPropagation();
   var id = $(this).attr('product');
@@ -105,7 +105,7 @@ $('.submit').click(function() {
   $('form').submit();
 });
 
-$('#item-submit').on('click', '.item-link', function(event) {
+$(document).on('click', '.item-link', function(event) {
   event.preventDefault();
   var action = this.pathname;
   $('#item-submit').attr('action', action);
@@ -114,17 +114,54 @@ $('#item-submit').on('click', '.item-link', function(event) {
 
 function calcSumm() {
   var cartSumm = 0;
+  var cartSummNoDisc = 0;
   var discountSumm = 0;
   $('.cart-quantity').each(function() {
     var price = $(this).attr('price');
     var quantity = parseInt(this.value);
+    if (isNaN(quantity))
+      quantity = 0;
     cartSumm += quantity * price;
-    discountSumm += $(this).attr('disc') * quantity;
+    var disc = $(this).attr('disc');
+    if (disc > 0)
+      discountSumm += disc * quantity;
+    else
+      cartSummNoDisc += quantity * price;
   });
   if (isNaN(cartSumm))
     cartSumm = 0;
+
+  var discountType = $('#coupon').attr('type_id');
+  if (discountType !== undefined && discountType.length > 0) {
+    if (cartSummNoDisc === 0)
+      $('#discount-text').html('Скидка по купону распространяется только товары без скидки.');
+    else {
+      var discountText = 'Скидка ';
+      var discountDisc = $('#coupon').attr('discount');
+      var discNum = parseFloat(discountDisc);
+      switch (discountType) {
+        case '0':
+          var couponDisc = cartSummNoDisc > discNum ? discNum : cartSummNoDisc;
+          discountSumm += couponDisc;
+          cartSumm -= couponDisc;
+          discountText += discountDisc + ' руб.';
+          $('#discount-text').html(discountText);
+          break;
+        case '1':
+          var couponDisc = cartSummNoDisc * discNum / 100;
+          discountSumm += couponDisc;
+          cartSumm -= couponDisc;
+          discountText += discountDisc + ' %';
+          $('#discount-text').html(discountText);
+          break;
+      }
+    }
+  }
+
   $('#cart-summ').html(cartSumm.formatMoney());
+  $('#cart-summ').attr('summ', cartSumm);
   $('#cart-discount').html(discountSumm.formatMoney());
+  $('#cart-discount').attr('summ', discountSumm);
   var priceDelivery = parseFloat($('input:checked + .cart-radio > span').attr('price'));
   if (!isNaN(priceDelivery)) {
     var price_f = priceDelivery.formatMoney();
@@ -158,24 +195,32 @@ $('#coupon').typing({
   },
   stop: function(event, $elem) {
     var code = $elem.val();
+    var err = 'Неверный код купона';
     $elem.attr('type_id', '');
     $elem.attr('discount', '');
-    if (code.length == 6) {
+    if (code.length === 6) {
       $.get('/coupon', {
         coupon: code
       }, function(data) {
-        var discount = JSON.parse(data);
-        $elem.attr('type_id', discount.type.toString());
-        $elem.attr('discount', discount.discount.toString());
-        $('#discount-text').html('Скидка ' + discount.discount.toString());
+        var discount = JSON && JSON.parse(data) || $.parseJSON(data);
+        var coupon = $('#coupon');
+        if (discount.type === 3) {
+          $('#discount-text').html(err);
+          coupon.attr('type_id', '');
+          coupon.attr('discount', '');
+        } else {
+          coupon.attr('type_id', discount.type);
+          coupon.attr('discount', discount.discount);
+          calcSumm();
+        }
       });
     } else if (code.length > 0)
-      $('#discount-text').html('Неверный код купона');
+      $('#discount-text').html(err);
     else
       $('#discount-text').html('');
     calcSumm();
   },
-  delay: 500
+  delay: 2000
 });
 
 calcSumm();

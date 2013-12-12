@@ -86,12 +86,17 @@
 
         <div class="control-group">
           <?php
-          echo TbHtml::label('Купон', 'coupon_code');
-          echo TbHtml::tag('div', array(
+          $couponOptions = array(
             'id' => 'coupon_code',
             'class' => 'display-field',
-            'style' => 'width:5em'
-          ));
+            'style' => 'width:5em',
+          );
+          if (!is_null($model->coupon)) {
+            $couponOptions['type_id'] = $model->coupon->type_id;
+            $couponOptions['disc'] = $model->coupon->value;
+          }
+          echo TbHtml::label('Купон', 'coupon_code');
+          echo TbHtml::tag('div', $couponOptions);
           echo is_null($model->coupon) ? '&nbsp' : $model->coupon->code;
           echo TbHtml::closeTag('div');
           ?>
@@ -125,6 +130,7 @@
     $total = 0;
     foreach ($product as $item) {
       $total += $item->quantity * $item->price;
+//      $discount = $item->product->getActualDiscount();
       ?>
       <tr>
         <td>
@@ -150,7 +156,7 @@
         <td>
           <?php
           echo TbHtml::activeNumberField($item, "[$item->product_id]price"
-              , array('class' => 'row-price'));
+              , array('class' => 'row-price', 'noDisc' => $item->discount == 0));
           ?>
         </td>
       </tr>
@@ -159,16 +165,23 @@
       <td></td><td></td><td><div style="text-align: right">Стоимость доставки: </div></td>
       <td>
         <?php
-        echo TbHtml::activeNumberField($model, 'delivery_summ',array(
+        echo TbHtml::activeNumberField($model, 'delivery_summ', array(
           'id' => 'order-delivery-summ',
         ));
-//        echo TbHtml::tag('div', array(
-//          'name' => 'order_delivery_summ',
-//          'class' => 'display-field',
-////          'style' => 'width:11.5em',
-//          'id' => 'order-delivery-summ'));
-//        echo $model->delivery_summ;
-//        echo TbHtml::closeTag('div');
+        ?>
+      </td>
+    </tr>
+    <tr>
+      <td></td><td></td><td><div style="text-align: right">Скидка по купону: </div></td>
+      <td>
+        <?php
+        echo TbHtml::tag('div', array(
+          'name' => 'order_coupon_discount',
+          'class' => 'display-field',
+//          'style' => 'width:11.5em',
+          'id' => 'order-coupon-discount'));
+        echo $model->delivery_summ;
+        echo TbHtml::closeTag('div');
         ?>
       </td>
     </tr>
@@ -206,20 +219,65 @@
 
   function calcSumm() {
     var sum = 0;
+    var noDiscSum = 0;
     $('.row-price').each(function() {
       var price = parseFloat(this.value);
+      if (isNaN(price))
+        price = 0;
       var priceid = this.id;
       var quantityid = priceid.replace('price', 'quantity');
       var quantity = parseInt($('#' + quantityid).val());
-      sum += price * quantity;
+      if (isNaN(quantity))
+        quantity = 0;
+      var noDisc = $(this).attr('noDisc');
+      var s = price * quantity;
+      if (noDisc)
+        noDiscSum += s;
+      sum += s;
     });
+    var couponType = $('#coupon_code').attr('type_id');
+    var couponDisc = parseFloat($('#coupon_code').attr('disc'));
+    var couponSum = 0;
+    switch (couponType) {
+      case '0':
+        couponSum = noDiscSum > couponDisc ? couponDisc : noDiscSum;
+        break;
+      case '1':
+        couponSum = noDiscSum * couponDisc / 100;
+        break;
+    }
     var delivery = parseFloat($('#order-delivery-summ').val());
+    if (isNaN(delivery))
+      delivery = 0;
     sum += delivery;
+    sum -= couponSum;
     $('#order-total').html(sum);
+    $('#order-coupon-discount').html(couponSum);
   }
+
+  function setStatus() {
+    var stat = $('#Order_status_id').val();
+    var read = true;
+    if (stat === '0' || stat === '1')
+      read = false;
+    $('.row-quantity, .row-price').each(function() {
+      $(this).prop('readonly', read);
+    });
+    $('#order-delivery-summ').prop('readonly', read);
+  }
+
+  calcSumm();
+  setStatus();
+
+  $('.row-price, .row-quantity, #order-delivery-summ').keyup(function() {
+    calcSumm();
+  });
 
   $('.row-price, .row-quantity, #order-delivery-summ').change(function() {
     calcSumm();
   });
 
+  $('#Order_status_id').change(function (){
+    setStatus();
+  });
 </script>

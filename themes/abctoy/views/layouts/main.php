@@ -32,7 +32,7 @@
   </body>
   <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/themes/abctoy/js/cufon-yui.js"></script>
   <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/themes/abctoy/js/RotondaC_400-RotondaC_700.font.js"></script>
-  <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.typing-0.2.0.min.js"></script>
+  <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.typing-0.3.0.js"></script>
   <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/themes/abctoy/js/submenu.js"></script>
   <script type="text/javascript">
     Cufon.replace(".cufon");

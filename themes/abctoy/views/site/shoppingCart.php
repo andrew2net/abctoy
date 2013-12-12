@@ -17,11 +17,11 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
   </div>
   <div style="font-size: 18pt; margin: 30px 0 10px">
     <span class="cufon">КУПОН </span><?php
-    echo CHtml::textField('coupon', '', array(
+    echo CHtml::textField('coupon', $coupon['code'], array(
+      'type_id' => $coupon['type'],
+      'discount' => $coupon['value'],
       'maxlength' => 8,
       'style' => 'width:5em; padding: 0 7px 0 5px; font-size: 16pt; border:1px dashed #BBB;border-radius:3px',
-      'type_id' => '',
-      'discount' => '',
     ));
     ?>
     <span id="discount-text" style="font-size: small"></span>

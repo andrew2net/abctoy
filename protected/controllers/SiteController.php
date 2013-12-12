@@ -337,6 +337,7 @@ class SiteController extends Controller {
     Yii::import('application.modules.delivery.models.CityDelivery');
     Yii::import('application.modules.delivery.models.City');
     Yii::import('application.modules.payment.models.Payment');
+    Yii::import('application.modules.discount.models.Coupon');
 
     if (Yii::app()->user->isGuest)
       $profile = CustomerProfile::model()->findByAttributes(array(
@@ -356,6 +357,18 @@ class SiteController extends Controller {
     $cart = Cart::model()->shoppingCart($this->getSession())
             ->with('product.brand')->findAll();
 
+    $coupon_data = array('code' => '', 'type' => '', 'value' => '');
+    if (isset($_POST['coupon'])) {
+      $coupon = Coupon::model()->findByAttributes(array(
+        'code' => $_POST['coupon']), 'used_id<>2');
+      if (!is_null($coupon))
+        $coupon_data = array(
+          'code' => $coupon->code,
+          'type' => $coupon->type_id,
+          'value' => $coupon->value
+        );
+    }
+
     $order = new Order;
     if (isset($_POST['CustomerProfile'])) {
       $profile->attributes = $_POST['CustomerProfile'];
@@ -364,6 +377,7 @@ class SiteController extends Controller {
         if (isset($_POST['Cart'])) {
           $count_product = 0;
           $summ = 0;
+          $noDicountSumm = 0;
           foreach ($_POST['Cart'] as $k => $q) {
             $quantity = $q['quantity'] > 0 ? $q['quantity'] : 0;
             $count_product += $quantity;
@@ -371,10 +385,25 @@ class SiteController extends Controller {
             $discount = $product->getActualDiscount();
             if (is_array($discount))
               $price = $discount['price'];
-            else
+            else {
               $price = $product->price;
+              $noDicountSumm += $product->price;
+            }
             $summ += $quantity * $price;
           }
+          if (!is_null($coupon)) {
+            switch ($coupon->type_id) {
+              case 0:
+                $coupon_discount = $noDicountSumm > $coupon->value ?
+                    $coupon->value : $noDicountSumm;
+                break;
+              case 1:
+                $coupon_discount = $noDicountSumm * $coupon->value / 100;
+                break;
+            }
+            $summ -= $coupon_discount;
+          }
+
           $fl = FALSE;
           if ($summ >= 1500) {
             try {
@@ -394,7 +423,11 @@ class SiteController extends Controller {
               $order->address = $profile->address;
               $order->status_id = 0;
               $order->time = date('Y-m-d H:i:s');
-              if ($order->save())
+
+              if (!is_null($coupon))
+                $order->coupon_id = $coupon->id;
+
+              if ($order->save()) {
                 foreach ($_POST['Cart'] as $key => $value) {
                   if ($value['quantity'] > 0) {
                     $order_product = new OrderProduct;
@@ -403,17 +436,28 @@ class SiteController extends Controller {
                     $order_product->quantity = $value['quantity'];
                     $product = Product::model()->findByPk($key);
                     $discount = $product->getActualDiscount();
-                    if (is_array($discount))
+                    if (is_array($discount)) {
                       $order_product->price = $discount['price'];
-                    else
+                      $order_product->discount = $discount['discount'];
+                    }
+                    else {
                       $order_product->price = $product->price;
+                      $order_product->discount = 0;
+                    }
                     $order_product->save();
                   }
                 }
+                if (!is_null($coupon)) {
+                  if ($coupon->used_id == 0) {
+                    $coupon->used_id = 2;
+                    $coupon->time_used = date('Y-m-d H:i:s');
+                    $coupon->update(array('used_id', 'time_used'));
+                  }
+                }
+              }
 
               foreach ($cart as $item)
                 $item->delete();
-              $tr->commit();
 
               $message = new YiiMailMessage('Ваш заказ');
               $message->view = 'confirmOrder';
@@ -421,6 +465,8 @@ class SiteController extends Controller {
                 'profile' => $profile,
                 'order' => $order,
               );
+              if (!is_null($coupon))
+                $params['coupon_discount'] = $coupon_discount;
               $message->setBody($params, 'text/html');
               $message->setFrom(Yii::app()->params['infoEmail']);
               $message->setTo(array($profile->email => $profile->fio));
@@ -428,16 +474,13 @@ class SiteController extends Controller {
 
               $message = new YiiMailMessage('Оповещение о заказе');
               $message->view = 'notifyOrder';
-              $params = array(
-                'profile' => $profile,
-                'order' => $order,
-              );
               $message->setBody($params, 'text/html');
               $message->setFrom(Yii::app()->params['infoEmail']);
               $message->setTo(array(Yii::app()->params['adminEmail']));
               Yii::app()->mail->send($message);
 
               $fl = TRUE;
+              $tr->commit();
             } catch (Exception $e) {
               $tr->rollback();
               throw $e;
@@ -464,6 +507,7 @@ class SiteController extends Controller {
       'order' => $order,
       'delivery' => $delivery,
       'payment' => $payment,
+      'coupon' => $coupon_data,
     ));
   }
 
@@ -545,8 +589,14 @@ class SiteController extends Controller {
   }
 
   public function actionCoupon() {
-    if (isset($_GET)) {
-      $data = array('type' => 0, 'discount' => 10);
+    if (isset($_GET['coupon'])) {
+      Yii::import('application.modules.discount.models.Coupon');
+      $coupon = Coupon::model()->findByAttributes(array(
+        'code' => $_GET['coupon']), 'used_id<>2');
+      if (is_null($coupon))
+        $data = array('type' => 3, 'discount' => 0);
+      else
+        $data = array('type' => $coupon->type_id, 'discount' => $coupon->value);
       echo json_encode($data);
     }
     Yii::app()->end();

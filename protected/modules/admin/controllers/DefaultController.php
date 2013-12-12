@@ -27,6 +27,8 @@ class DefaultController extends Controller {
     Yii::import('application.modules.delivery.models.Delivery');
     Yii::import('application.modules.payment.models.Payment');
     Yii::import('application.modules.catalog.models.Product');
+    Yii::import('application.modules.discount.models.Coupon');
+
     $model = $this->loadModel($id);
     $product = OrderProduct::model()->with(array('product'))
         ->findAllByAttributes(array('order_id' => $model->id));
