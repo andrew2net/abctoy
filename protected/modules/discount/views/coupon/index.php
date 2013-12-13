@@ -44,6 +44,14 @@ $this->breadcrumbs=array(
     array(
       'class' => 'bootstrap.widgets.TbButtonColumn',
       'template' => '{update}{delete}',
+      'buttons'=>array(
+        'update'=>array(
+          'visible'=>'$data->used_id!=2'
+        ),
+        'delete'=>array(
+          'visible'=>'$data->used_id!=2'
+        ),
+      ),
     ),
   ),
 )); ?>

@@ -220,4 +220,15 @@ class Coupon extends CActiveRecord {
     return TRUE;
   }
 
+  public function beforeDelete() {
+
+    if (parent::beforeDelete()) {
+      $order = Order::model()->findAllByAttributes(array('coupon_id' => $this->id));
+      if (is_null($order)) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
 }
