@@ -56,18 +56,20 @@ class DefaultController extends Controller {
               }
             }
             if ($old_status != $model->status_id) {
+              $message = new YiiMailMessage;
+              $message->view = 'processOrder';
+              $message->setFrom(Yii::app()->params['infoEmail']);
+              $message->setTo(array($profile->email => $profile->fio));
+              $params = array(
+                'profile' => $profile,
+                'order' => $model,
+              );
               switch ($model->status_id) {
-                case 1:
-                  $message = new YiiMailMessage("Заказ №{$model->id}");
-                  $message->view = 'confirmOrder';
-                  $params = array(
-                    'profile' => $profile,
-                    'order' => $order,
-                  );
-                  break;
-                case 2:
-                  $message = new YiiMailMessage('Ваш заказ');
-                  $message->view = 'confirmOrder';
+                case 5:
+                  $message->setSubject("Отмена заказа");
+                  $params['text'] = 'отменен';
+                  $message->setBody($params, 'text/html');
+                  Yii::app()->mail->send($message);
                   break;
               }
             }
