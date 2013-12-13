@@ -46,10 +46,10 @@ $this->breadcrumbs=array(
       'template' => '{update}{delete}',
       'buttons'=>array(
         'update'=>array(
-          'visible'=>'$data->used_id!=2'
+          'visible'=>'$data->isNotUsed || $data->used_id==1 || $data->used_id==2 && !$data->hasUsedTime'
         ),
         'delete'=>array(
-          'visible'=>'$data->used_id!=2'
+          'visible'=>'$data->isNotUsed'
         ),
       ),
     ),

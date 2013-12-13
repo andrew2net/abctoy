@@ -22,6 +22,7 @@ class Coupon extends CActiveRecord {
   private $types = array(0 => 'Сумма', 1 => 'Процент');
   private $used = array(0 => 'Неиспользован', 1 => 'Многоразовый'
     , 2 => 'Использован');
+  private $used_old;
 
   const DAYS_BEFORE_REUSE_CODE = 180;
   const CODE_LEGTH = 6;
@@ -194,6 +195,7 @@ class Coupon extends CActiveRecord {
   }
 
   public function afterFind() {
+    $this->used_old = $this->used_id;
     $date = Yii::app()->dateFormatter->formatDateTime($this->time_issue);
     $this->time_issue = $date;
 
@@ -215,20 +217,36 @@ class Coupon extends CActiveRecord {
       $date = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm:ss', $this->time_used);
       $this->time_used = $date;
     }
-
-    parent::beforeSave();
-    return TRUE;
+    return parent::beforeSave();
   }
 
-  public function beforeDelete() {
+  public function deleteByPk($pk, $condition = '', $params = array()) {
+    if ($this->isNotUsed)
+      return parent::deleteByPk($pk, $condition, $params);
+    else
+      return FALSE;
+  }
 
-    if (parent::beforeDelete()) {
-      $order = Order::model()->findAllByAttributes(array('coupon_id' => $this->id));
-      if (is_null($order)) {
-        return TRUE;
+  public function getIsNotUsed() {
+    $order = Order::model()->findAllByAttributes(array('coupon_id' => $this->id));
+    return count($order) == 0;
+  }
+  
+  public function getHasUsedTime(){
+    return !is_null($this->time_used);
+  }
+
+  public function updateByPk($pk, $attributes, $condition = '', $params = array()) {
+    if (!$this->isNotUsed) {
+      if ($this->used_old == 1 && $this->used_id == 2 ||
+          $this->used_old == 2 && $this->used_id == 1) {
+        $attributes = array('used_id' => $this->used_id);
       }
+      else
+        return FALSE;
     }
-    return FALSE;
+    return parent::updateByPk($pk, $attributes, $condition, $params);
   }
 
 }
+
