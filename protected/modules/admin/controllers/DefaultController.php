@@ -38,22 +38,46 @@ class DefaultController extends Controller {
     // $this->performAjaxValidation($model);
 
     if (isset($_POST['Order'])) {
+      $old_status = $model->status_id;
       $model->attributes = $_POST['Order'];
-      if ($model->save()) {
-        $profile->attributes = $_POST['CustomerProfile'];
-        if ($profile->save()) {
-          foreach ($_POST['OrderProduct'] as $id => $value) {
-            $order_product = OrderProduct::model()->findByPk(array(
-              'order_id' => $model->id,
-              'product_id' => $id));
-            if (!is_null($order_product)) {
-              $order_product->quantity = $value['quantity'] > 0 ? $value['quantity'] : 0;
-              $order_product->price = $value['price'] > 0 ? $value['price'] : 0;
-              $order_product->save();
+      $tr = Yii::app()->db->beginTransaction();
+      try {
+        if ($model->save()) {
+          $profile->attributes = $_POST['CustomerProfile'];
+          if ($profile->save()) {
+            foreach ($_POST['OrderProduct'] as $id => $value) {
+              $order_product = OrderProduct::model()->findByPk(array(
+                'order_id' => $model->id,
+                'product_id' => $id));
+              if (!is_null($order_product)) {
+                $order_product->quantity = $value['quantity'] > 0 ? $value['quantity'] : 0;
+                $order_product->price = $value['price'] > 0 ? $value['price'] : 0;
+                $order_product->save();
+              }
             }
+            if ($old_status != $model->status_id) {
+              switch ($model->status_id) {
+                case 1:
+                  $message = new YiiMailMessage("Заказ №{$model->id}");
+                  $message->view = 'confirmOrder';
+                  $params = array(
+                    'profile' => $profile,
+                    'order' => $order,
+                  );
+                  break;
+                case 2:
+                  $message = new YiiMailMessage('Ваш заказ');
+                  $message->view = 'confirmOrder';
+                  break;
+              }
+            }
+            $tr->commit();
+            $this->redirect(array('index'));
           }
-          $this->redirect(array('index'));
         }
+      } catch (Exception $e) {
+        $tr->rollback();
+        throw $e;
       }
     }
 
