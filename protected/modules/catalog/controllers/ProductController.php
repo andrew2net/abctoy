@@ -275,7 +275,7 @@ class ProductController extends Controller {
             'brand_id' => (int) $brand->id,
             'gender_id' => $data[11],
             'remainder' => $data[8],
-            'description' => $data[12],
+            'description' => strtr($data[12], $quotes),
             'price' => $data[9],
             'age' => $ages[0],
             'age_to' => isset($ages[1]) ? $ages[1] : '',
