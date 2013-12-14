@@ -497,6 +497,8 @@ class SiteController extends Controller {
                   $user->password = UserModule::encrypting($soucePassword);
                   $user->superuser = 0;
                   $user->status = User::STATUS_ACTIVE;
+                  $user->validate();
+                  $err = $user->getErrors();
                   if ($user->save()) {
                     $identity = new UserIdentity($model->username, $soucePassword);
                     $identity->authenticate();
