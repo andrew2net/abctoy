@@ -506,8 +506,6 @@ class SiteController extends Controller {
               }
               $this->redirect('orderSent');
             }
-              }
-            $this->redirect('orderSent');
           }
         }
       }
