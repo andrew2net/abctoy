@@ -40,7 +40,7 @@ class Coupon extends CActiveRecord {
     if (!$this->isNotUsed && 
         ($this->used_id==1 || $this->used_id==2 && is_null($this->time_used))){
       $used_values = $this->used;
-      array_shift($used_values);
+      unset($used_values[0]);
       return $used_values;
     }
     return $this->used;
