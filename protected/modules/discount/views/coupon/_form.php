@@ -23,24 +23,42 @@
 
   <div class="inline-blocks">
     <div>
-      <?php echo $form->textFieldControlGroup($model, 'code', array('span' => 2, 'maxlength' => 8)); ?>
+      <?php
+      $options = array(
+        'span' => 2,
+        'maxlength' => 8,
+      );
+      if (!$model->isNotUsed)
+        $options['readOnly'] = TRUE;
+
+      echo $form->textFieldControlGroup($model, 'code', $options);
+      ?>
     </div>
     <div>
       <?php
+      $used_options = array('span' => 2);
+      if (!$model->isNotUsed && !is_null($model->time_used))
+        $used_options['disabled'] = TRUE;
       echo $form->dropDownListControlGroup($model, 'used_id'
-          , $model->usedValues, array('span' => 2));
+      , $model->usedValues, $used_options);
       ?>
     </div>
   </div>
 
   <div class="inline-blocks">
     <div>
-      <?php echo $form->textFieldControlGroup($model, 'value', array('span' => 2, 'maxlength' => 5)); ?>
+      <?php
+      $options['maxlength'] = 5;
+      echo $form->textFieldControlGroup($model, 'value', $options);
+      ?>
     </div>
     <div>
       <?php
+      unset($options['maxlength'], $options['readOnly']);
+      if (!$model->isNotUsed)
+        $options['disabled'] = TRUE;
       echo $form->dropDownListControlGroup($model, 'type_id'
-          , $model->types, array('span' => 2));
+          , $model->types, $options);
       ?>
     </div>
   </div>

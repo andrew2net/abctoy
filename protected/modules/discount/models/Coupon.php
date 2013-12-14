@@ -16,6 +16,7 @@
  * @property-read string $type 0-summa, 1-percent
  * @property-read array $usedValues 
  * @property-read string $used 0-unused, 1-permanent, 2-used
+ * @property-read boolean $isNotUsed 
  */
 class Coupon extends CActiveRecord {
 
@@ -36,6 +37,12 @@ class Coupon extends CActiveRecord {
   }
 
   public function getUsedValues() {
+    if (!$this->isNotUsed && 
+        ($this->used_id==1 || $this->used_id==2 && is_null($this->time_used))){
+      $used_values = $this->used;
+      array_shift($used_values);
+      return $used_values;
+    }
     return $this->used;
   }
 
