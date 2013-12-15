@@ -283,10 +283,11 @@ input[type=checkbox]:checked + label:before, .weekcarousel-prev,
 .icon-cart a:before{
   content: '';
   display: inline-block;
-  position: absolute;
-  left: -20px;
+  position: relative;
+  left: -10px;
+  vertical-align: top;
   background-position: -38px -28px;
-  /*padding-right: 4em;*/
+  margin-left: 4em;
   width: 24px;
   height: 24px;
 }

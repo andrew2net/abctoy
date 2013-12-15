@@ -492,19 +492,35 @@ class SiteController extends Controller {
                   'username' => $profile->email));
                 if (is_null($user)) {
                   $user = new User;
-                  $user->username = $profile->email;
-                  $soucePassword = $this->generate_password();
-                  $user->password = UserModule::encrypting($soucePassword);
+                  $user->email = $profile->email;
+                  $user->usernameGenerator();
+                  $sourcePassword = $this->generate_password();
+                  $user->password = UserModule::encrypting($sourcePassword);
                   $user->superuser = 0;
                   $user->status = User::STATUS_ACTIVE;
-                  $user->validate();
-                  $err = $user->getErrors();
                   if ($user->save()) {
-                    $identity = new UserIdentity($model->username, $soucePassword);
+                    $identity = new UserIdentity($user->username, $sourcePassword);
                     $identity->authenticate();
                     Yii::app()->user->login($identity, 3600 * 24 * 7);
+
+                    $profile->update(array(
+                      'session_id' => NULL,
+                      'user_id' => $user->id,
+                    ));
+
+                    $params['login'] = $user->username;
+                    $params['passw'] = $sourcePassword;
+                    $message->setSubject('Личный кабинет');
+                    $message->view = 'registrInfo';
+                    $message->setBody($params, 'text/html');
+                    $message->setTo(array($profile->email => $profile->fio));
+                    Yii::app()->mail->send($message);
                   }
                 }
+                $this->render('cartLogin', array(
+                  'profile' => $profile,
+                  'order' => $order
+                ));
               }
               $this->redirect('orderSent');
             }
@@ -532,6 +548,13 @@ class SiteController extends Controller {
       'coupon' => $coupon_data,
       'has_err' => $has_err,
     ));
+  }
+
+  public function actionCartLogin() {
+    if (isset($_POST['profile_id']))
+      $profile = CustomerProfile::model()->findByPk($_POST['profile_id']);
+    if (isset($_POST['order_id']))
+      $order = Order::model()->findByPk($_POST['order_id']);
   }
 
   public function actionDelivery() {
@@ -630,7 +653,7 @@ class SiteController extends Controller {
     $max = strlen($str);
     $length = @round($length);
     if (empty($length)) {
-      $length = rand(8, 12);
+      $length = rand(6, 8);
     }
     $password = '';
     for ($i = 0; $i < $length; $i++) {
