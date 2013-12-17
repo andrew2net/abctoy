@@ -357,8 +357,11 @@ class Product extends CActiveRecord {
     $text = strtr($text, array('%' => '\%', '_' => '\_'));
     $this->getDbCriteria()->mergeWith(
         array(
-          'condition' => "t.name LIKE :text",
-          'params' => array(':text' => '%' . $text . '%'),
+          'condition' => "t.name LIKE :text OR t.article=:art",
+          'params' => array(
+            ':text' => '%' . $text . '%',
+            ':art' => $text,
+          ),
         )
     );
     return $this;
