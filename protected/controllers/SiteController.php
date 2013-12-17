@@ -376,110 +376,32 @@ class SiteController extends Controller {
       if ($profile->save()) {
         $tr = $order->dbConnection->beginTransaction();
         if (isset($_POST['Cart'])) {
-          $count_product = 0;
-          $summ = 0;
-          $noDicountSumm = 0;
-          foreach ($_POST['Cart'] as $k => $q) {
-            $quantity = $q['quantity'] > 0 ? $q['quantity'] : 0;
-            $count_product += $quantity;
-            $product = Product::model()->findByPk($k);
-            $discount = $product->getActualDiscount();
-            if (is_array($discount))
-              $price = $discount['price'];
-            else {
-              $price = $product->price;
-              $noDicountSumm += $product->price;
-            }
-            $summ += $quantity * $price;
-          }
+          $count_products = $this->countProducts();
+          $coupon_discount = 0;
           if (!is_null($coupon)) {
             switch ($coupon->type_id) {
               case 0:
-                $coupon_discount = $noDicountSumm > $coupon->value ?
-                    $coupon->value : $noDicountSumm;
+                $coupon_discount = $count_products['noDiscount'] > $coupon->value ?
+                    $coupon->value : $count_products['noDiscount'];
                 break;
               case 1:
-                $coupon_discount = $noDicountSumm * $coupon->value / 100;
+                $coupon_discount = $count_products['noDiscount'] * $coupon->value / 100;
                 break;
             }
-            $summ -= $coupon_discount;
+            $count_products['summ'] -= $coupon_discount;
           }
 
           $fl = FALSE;
-          if ($summ >= 1500) {
+          if ($count_products['summ'] >= 1500) {
             try {
-              $delivery = CityDelivery::model()->with('city')->findByAttributes(array(
-                'delivery_id' => $_POST['Order']['delivery_id'])
-                  , 'city.name=:city', array(':city' => $profile->city));
-              $delivery_summ = is_null($delivery) ? 0 : $delivery->price;
+              if (count($cart) > 0) {
+                $this->saveOrderProducts($order, $profile, $coupon);
 
-              $order->attributes = $_POST['Order'];
-              $order->delivery_summ = $delivery_summ;
-              $order->payment_id = 1;
-              $order->profile_id = $profile->id;
-              $order->fio = $profile->fio;
-              $order->email = $profile->email;
-              $order->phone = $profile->phone;
-              $order->city = $profile->city;
-              $order->address = $profile->address;
-              $order->status_id = 0;
-              $order->time = date('Y-m-d H:i:s');
+                foreach ($cart as $item)
+                  $item->delete();
 
-              if (!is_null($coupon))
-                $order->coupon_id = $coupon->id;
-
-              if ($order->save()) {
-                foreach ($_POST['Cart'] as $key => $value) {
-                  if ($value['quantity'] > 0) {
-                    $order_product = new OrderProduct;
-                    $order_product->order_id = $order->id;
-                    $order_product->product_id = $key;
-                    $order_product->quantity = $value['quantity'];
-                    $product = Product::model()->findByPk($key);
-                    $discount = $product->getActualDiscount();
-                    if (is_array($discount)) {
-                      $order_product->price = $discount['price'];
-                      $order_product->discount = $discount['discount'];
-                    }
-                    else {
-                      $order_product->price = $product->price;
-                      $order_product->discount = 0;
-                    }
-                    $order_product->save();
-                  }
-                }
-                if (!is_null($coupon)) {
-                  if ($coupon->used_id == 0) {
-                    $coupon->used_id = 2;
-                    $coupon->time_used = date('Y-m-d H:i:s');
-                    $coupon->update(array('used_id', 'time_used'));
-                  }
-                }
+                $this->sendConfirmOrderMessage($order, $profile, $coupon_discount);
               }
-
-              foreach ($cart as $item)
-                $item->delete();
-
-              $message = new YiiMailMessage('Ваш заказ');
-              $message->view = 'confirmOrder';
-              $params = array(
-                'profile' => $profile,
-                'order' => $order,
-              );
-              if (!is_null($coupon))
-                $params['coupon_discount'] = $coupon_discount;
-              $message->setBody($params, 'text/html');
-              $message->setFrom(Yii::app()->params['infoEmail']);
-              $message->setTo(array($profile->email => $profile->fio));
-              Yii::app()->mail->send($message);
-
-              $message = new YiiMailMessage('Оповещение о заказе');
-              $message->view = 'notifyOrder';
-              $message->setBody($params, 'text/html');
-              $message->setFrom(Yii::app()->params['infoEmail']);
-              $message->setTo(array(Yii::app()->params['adminEmail']));
-              Yii::app()->mail->send($message);
-
               $fl = TRUE;
               $tr->commit();
             } catch (Exception $e) {
@@ -489,38 +411,10 @@ class SiteController extends Controller {
             if ($fl) {
               if (Yii::app()->user->isGuest) {
                 $user = User::model()->findByAttributes(array(
-                  'username' => $profile->email));
+                  'email' => $profile->email));
                 if (is_null($user)) {
-                  $user = new User;
-                  $user->email = $profile->email;
-                  $user->usernameGenerator();
-                  $sourcePassword = $this->generate_password();
-                  $user->password = UserModule::encrypting($sourcePassword);
-                  $user->superuser = 0;
-                  $user->status = User::STATUS_ACTIVE;
-                  if ($user->save()) {
-                    $identity = new UserIdentity($user->username, $sourcePassword);
-                    $identity->authenticate();
-                    Yii::app()->user->login($identity, 3600 * 24 * 7);
-
-                    $profile->update(array(
-                      'session_id' => NULL,
-                      'user_id' => $user->id,
-                    ));
-
-                    $params['login'] = $user->username;
-                    $params['passw'] = $sourcePassword;
-                    $message->setSubject('Личный кабинет');
-                    $message->view = 'registrInfo';
-                    $message->setBody($params, 'text/html');
-                    $message->setTo(array($profile->email => $profile->fio));
-                    Yii::app()->mail->send($message);
-                  }
+                  $this->registerUser($profile);
                 }
-                $this->render('cartLogin', array(
-                  'profile' => $profile,
-                  'order' => $order
-                ));
               }
               $this->redirect('orderSent');
             }
@@ -550,11 +444,186 @@ class SiteController extends Controller {
     ));
   }
 
+  private function countProducts() {
+    $result = array('count' => 0, 'summ' => 0, 'noDiscount' => 0);
+    foreach ($_POST['Cart'] as $k => $q) {
+      $quantity = $q['quantity'] > 0 ? $q['quantity'] : 0;
+      $result['count'] += $quantity;
+      $product = Product::model()->findByPk($k);
+      $discount = $product->getActualDiscount();
+      if (is_array($discount))
+        $price = $discount['price'];
+      else {
+        $price = $product->price;
+        $result['noDiscount'] += $product->price * $quantity;
+      }
+      $result['summ'] += $quantity * $price;
+    }
+    return $result;
+  }
+
+  private function saveOrderProducts($order, $profile, $coupon) {
+    $delivery = CityDelivery::model()->with('city')->findByAttributes(array(
+      'delivery_id' => $_POST['Order']['delivery_id'])
+        , 'city.name=:city', array(':city' => $profile->city));
+    $delivery_summ = is_null($delivery) ? 0 : $delivery->price;
+
+    $order->attributes = $_POST['Order'];
+    $order->delivery_summ = $delivery_summ;
+    $order->payment_id = 1;
+    $order->profile_id = $profile->id;
+    $order->fio = $profile->fio;
+    $order->email = $profile->email;
+    $order->phone = $profile->phone;
+    $order->city = $profile->city;
+    $order->address = $profile->address;
+    $order->status_id = 0;
+    $order->time = date('Y-m-d H:i:s');
+
+    if (!is_null($coupon))
+      $order->coupon_id = $coupon->id;
+
+    if ($order->save()) {
+      foreach ($_POST['Cart'] as $key => $value) {
+        if ($value['quantity'] > 0) {
+          $order_product = new OrderProduct;
+          $order_product->order_id = $order->id;
+          $order_product->product_id = $key;
+          $order_product->quantity = $value['quantity'];
+          $product = Product::model()->findByPk($key);
+          $discount = $product->getActualDiscount();
+          if (is_array($discount)) {
+            $order_product->price = $discount['price'];
+            $order_product->discount = $discount['discount'];
+          }
+          else {
+            $order_product->price = $product->price;
+            $order_product->discount = 0;
+          }
+          $order_product->save();
+        }
+      }
+      if (!is_null($coupon)) {
+        if ($coupon->used_id == 0) {
+          $coupon->used_id = 2;
+          $coupon->time_used = date('Y-m-d H:i:s');
+          $coupon->update(array('used_id', 'time_used'));
+        }
+      }
+    }
+  }
+
+  private function registerUser($profile) {
+    $user = new User;
+    $user->email = $profile->email;
+    $user->usernameGenerator();
+    $sourcePassword = $this->generate_password();
+    $user->activkey = UserModule::encrypting(microtime() . $sourcePassword);
+    $user->password = UserModule::encrypting($sourcePassword);
+    $user->superuser = 0;
+    $user->status = User::STATUS_ACTIVE;
+    if ($user->save()) {
+      $identity = new UserIdentity($user->username, $sourcePassword);
+      if ($identity->authenticate()) {
+        Yii::app()->user->login($identity, 3600 * 24 * 7);
+
+        $profile->session_id = null;
+        $profile->user_id = $user->id;
+        $profile->update(array(
+          'session_id',
+          'user_id',
+        ));
+
+        $params = array(
+          'profile' => $profile,
+          'login' => $user->username,
+          'passw' => $sourcePassword,
+        );
+        $message = new YiiMailMessage('Личный кабинет');
+        $message->view = 'registrInfo';
+        $message->setBody($params, 'text/html');
+        $message->setFrom(Yii::app()->params['infoEmail']);
+        $message->setTo(array($profile->email => $profile->fio));
+        Yii::app()->mail->send($message);
+      }
+    }
+  }
+
+  private function sendConfirmOrderMessage($order, $profile, $coupon_discount = NULL) {
+    $message = new YiiMailMessage('Ваш заказ');
+    $message->view = 'confirmOrder';
+    $params = array(
+      'profile' => $profile,
+      'order' => $order,
+    );
+    if ($coupon_discount > 0)
+      $params['coupon_discount'] = $coupon_discount;
+    $message->setBody($params, 'text/html');
+    $message->setFrom(Yii::app()->params['infoEmail']);
+    $message->setTo(array($profile->email => $profile->fio));
+//              Yii::app()->mail->send($message);
+
+    $message->setSubject('Оповещение о заказе');
+    $message->view = 'notifyOrder';
+    $message->setBody($params, 'text/html');
+    $message->setTo(array(Yii::app()->params['adminEmail']));
+//              Yii::app()->mail->send($message);
+  }
+
+  public function actionCheckEmail() {
+    if (isset($_POST['email'])) {
+      $user = User::model()->findByAttributes(array('email' => $_POST['email']));
+      if (Yii::app()->user->isGuest) {
+        if (is_null($user)) { //new user
+          echo 'ok';
+          Yii::app()->end();
+        }
+        else {                //need sign up
+          echo '';
+          Yii::app()->end();
+        }
+      }
+      else {
+        if (is_null($user)) { //new email
+          Yii::app()->user->update(array('email' => $_POST['email']));
+          echo 'ok';
+          Yii::app()->end();
+        }
+        else if ($user->id != Yii::app()->user->id) { //there is user with same email
+          echo '';
+          Yii::app()->end();
+        }
+        else {               //signed up
+          echo 'ok';
+          Yii::app()->end();
+        }
+      }
+    }
+    Yii::app()->end();
+  }
+
   public function actionCartLogin() {
-    if (isset($_POST['profile_id']))
-      $profile = CustomerProfile::model()->findByPk($_POST['profile_id']);
-    if (isset($_POST['order_id']))
-      $order = Order::model()->findByPk($_POST['order_id']);
+    if (isset($_POST['email']) && isset($_POST['passw'])) {
+      $user = User::model()->findByAttributes(array('email' => $_POST['email']));
+      if (!is_null($user)) {
+        $identity = new UserIdentity($user->username, $_POST['passw']);
+        if ($identity->authenticate()) {
+          $session_id = self::getSession();
+          Yii::app()->user->login($identity, 3600 * 24 * 7);
+          $cart = Cart::model()->findAllByAttributes(array(
+            'session_id' => $session_id));
+          foreach ($cart as $item) {
+            $item->session_id = null;
+            $item->user_id = $user->id;
+            $item->update(array('session_id', 'user_id'));
+          }
+          echo 'ok';
+          Yii::app()->end();
+        }
+      }
+    }
+    echo '';
+    Yii::app()->end();
   }
 
   public function actionDelivery() {
@@ -577,7 +646,7 @@ class SiteController extends Controller {
     Yii::app()->end();
   }
 
-  private function getSession() {
+  public static function getSession() {
     if (!Yii::app()->user->isGuest)
       return '';
 
@@ -585,11 +654,11 @@ class SiteController extends Controller {
       $session_id = Yii::app()->request->cookies['cart']->value;
     else {
       $session_id = Yii::app()->session->sessionId;
-      $cookie = new CHttpCookie('cart', $session_id);
-      $cookie->expire = time() + 2592000;
-      $cookie->httpOnly = TRUE;
-      Yii::app()->request->cookies['cart'] = $cookie;
     }
+    $cookie = new CHttpCookie('cart', $session_id);
+    $cookie->expire = time() + 60 * 60 * 24 * 30;
+    $cookie->httpOnly = TRUE;
+    Yii::app()->request->cookies['cart'] = $cookie;
     return $session_id;
   }
 

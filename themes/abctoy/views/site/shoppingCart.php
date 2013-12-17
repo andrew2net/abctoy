@@ -14,7 +14,7 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
   $form = $this->beginWidget('CActiveForm', array(
     'id' => 'item-submit',
     'action'=>$this->createUrl('')."#prof",
-    ));
+  ));
   ?>
   <div id="cart-items">
     <?php $this->renderPartial('_cartItems', array('cart' => $cart)); ?>
@@ -182,7 +182,249 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
     <span class="cufon">Общая сумма заказа: </span><span id="cart-total" class="red"></span>
   </div>
   <div style="margin: 40px 0; text-align: center">
-    <?php echo CHtml::submitButton('', array('id' => 'cart-submit')); ?>
+    <?php echo CHtml::button('', array('id' => 'cart-submit')); ?>
+  </div>
+  <div id="cart-login-dialog">
+    <div>Пользователь с адресом электройнной почты <span id="email-dialog" style="color: rgb(51, 153, 204)"></span> уже зарегистрирован на этом сайте.</div>
+    <div style="margin: 1em 0 2em">Чтобы войти в личный кабинет, небходимо ввести пароль.</div>
+    <?php echo CHtml::label('Пароль', 'password'); ?>
+    <?php echo CHtml::passwordField('password'); ?>
+    <?php echo CHtml::Button('Вход', array('id' => 'submit-password')); ?>
+    <span class="red" id="passw-err"></span>
+    <div style="margin-top: 1em">
+      Забыли пароль? <?php echo CHtml::Button('Восстановить', array('id' => 'recover-password')); ?>
+      <img src="/images/load.gif" style="display: none; vertical-align: middle; margin-left: 15px" id="loading-dialog" />
+    </div>
+    <div id="sent-mail-recovery" style="height: 40px"></div>
+    <div id="close-cart-dialog" class="green" style="text-align: right; margin-top: 1em; cursor: pointer">Закрыть окно</div>
   </div>
   <?php $this->endWidget(); ?>
 </div>
+<script type="text/javascript">
+  function calcSumm() {
+    var cartSumm = 0;
+    var cartSummNoDisc = 0;
+    var discountSumm = 0;
+    $('.cart-quantity').each(function() {
+      var price = $(this).attr('price');
+      var quantity = parseInt(this.value);
+      if (isNaN(quantity))
+        quantity = 0;
+      cartSumm += quantity * price;
+      var disc = $(this).attr('disc');
+      if (disc > 0)
+        discountSumm += disc * quantity;
+      else
+        cartSummNoDisc += quantity * price;
+    });
+    if (isNaN(cartSumm))
+      cartSumm = 0;
+
+    var discountType = $('#coupon').attr('type_id');
+    if (discountType !== undefined && discountType.length > 0) {
+      if (cartSummNoDisc === 0)
+        $('#discount-text').html('Скидка по купону распространяется только товары без скидки.');
+      else {
+        var discountText = 'Скидка ';
+        var discountDisc = $('#coupon').attr('discount');
+        var discNum = parseFloat(discountDisc);
+        switch (discountType) {
+          case '0':
+            var couponDisc = cartSummNoDisc > discNum ? discNum : cartSummNoDisc;
+            discountSumm += couponDisc;
+            cartSumm -= couponDisc;
+            discountText += discountDisc + ' руб.';
+            $('#discount-text').html(discountText);
+            break;
+          case '1':
+            var couponDisc = cartSummNoDisc * discNum / 100;
+            discountSumm += couponDisc;
+            cartSumm -= couponDisc;
+            discountText += discountDisc + ' %';
+            $('#discount-text').html(discountText);
+            break;
+        }
+      }
+    }
+
+    $('#cart-summ').html(cartSumm.formatMoney());
+    $('#cart-summ').attr('summ', cartSumm);
+    $('#cart-discount').html(discountSumm.formatMoney());
+    $('#cart-discount').attr('summ', discountSumm);
+    var priceDelivery = parseFloat($('input:checked + .cart-radio > span').attr('price'));
+    if (!isNaN(priceDelivery)) {
+      var price_f = priceDelivery.formatMoney();
+      $('#delivery-summ').html(price_f);
+      $('#cart-total').html((priceDelivery + cartSumm).formatMoney());
+    }
+    else {
+      $('#delivery-summ').html('');
+      $('#cart-total').html(cartSumm.formatMoney());
+    }
+    Cufon.replace('#cart-summ, #cart-discount, #delivery-summ, #cart-total');
+  }
+  calcSumm();
+
+  $('#cart-submit').click(function() {
+    var email = $('#CustomerProfile_email').val();
+    $.post('/checkemail', {
+      email: email
+    }, function(data) {
+      if (data == 'ok')
+        $('form').submit();
+      else {
+        $('#email-dialog').html(email);
+        $('#cart-login-dialog').dialog('open');
+      }
+    });
+  });
+
+  $('#submit-password').click(function() {
+    var email = $('#CustomerProfile_email').val();
+    var passw = $('#password').val();
+    $.post('/cartLogin', {
+      email: email,
+      passw: passw
+    }, function(data) {
+      if (data == 'ok')
+        $('form').submit();
+      else
+        $('#passw-err').html('Неверный пароль');
+    });
+  });
+
+  $('#recover-password').click(function() {
+    var email = $('#CustomerProfile_email').val();
+    $('#loading-dialog').css('display', 'inline');
+    $.post('/user/recovery/cartpasswrecover', {
+      email: email
+    }, function(data) {
+      if (data == 'ok')
+        $('#sent-mail-recovery').html('Инструкции для восстановления пароля высланы на Email ' + email);
+      $('#loading-dialog').css('display', 'none');
+
+    });
+  });
+
+  $('#cart-city').typing({
+    start: function(event, $elem) {
+    },
+    stop: function(event, $elem) {
+      var city = $elem.val();
+      $.get('/delivery', {
+        'city': city
+      }, function(data) {
+        $('#cart-delivery').html(data);
+        calcSumm();
+      });
+    },
+    delay: 2000
+  });
+
+  $('#coupon').typing({
+    start: function(event, $elem) {
+    },
+    stop: function(event, $elem) {
+      var code = $.trim($elem.val());
+      var err = 'Неверный код купона';
+      $elem.attr('type_id', '');
+      $elem.attr('discount', '');
+      if (code.length === 6) {
+        $.get('/coupon', {
+          coupon: code
+        }, function(data) {
+          var discount = JSON && JSON.parse(data) || $.parseJSON(data);
+          var coupon = $('#coupon');
+          if (discount.type === 3) {
+            $('#discount-text').html(err);
+            coupon.attr('type_id', '');
+            coupon.attr('discount', '');
+          } else {
+            coupon.attr('type_id', discount.type);
+            coupon.attr('discount', discount.discount);
+            calcSumm();
+          }
+        });
+      } else if (code.length > 0)
+        $('#discount-text').html(err);
+      else
+        $('#discount-text').html('');
+      calcSumm();
+    },
+    delay: 2000
+  });
+
+  $('#cart-delivery').on('change', 'input[name="Order[delivery_id]"]', function() {
+    calcSumm();
+  });
+
+  $(document).on('change', '.cart-quantity', function() {
+    var id = $(this).attr('product');
+    var quantity = parseInt(this.value);
+    if (isNaN(quantity))
+      quantity = 0;
+    if (quantity < 0) {
+      quantity = 0;
+      this.value = quantity;
+    } else if (quantity > 9) {
+      quantity = 9;
+    }
+    calcSumm();
+    $.post('/changeCart', {
+      'id': id,
+      'quantity': quantity
+    });
+  });
+  $(document).on('click', '.cart-item-del', function() {
+    var id = $(this).attr('product');
+    $.post('/delitemcart', {
+      'id': id,
+    }, function(data) {
+      $('#cart-items').html(data);
+      calcSumm();
+      Cufon.replace('#cart-items .cufon');
+    }
+    );
+  });
+
+  var cartQuantity;
+  $(document).on('keyup', '.cart-quantity', function(event) {
+    if (this.value.length > 0) {
+      var value = parseInt(this.value);
+      if (value > 99)
+        this.value = cartQuantity;
+      else
+        this.value = value;
+    }
+    else
+      this.value = 0;
+    calcSumm();
+  });
+
+  $(document).on('keydown', '.cart-quantity', function(event) {
+    cartQuantity = this.value;
+  });
+
+  $(function() {
+    $("#cart-login-dialog").dialog({
+      autoOpen: false,
+      modal: true,
+      draggable: false,
+      resizable: false,
+      width: 500,
+      dialogClass: "cart-login-alert",
+      show: {
+        effect: "blind",
+        duration: 500
+      },
+      hide: {
+        effect: "explode",
+        duration: 500
+      }
+    });
+  });
+
+  $('#close-cart-dialog').click(function() {
+    $("#cart-login-dialog").dialog('close');
+  });
+</script>

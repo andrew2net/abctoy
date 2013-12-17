@@ -22,46 +22,50 @@
     ?>
     <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
     <?php Yii::app()->clientScript->registerCoreScript('jquery.ui'); ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.typing-0.3.0.js'); ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/themes/abctoy/js/submenu.js'); ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/themes/abctoy/js/cufon-yui.js'); ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/themes/abctoy/js/RotondaC_400-RotondaC_700.font.js'); ?>
 
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
   </head>
 
   <body>
     <?php echo $content; ?>
-    <script type="text/javascript"> Cufon.now();</script>
   </body>
-  <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/themes/abctoy/js/cufon-yui.js"></script>
-  <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/themes/abctoy/js/RotondaC_400-RotondaC_700.font.js"></script>
-  <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.typing-0.3.0.js"></script>
-  <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/themes/abctoy/js/submenu.js"></script>
   <script type="text/javascript">
-    Cufon.replace(".cufon");
+    $(document).ready(Cufon.replace(".cufon"));
   </script>
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-(function (d, w, c) {
-    (w[c] = w[c] || []).push(function() {
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function(d, w, c) {
+      (w[c] = w[c] || []).push(function() {
         try {
-            w.yaCounter23309737 = new Ya.Metrika({id:23309737,
-                    webvisor:true,
-                    clickmap:true,
-                    trackLinks:true,
-                    accurateTrackBounce:true});
-        } catch(e) { }
-    });
+          w.yaCounter23309737 = new Ya.Metrika({id: 23309737,
+            webvisor: true,
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true});
+        } catch (e) {
+        }
+      });
 
-    var n = d.getElementsByTagName("script")[0],
-        s = d.createElement("script"),
-        f = function () { n.parentNode.insertBefore(s, n); };
-    s.type = "text/javascript";
-    s.async = true;
-    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+      var n = d.getElementsByTagName("script")[0],
+              s = d.createElement("script"),
+              f = function() {
+        n.parentNode.insertBefore(s, n);
+      };
+      s.type = "text/javascript";
+      s.async = true;
+      s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
 
-    if (w.opera == "[object Opera]") {
+      if (w.opera == "[object Opera]") {
         d.addEventListener("DOMContentLoaded", f, false);
-    } else { f(); }
-})(document, window, "yandex_metrika_callbacks");
-</script>
-<noscript><div><img src="//mc.yandex.ru/watch/23309737" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
+      } else {
+        f();
+      }
+    })(document, window, "yandex_metrika_callbacks");
+  </script>
+  <noscript><div><img src="//mc.yandex.ru/watch/23309737" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
 </html>
