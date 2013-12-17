@@ -891,3 +891,7 @@ a:hover .item-disc, a:hover .item-price{
 #close-add-dialog{
   cursor: pointer;
 }
+
+.error{
+  font-size: 12pt;
+}
