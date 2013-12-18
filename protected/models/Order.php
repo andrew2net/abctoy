@@ -77,7 +77,8 @@ class Order extends CActiveRecord {
     // will receive user inputs.
     return array(
       array('profile_id, delivery_id, payment_id, status_id', 'required'),
-      array('profile_id, delivery_id, payment_id, status_id, coupon_id, phone', 'length', 'max' => 11),
+      array('profile_id, delivery_id, payment_id, status_id, coupon_id', 'length', 'max' => 11),
+      array('phone', 'length', 'max' => 20  ),
       array('delivery_summ', 'numerical'),
       array('email', 'email'),
       array('fio, email', 'length', 'max' => 255),
