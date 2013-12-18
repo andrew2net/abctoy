@@ -29,6 +29,7 @@
  */
 class Order extends CActiveRecord {
 
+  public $summ;
   private $statuses = array(
     '0' => 'Необработан',
     '1' => 'В обработке',
@@ -50,6 +51,7 @@ class Order extends CActiveRecord {
   public $profile_fio;
   public $profile_email;
   public $profile_phone;
+
 //  public $paiment_name;
 
   public function getDeliveryOptions() {
@@ -191,6 +193,24 @@ class Order extends CActiveRecord {
     $this->time = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm:ss', $this->time);
 //    $this->coupon_id
     return parent::beforeSave();
+  }
+
+  public function getCouponDiscount() {
+    $summa = 0;
+    if ($this->coupon) {
+      foreach ($this->orderProducts as $product) {
+        if ($product->discount == 0)
+          if ($this->coupon->type_id) {
+            $summa += $product->price * $product->quantity * $this->coupon->value / 100;
+          }
+          else {
+            $summa += $product->price * $product->quantity;
+          }
+      }
+      if (!$this->coupon->type_id && $this->coupon->value < $summa)
+        $summa = $this->coupon->value;
+    }
+    return $summa;
   }
 
 }

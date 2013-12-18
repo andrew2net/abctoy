@@ -895,3 +895,21 @@ a:hover .item-disc, a:hover .item-price{
 .error{
   font-size: 12pt;
 }
+
+#profile-grid-order .items{
+  display: table;  
+  font-size: 12pt;
+}
+#profile-grid-order th, #profile-grid-order th a{
+  background: whitesmoke;
+  color: gray;
+}
+#profile-grid-order td{
+  text-align: center;
+}
+#profile-grid-order .odd{
+  background-color: white;
+}
+#profile-grid-order .even{
+  background-color: whitesmoke;
+}

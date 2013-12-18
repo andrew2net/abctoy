@@ -731,4 +731,60 @@ class SiteController extends Controller {
     return $password;
   }
 
+  public function actionProfile() {
+    Yii::import('application.modules.discount.models.Coupon');
+    if (Yii::app()->user->isGuest)
+      $this->redirect('/');
+
+    $profile = CustomerProfile::model()->findByAttributes(
+        array('user_id' => Yii::app()->user->id));
+    if (is_null($profile))
+      $profile = new CustomerProfile;
+
+    $new_passw = new NewPassword;
+
+    if (isset($_POST['CustomerProfile']) && isset($_POST['NewPassword'])) {
+      $new_passw->attributes = $_POST['NewPassword'];
+      $profile->attributes = $_POST['CustomerProfile'];
+      if ($new_passw->validate() && $profile->save()) {
+        if (strlen($new_passw->passw1) > 0) {
+          $new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
+          $new_password->password = UserModule::encrypting($new_passw->passw1);
+          $new_password->activkey = UserModule::encrypting(microtime() . $new_passw->passw1);
+          $new_password->save();
+          Yii::app()->user->setFlash('newPassw', "Новый пароль сохранен.");
+        }
+      }
+    }
+
+    $order = new CActiveDataProvider('Order', array(
+      'criteria' => array(
+        'condition' => 'profile_id = :profile_id',
+        'params' => array(':profile_id' => $profile->id),
+        'with' => array(
+          'orderProducts' => array('alias' => 'p'),
+          'coupon' => array('alias' => 'c'),
+        ),
+        'together' => TRUE,
+        'select' => array(
+          'id',
+          'time',
+          'delivery_summ',
+          'SUM(p.price*p.quantity) AS summ',
+          'status_id'
+        ),
+        'group' => 't.id, t.time, t.status_id'
+      ),
+      'pagination' => array(
+        'pagesize' => 5
+      )
+    ));
+
+    $this->render('profile', array(
+      'profile' => $profile,
+      'order' => $order,
+      'new_passw' => $new_passw,
+    ));
+  }
+
 }

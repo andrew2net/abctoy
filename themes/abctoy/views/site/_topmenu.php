@@ -22,7 +22,7 @@
         ),
         array(
           'label' => 'Личный кабинет',
-          'url' => array(''),
+          'url' => array('/profile'),
           'visible' => !Yii::app()->user->isGuest,
           'itemOptions' => array('class' => 'align-right'),
         ),
