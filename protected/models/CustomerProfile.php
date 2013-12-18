@@ -55,7 +55,7 @@ class CustomerProfile extends CActiveRecord {
       array('user_id, call_time_id', 'numerical', 'integerOnly' => true),
       array('session_id', 'length', 'max' => 32),
       array('fio, email, address', 'length', 'max' => 255),
-      array('phone', 'length', 'max' => 11),
+      array('phone', 'length', 'max' => 20  ),
       array('city', 'length', 'max' => 100),
       array('fio, email, phone, city', 'required'),
       array('fio, email, address, description', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),

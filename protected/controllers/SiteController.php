@@ -369,6 +369,7 @@ class SiteController extends Controller {
         );
     }
 
+    $has_err = '';
     $order = new Order;
     if (isset($_POST['CustomerProfile'])) {
       $profile->attributes = $_POST['CustomerProfile'];
@@ -491,6 +492,8 @@ class SiteController extends Controller {
           }
         }
       }
+      else
+        $has_err = 'prof';
     }
     $order->payment_id = 1;
     $delivery = Delivery::model()->getDeliveryList($profile->city);
@@ -508,6 +511,7 @@ class SiteController extends Controller {
       'delivery' => $delivery,
       'payment' => $payment,
       'coupon' => $coupon_data,
+      'has_err' => $has_err,
     ));
   }
 

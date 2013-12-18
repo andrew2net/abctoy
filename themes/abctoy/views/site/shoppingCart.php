@@ -4,13 +4,17 @@
 /* @var $order Order */
 /* @var $delivery array */
 /* @var $payment Payment */
+/* @var $has_err string */
 $this->pageTitle = Yii::app()->name . ' - Корзина';
 ?>
 <div class="container" id="page" style="margin-top: 0">
   <?php $this->renderPartial('_shoppingCartTopBlock'); ?>
   <div class="cufon gray bold" style="font-size: 28pt; margin: 20px 0">Ваша корзина</div>
   <?php
-  $form = $this->beginWidget('CActiveForm', array('id' => 'item-submit'));
+  $form = $this->beginWidget('CActiveForm', array(
+    'id' => 'item-submit',
+    'action'=>$this->createUrl('')."#prof",
+    ));
   ?>
   <div id="cart-items">
     <?php $this->renderPartial('_cartItems', array('cart' => $cart)); ?>
@@ -41,7 +45,8 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
   <div class="cufon gray bold" style="font-size: 26pt; text-align: center; margin: 40px 0">Контактная информация</div>
   <div class="inline-blocks" style="font-size: 12pt">
     <div style="vertical-align: top; width: 290px">
-      <div><?php
+      <div><span id="<?php echo $has_err; ?>"></span>
+        <?php
         echo CHtml::label('Ваше имя и фамилия<span class="red">*</span>'
             , 'CustomerProfile_fio', array(
           'class' => 'cufon gray bold',
