@@ -1,9 +1,10 @@
 <?php
 
-class m131218_192710_order_phone_20_chars extends CDbMigration
+class m131219_192710_order_phone_20_chars extends CDbMigration
 {
 	public function up()
 	{
+    $this->alterColumn('store_order', 'phone', 'varchar(20)');
 	}
 
 	public function down()
