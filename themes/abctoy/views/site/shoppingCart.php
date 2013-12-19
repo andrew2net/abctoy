@@ -13,7 +13,7 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
   <?php
   $form = $this->beginWidget('CActiveForm', array(
     'id' => 'item-submit',
-    'action'=>$this->createUrl('')."#prof",
+    'action' => $this->createUrl('') . "#prof",
   ));
   ?>
   <div id="cart-items">
@@ -193,10 +193,10 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
     <span class="red" id="passw-err"></span>
     <div style="margin-top: 1em">
       Забыли пароль? <?php echo CHtml::Button('Восстановить', array('id' => 'recover-password')); ?>
-      <img src="/images/load.gif" style="display: none; vertical-align: middle; margin-left: 15px" id="loading-dialog" />
+      <img src="/images/process.gif" style="display: none; vertical-align: middle; margin-left: 15px" id="loading-dialog" />
     </div>
     <div id="sent-mail-recovery" style="height: 40px"></div>
-    <div id="close-cart-dialog" class="green" style="text-align: right; margin-top: 1em; cursor: pointer">Закрыть окно</div>
+    <div id="close-cart-dialog" class="blue" style="text-align: right; font-size: 9pt; margin-top: 1em; cursor: pointer">Закрыть окно</div>
   </div>
   <?php $this->endWidget(); ?>
 </div>
@@ -282,7 +282,7 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
   $('#submit-password').click(function() {
     var email = $('#CustomerProfile_email').val();
     var passw = $('#password').val();
-    $.post('/cartLogin', {
+    $.post('/login', {
       email: email,
       passw: passw
     }, function(data) {
@@ -295,14 +295,16 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
 
   $('#recover-password').click(function() {
     var email = $('#CustomerProfile_email').val();
+    $('#sent-mail-recovery').html('');
+    $(this).css('display', 'none');
     $('#loading-dialog').css('display', 'inline');
-    $.post('/user/recovery/cartpasswrecover', {
+    $.post('/user/recovery/passwrecover', {
       email: email
     }, function(data) {
       if (data == 'ok')
         $('#sent-mail-recovery').html('Инструкции для восстановления пароля высланы на Email ' + email);
       $('#loading-dialog').css('display', 'none');
-
+      $('#recover-password').css('display', 'inline');
     });
   });
 

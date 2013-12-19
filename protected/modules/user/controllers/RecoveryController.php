@@ -71,13 +71,24 @@ class RecoveryController extends Controller {
     }
   }
 
-  public function actionCartPasswRecover() {
+  public function actionPasswRecover() {
     if (isset($_POST['email'])) {
       $user = User::model()->notsafe()->findByAttributes(array('email' => $_POST['email']));
       if (!is_null($user)) {
         $this->sendMail($user);
       }
       echo 'ok';
+    }
+    else if (isset($_POST['login'])) {
+      $user = User::model()->notsafe()->findByAttributes(array('username' => $_POST['login']));
+      if (is_null($user))
+        $user = User::model()->notsafe()->findByAttributes(array('email' => $_POST['login']));
+      if (!is_null($user)) {
+        $this->sendMail($user);
+        echo json_encode(array('result' => TRUE, 'email' => $user->email));
+      }
+      else
+        echo json_encode(array('result' => FALSE));
     }
     else
       echo '';

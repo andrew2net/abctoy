@@ -867,13 +867,18 @@ a:hover .item-disc, a:hover .item-price{
   font-size: 12pt;
 }
 .add-prodact-alert .ui-dialog-titlebar, 
-.cart-login-alert .ui-dialog-titlebar{
+.cart-login-alert .ui-dialog-titlebar,
+.login-dialog .ui-dialog-titlebar{
   display: none;
 }
-.add-prodact-alert, .cart-login-alert{
+.add-prodact-alert, .cart-login-alert, .login-dialog{
   border: 4px solid #3399cc !important;
   border-radius: 5px;
 }
+/*.login-dialog{
+  border: 4px solid #99cc33 !important;
+  border-radius: 5px;
+}*/
 .add-prodact-alert div{
   text-align: center;
 }

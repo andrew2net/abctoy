@@ -124,10 +124,10 @@ class SiteController extends Controller {
   /**
    * Logs out the current user and redirect to homepage.
    */
-//  public function actionLogout() {
-//    Yii::app()->user->logout();
-//    $this->redirect(Yii::app()->homeUrl);
-//  }
+  public function actionLogout() {
+    Yii::app()->user->logout();
+    $this->redirect(Yii::app()->homeUrl);
+  }
 
   public function actionGroup($id) {
     Yii::import('application.modules.catalog.models.Product');
@@ -602,27 +602,45 @@ class SiteController extends Controller {
     Yii::app()->end();
   }
 
-  public function actionCartLogin() {
-    if (isset($_POST['email']) && isset($_POST['passw'])) {
-      $user = User::model()->findByAttributes(array('email' => $_POST['email']));
+  public function actionLogin() {
+    if ((isset($_POST['email']) || isset($_POST['login'])) && isset($_POST['passw'])) {
+      if (isset($_POST['email']))
+        $user = User::model()->findByAttributes(array('email' => $_POST['email']));
+      else if (isset($_POST['login'])) {
+        $user = User::model()->findByAttributes(array('username' => $_POST['login']));
+        if (is_null($user))
+          $user = User::model()->findByAttributes(array('email' => $_POST['login']));
+      }
       if (!is_null($user)) {
         $identity = new UserIdentity($user->username, $_POST['passw']);
         if ($identity->authenticate()) {
           $session_id = self::getSession();
           Yii::app()->user->login($identity, 3600 * 24 * 7);
-          $cart = Cart::model()->findAllByAttributes(array(
-            'session_id' => $session_id));
-          foreach ($cart as $item) {
-            $item->session_id = null;
-            $item->user_id = $user->id;
-            $item->update(array('session_id', 'user_id'));
+          if (isset($_POST['email'])) { //if login from shopping cart move items to profile
+            $cart = Cart::model()->findAllByAttributes(array('user_id' => $user->id));
+            foreach ($cart as $item) {
+              $item->delete();
+            }
+            $old_cart = Cart::model()->findAllByAttributes(array(
+              'session_id' => $session_id));
+            foreach ($old_cart as $item) {
+              $item->session_id = null;
+              $item->user_id = $user->id;
+              $item->update(array('session_id', 'user_id'));
+            }
+            echo 'ok';
           }
-          echo 'ok';
+          elseif (isset($_POST['login'])) {
+            echo json_encode(array('result' => TRUE, 'cart' => $this->cartLabel()));
+          }
           Yii::app()->end();
         }
       }
     }
-    echo '';
+    if (isset($_POST['login']))  //if login from shopping cart move items to profile
+      echo json_encode(array('result' => FALSE));
+    else
+      echo '';
     Yii::app()->end();
   }
 
