@@ -42,22 +42,31 @@
   </div>
 </div>
 <div id="login-dialog">
-  <div style="display: inline-block; vertical-align: top">
-    <div><?php echo CHtml::label('Имя или Email', 'login'); ?></div>
-    <div><?php echo CHtml::textField('login', '', array('style' => 'width: 150px')); ?></div>
+  <div id="close-login-dialog" class="blue" style="text-align: right; cursor: pointer;font-size: 8pt">Закрыть окно</div>
+  <div id="login-block" class="inline-blocks">
+    <div style="display: inline-block; vertical-align: top">
+      <div><?php echo CHtml::label('Имя или Email', 'login'); ?></div>
+      <div><?php echo CHtml::textField('login', '', array('style' => 'width: 150px')); ?></div>
+    </div>
+    <div style="display: inline-block; vertical-align: top; margin-left: 3px">
+      <div><?php echo CHtml::label('Пароль', 'password'); ?></div>
+      <div><?php echo CHtml::passwordField('password', '', array('style' => 'width: 150px')); ?></div>
+    </div>
   </div>
-  <div style="display: inline-block; vertical-align: top; margin-left: 3px">
-    <div><?php echo CHtml::label('Пароль', 'password'); ?></div>
-    <div><?php echo CHtml::passwordField('password', '', array('style' => 'width: 150px')); ?></div>
+  <div id="registr-block" style="display: none">
+    <div style="display: inline-block; vertical-align: top">
+      <div><?php echo CHtml::label('Ваш Email', 'email'); ?></div>
+      <div><?php echo CHtml::textField('email', '', array('style' => 'width: 300px')); ?></div>
+    </div>
   </div>
-  <div style="height: 10px; text-align: center"><span style="font-size: 8pt; display: none" class="red passw-err">Неверное имя или пароль</span></div>
-  <div style="margin-top: 5px" class="right">
-    <div style="cursor: pointer;margin-bottom: 10px" id="submit-password" class="blue">Вход</div>
-    <div id="close-login-dialog" class="blue" style="text-align: right; cursor: pointer;font-size: 8pt">Закрыть окно</div>
+  <div style="height: 10px; font-size: 8pt">
+    <span id="error-msg" style="display: none; margin-right: 15px" class="red passw-err"></span>
+    <span id="recover-password" class="blue passw-err" style="cursor: pointer; display: none">Восстановить доступ</span>
   </div>
+  <div class="right blue" style="cursor: pointer;margin: 5px 0 5px" id="submit-password">Вход</div>
   <div  style="margin-top: 5px">
     <div id="registr" class="blue" style="cursor: pointer">Зрегистрироваться</div>
-    <div id="recover-password" class="blue passw-err" style="cursor: pointer; display: none;font-size: 9pt; margin-top: 5px">Восстановить доступ?</div>
+    <div style="cursor: pointer;margin-bottom: 10px; display: none" id="submit-registr" class="blue">Регистрация</div>
     <img src="/images/process.gif" style="display: none; margin: 5px 35px" id="loading-dialog" />
     <div id="sent-mail-recovery" style="font-size: 9pt; display: none; cursor: pointer"></div>
   </div>
@@ -82,9 +91,15 @@
       },
       close: function() {
         $('.passw-err').css('display', 'none');
-        $('#recover-password').css('display', 'none');
+//        $('#recover-password').css('display', 'none');
         $('#loading-dialog').css('display', 'none');
         $('#sent-mail-recovery').css('display', 'none');
+        $('#registr').css('display', 'inherit');
+        $('#login-block').css('display', 'inherit');
+        $('#submit-password').css('display', 'inherit');
+//        $('#recover-password').css('display', 'none');
+        $('#registr-block').css('display', 'none');
+        $('#submit-registr').css('display', 'none');
       },
       show: {
         effect: "blind",
@@ -112,9 +127,9 @@
         $('#profile-menu').css('display', 'inherit');
         $('#shoppingCart').html(result.cart);
       } else {
-//        $('#registr').css('display', 'none');
-        $('.passw-err').css('display', 'inherit');
-        $('#recover-password').css('display', 'inherit');
+        $('#error-msg').html('Неверное имя или пароль');
+        $('.passw-err').css('display', 'inline');
+//        $('#recover-password').css('display', 'inline');
       }
     });
   });
@@ -122,6 +137,7 @@
   $('#recover-password').click(function() {
     var login = $('#login').val();
     $('.passw-err').css('display', 'none');
+    $('#registr').css('display', 'none');
     $('#loading-dialog').css('display', 'inline');
     $.post('/user/recovery/passwrecover', {
       login: login
@@ -138,9 +154,37 @@
     });
   });
 
+  $('#submit-registr').click(function() {
+    var email = $('#email').val();
+    $(this).css('display', 'none');
+    $('#loading-dialog').css('display', 'inline')
+    $.post('/registr', {email: email}, function(data) {
+      $('#loading-dialog').css('display', 'none')
+      var result = JSON && JSON.parse(data) || $.parseJSON(data);
+      if (result.result) {
+        $("#login-dialog").dialog('close');
+        document.location.href = '/profile';
+      } else {
+        $('#error-msg').html(result.msg);
+        $('#error-msg').css('display', 'inline');
+        $('#submit-registr').css('display', 'inline');
+      }
+    });
+  });
+
   $('#sent-mail-recovery').click(function() {
     $(this).css('display', 'none');
-    $('#recover-password').css('display', 'inherit');
+    $('#recover-password').css('display', 'inline');
+    $('#registr').css('display', 'inherit');
+  });
+
+  $('#registr').click(function() {
+    $(this).css('display', 'none');
+    $('#login-block').css('display', 'none');
+    $('#submit-password').css('display', 'none');
+    $('.passw-err').css('display', 'none');
+    $('#registr-block').css('display', 'inherit');
+    $('#submit-registr').css('display', 'inline');
   });
 
   $('#login-menu a').click(function(event) {

@@ -570,6 +570,39 @@ class SiteController extends Controller {
 //              Yii::app()->mail->send($message);
   }
 
+  public function actionRegistr() {
+    if (isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+      $user = User::model()->findByAttributes(array('email' => $_POST['email']));
+      if ($user)
+        echo json_encode(array('result' => false, 'msg' => 'Пользователь с таким адресом уже зарегистрирован'));
+      else {
+        $session_id = '';
+        if (!Yii::app()->user->isGuest)
+          Yii::app()->user - logOut();
+        else
+          $seesion_id = $this->getSession();
+
+        $profile = CustomerProfile::model()->findByAttributes(array('email' => $_POST['email']));
+        if ($profile)
+          $old_session_id = $profile->session_id;
+        else
+          $profile = new CustomerProfile;
+        $profile->email = $_POST['email'];
+        $profile->save(FALSE);
+        $this->registerUser($profile);
+        $cart = Cart::model()->findAllByAttributes(array('session_id' => $seesion_id));
+        foreach ($cart as $item) {
+          $item->session_id = NULL;
+          $item->user_id = Yii::app()->user->id;
+          $item->update(array('session_id', 'user_id'));
+        }
+        echo json_encode(array('result' => true));
+      }
+    }
+    else
+      echo json_encode(array('result' => false, 'msg' => 'Адрес задан неверно'));
+  }
+
   public function actionCheckEmail() {
     if (isset($_POST['email'])) {
       $user = User::model()->findByAttributes(array('email' => $_POST['email']));
