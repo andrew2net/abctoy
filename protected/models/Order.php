@@ -86,6 +86,7 @@ class Order extends CActiveRecord {
       array('fio, email', 'length', 'max' => 255),
       array('city', 'length', 'max' => 100),
       array('time, address', 'safe'),
+      array('fio, email, address', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
       array('id, email, profile_email, fio, profile_fio, phone, profile_phone, city, address, delivery_id, payment_id, status_id, coupon_id, time', 'safe', 'on' => 'search'),

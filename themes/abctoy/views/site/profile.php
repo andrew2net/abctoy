@@ -2,8 +2,14 @@
 /* @var $profile CustomerProfile */
 /* @var $order Order */
 /* @var $new_passw NewPassword */
+/* @var $child Child */
 ?>
-<?php $this->pageTitle = Yii::app()->name . ' - Личный кабинет'; ?>
+<?php
+$this->pageTitle = Yii::app()->name . ' - Личный кабинет';
+$cs = Yii::app()->getClientScript();
+$coreScriptUrl = $cs->getCoreScriptUrl();
+$cs->registerScriptFile($coreScriptUrl . '/jui/js/jquery-ui-i18n.min.js', CClientScript::POS_HEAD);
+?>
 <div class="container" id="page" style="margin-top: 0">
   <?php $this->renderPartial('_profileTopBlock'); ?>
   <div style="text-align: right; margin: 40px 0 10px"><a href="/logout">Выйти</a></div>
@@ -13,6 +19,7 @@
       <div class="cufon bold" style="font-size: 14pt; width: 400px">Контактная информация</div>
       <div style="height: 20px; margin: 10px 0">
         <?php if (Yii::app()->user->hasFlash('newPassw')) { ?>
+          //$cs->registerCssFile($coreScriptUrl . '/jui/css/base/jquery-ui.css');
           <span class="cufon red bold" style="font-size: 12pt; margin-bottom: 10px"><?php echo Yii::app()->user->getFlash('newPassw'); ?></span>
         <?php } ?>
       </div>
@@ -132,9 +139,9 @@
       <div class="cufon green bold" style="font-size: 22pt; position: relative;
            background: white; width: 90px; text-align: center; left: 50px; 
            z-index: 10">Дети</div>
-      <div style="border: #99cc33 solid 4px; border-radius: 4px; position: relative; 
-           width: 538px; height: 300px; top: -15px">
-
+      <div id="children-block" style="border: #99cc33 solid 4px; border-radius: 4px; position: relative; 
+           width: 538px; min-height: 250px; top: -15px" class="inline-blocks">
+           <?php $this->renderPartial('_child', array('child' => $child)); ?>
       </div>
       <div class="cufon bold" style="font-size: 16pt; margin: 20px 0 0px">Мои заказы</div>
       <?php
@@ -165,3 +172,109 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  function showAddForm() {
+    $('#add-child-link').css('display', 'none');
+    $('#child-add').css('display', 'inline-block');
+    $('input[name="Child[gender_id]"]:checked').attr('checked', false);
+    $('#Child_birthday').val('');
+    $('#Child_name').val('');
+    $('#error-block').html('');
+  }
+
+  function hideAddForm() {
+    $('#add-child-link').css('display', 'inline-block');
+    $('#child-add').css('display', 'none');
+  }
+
+  function setChildrenView() {
+    $('.icon-boy, .icon-girl').parent().find('.child-update').css('display', 'none');
+    $('.icon-boy, .icon-girl').parent().find('.child-view').css('display', 'inherit');
+  }
+
+  $('#children-block').on('click', '#add-child-link', function() {
+    setChildrenView();
+    showAddForm();
+  });
+
+  $('#children-block').on('click', '.icon-add-child', function() {
+    if ($('#child-add').css('display') === 'none') {
+      setChildrenView();
+      showAddForm();
+    } else {
+      hideAddForm();
+    }
+  });
+
+  $('#children-block').on('click', '#save-child', function() {
+    var gender = $('input[name="Child[gender_id]"]:checked').val();
+    var birthday = $('#Child_birthday').val();
+    var name = $('#Child_name').val();
+    $.post('/updatechild', {
+      id: 0,
+      gender: gender,
+      birthday: birthday,
+      name: name
+    }, function(data) {
+      var result = JSON && JSON.parse(data) || $.parseJSON(data);
+      if (result.result) {
+        $(result.html).insertBefore($('#child-add').parent());
+        hideAddForm();
+      } else {
+        $('#child-add').html(result.html);
+      }
+    });
+  });
+
+  $('#children-block').on('focus', '.date', function() {
+    $(this).datepicker($.extend({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "-30:+00"
+    }, $.datepicker.regional['ru']));
+  });
+
+  $('#children-block').on('click', '.icon-boy, .icon-girl', function() {
+    var view = $(this).parent().find('.child-view');
+    if (view.css('display') === 'none') {
+      view.css('display', 'inherit');
+      $(this).parent().find('.child-update').css('display', 'none');
+      $(this).parent().find('.child-error').empty();
+    } else {
+      hideAddForm();
+      setChildrenView();
+      view.css('display', 'none');
+      $(this).parent().find('.child-update').css('display', 'inherit');
+    }
+  });
+
+  $('#children-block').on('click', '.delete', function() {
+    var parent = $(this).parents('.child-block')[0];
+    var id = /[0-9]+/.exec(parent.id)[0];
+    $.post('/delChild', {
+      id: id
+    }, function(data) {
+      if (data)
+        $(parent).remove();
+    });
+  });
+
+  $('#children-block').on('click', '.update', function() {
+    var parent = $(this).parents('.child-block')[0];
+    var id = /[0-9]+/.exec(parent.id)[0];
+    var name = $(parent).find('.name').val();
+    var birthday = $(parent).find('.date').val();
+    $.post('/updatechild', {
+      id: id,
+      birthday: birthday,
+      name: name
+    }, function(data) {
+      var result = JSON && JSON.parse(data) || $.parseJSON(data);
+      $(result.html).replaceAll(parent);
+      if (!result.result) {
+        $('#child-' + id).find('.child-view').css('display', 'none');
+        $('#child-' + id).find('.child-update').css('display', 'inherit');
+      }
+    });
+  });
+</script>

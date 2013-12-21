@@ -601,6 +601,7 @@ class SiteController extends Controller {
     }
     else
       echo json_encode(array('result' => false, 'msg' => 'Адрес задан неверно'));
+    Yii::app()->end();
   }
 
   public function actionCheckEmail() {
@@ -793,17 +794,22 @@ class SiteController extends Controller {
       $profile = new CustomerProfile;
 
     $new_passw = new NewPassword;
+    $child = new Child;
 
     if (isset($_POST['CustomerProfile']) && isset($_POST['NewPassword'])) {
       $new_passw->attributes = $_POST['NewPassword'];
       $profile->attributes = $_POST['CustomerProfile'];
-      if ($new_passw->validate() && $profile->save()) {
+      $profile->save();
+      if ($new_passw->validate()) {
         if (strlen($new_passw->passw1) > 0) {
           $new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
           $new_password->password = UserModule::encrypting($new_passw->passw1);
           $new_password->activkey = UserModule::encrypting(microtime() . $new_passw->passw1);
-          $new_password->save();
-          Yii::app()->user->setFlash('newPassw', "Новый пароль сохранен.");
+          if ($new_password->save()) {
+            Yii::app()->user->setFlash('newPassw', "Новый пароль сохранен.");
+            $new_passw->passw1 = '';
+            $new_passw->passw2 = '';
+          }
         }
       }
     }
@@ -835,7 +841,57 @@ class SiteController extends Controller {
       'profile' => $profile,
       'order' => $order,
       'new_passw' => $new_passw,
+      'child' => $child,
     ));
+  }
+
+  public function actionUpdateChild() {
+    if (isset($_POST['id'])) {
+      $profile = CustomerProfile::model()->findByAttributes(array(
+        'user_id' => Yii::app()->user->id
+      ));
+      $child = Child::model()->findByPk($_POST['id'], 'profile_id=:id'
+          , array(':id' => $profile->id));
+      if (is_null($child))
+        $child = new Child;
+      $child->profile_id = $profile->id;
+      if (isset($_POST['gender']))
+        $child->gender_id = $_POST['gender'];
+      $child->birthday = $_POST['birthday'];
+      $child->name = $_POST['name'];
+      if ($child->save()) {
+        $child->afterFind();
+        echo json_encode(array(
+          'result' => TRUE,
+          'html' => $this->renderPartial('_childUpdate', array('child' => $child), true)
+        ));
+      }
+      else {
+        $child->refresh();
+        if ($_POST['id'] == 0)
+          $output = $this->renderPartial('_childAdd', array('child' => $child), TRUE);
+        else
+          $output = $this->renderPartial('_childUpdate', array('child' => $child), TRUE);
+        echo json_encode(array(
+          'result' => FALSE,
+          'html' => $output,
+        ));
+      }
+    }
+    Yii::app()->end();
+  }
+
+  public function actionDelChild() {
+    if (isset($_POST['id'])) {
+      $child = Child::model()->with('profile')->findByPk($_POST['id']
+          , array(
+        'condition' => 'profile.user_id=19',
+        'params' => array(':uid' => Yii::app()->user->id)
+          )
+      );
+      echo ($child && $child->delete());
+    }
+    Yii::app()->end();
   }
 
 }

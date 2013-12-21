@@ -163,7 +163,7 @@
       var result = JSON && JSON.parse(data) || $.parseJSON(data);
       if (result.result) {
         $("#login-dialog").dialog('close');
-        document.location.href = '/profile';
+        window.location.href = '/profile';
       } else {
         $('#error-msg').html(result.msg);
         $('#error-msg').css('display', 'inline');

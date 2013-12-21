@@ -328,6 +328,46 @@ input[type=checkbox]:checked + label:before, .weekcarousel-prev,
   width: 25px;
   height: 25px;
 }
+.icon-boy, .icon-girl{
+  background: url(/themes/abctoy/css/icons1.png) no-repeat;
+  width: 75px;
+  height: 75px;
+  margin: 20px;
+  cursor: pointer;
+}
+.icon-boy{
+  background-position: -78px -162px;
+}
+.icon-girl{
+  background-position: 0 -162px;
+}
+.icon-add-child{
+  width: 75px;
+  height: 75px;
+  border-radius: 37px;
+  background-color: #666666;
+  margin: 20px;
+  cursor: pointer;
+  position: relative;
+}
+.icon-add-child:before, .icon-add-child:after{
+  position: absolute;
+  background-color: white;
+}
+.icon-add-child:before{
+  content: " ";
+  width: 1px;
+  height: 37px;
+  top: 18px;
+  left: 37px;
+}
+.icon-add-child:after{
+  content: " ";
+  width: 37px;
+  height: 1px;
+  top: 37px;
+  left: 18px;
+}
 
 .valign-middle{
   vertical-align: middle;
