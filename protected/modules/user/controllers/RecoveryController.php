@@ -29,10 +29,24 @@ class RecoveryController extends Controller {
                 $find->status = 1;
               }
               $find->save();
-              $identity = new UserIdentity($find->username, $form2->password);
-              $identity->authenticate();
-              Yii::app()->user->login($identity, 60 * 60 * 24 * 7);
-
+//              $identity = new UserIdentity($find->username, $form2->password);
+//              $identity->authenticate();
+//              Yii::import('application.controllers.SiteController');
+//              $session_id = SiteController::getSession();
+//              Yii::app()->user->login($identity, 60 * 60 * 24 * 7);
+//              $old_cart = Cart::model()->findAllByAttributes(array(
+//                'session_id' => $session_id));
+//              if (count($old_cart) > 0) {
+//                $cart = Cart::model()->findAllByAttributes(array('user_id' => Yii::app()->user->id));
+//                foreach ($cart as $item) {
+//                  $item->delete();
+//                }
+//                foreach ($old_cart as $item) {
+//                  $item->session_id = null;
+//                  $item->user_id = Yii::app()->user->id;
+//                  $item->update(array('session_id', 'user_id'));
+//                }
+//              }
               Yii::app()->user->setFlash('recoveryMessage', UserModule::t("New password is saved."));
               $this->redirect(Yii::app()->controller->module->recoveryUrl);
             }

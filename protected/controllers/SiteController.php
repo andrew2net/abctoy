@@ -643,16 +643,18 @@ class SiteController extends Controller {
           $session_id = self::getSession();
           Yii::app()->user->login($identity, 3600 * 24 * 7);
           if (isset($_POST['email'])) { //if login from shopping cart move items to profile
-            $cart = Cart::model()->findAllByAttributes(array('user_id' => $user->id));
-            foreach ($cart as $item) {
-              $item->delete();
-            }
             $old_cart = Cart::model()->findAllByAttributes(array(
               'session_id' => $session_id));
-            foreach ($old_cart as $item) {
-              $item->session_id = null;
-              $item->user_id = $user->id;
-              $item->update(array('session_id', 'user_id'));
+            if (count($old_cart) > 0) {
+              $cart = Cart::model()->findAllByAttributes(array('user_id' => $user->id));
+              foreach ($cart as $item) {
+                $item->delete();
+              }
+              foreach ($old_cart as $item) {
+                $item->session_id = null;
+                $item->user_id = $user->id;
+                $item->update(array('session_id', 'user_id'));
+              }
             }
             echo 'ok';
           }
