@@ -610,30 +610,24 @@ class SiteController extends Controller {
       if (Yii::app()->user->isGuest) {
         if (is_null($user)) { //new user
           echo 'ok';
-          Yii::app()->end();
         }
         else {                //need sign up
           echo '';
-          Yii::app()->end();
         }
       }
       else {
         if (is_null($user)) { //new email
           Yii::app()->user->update(array('email' => $_POST['email']));
           echo 'ok';
-          Yii::app()->end();
         }
         else if ($user->id != Yii::app()->user->id) { //there is user with same email
           echo '';
-          Yii::app()->end();
         }
         else {               //signed up
           echo 'ok';
-          Yii::app()->end();
         }
       }
     }
-    echo '1';
     Yii::app()->end();
   }
 
