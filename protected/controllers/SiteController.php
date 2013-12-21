@@ -607,27 +607,24 @@ class SiteController extends Controller {
   public function actionCheckEmail() {
     if (isset($_POST['email'])) {
       $user = User::model()->findByAttributes(array('email' => $_POST['email']));
-      if (Yii::app()->user->isGuest) {
-        if (is_null($user)) { //new user
+      if (Yii::app()->user->isGuest)
+        if (is_null($user))  //new user
           echo 'ok';
-        }
-        else {                //need sign up
+        else                 //need sign up
           echo '';
-        }
-      }
       else {
         if (is_null($user)) { //new email
           Yii::app()->user->update(array('email' => $_POST['email']));
           echo 'ok';
         }
-        else if ($user->id != Yii::app()->user->id) { //there is user with same email
+        else if ($user->id != Yii::app()->user->id)  //there is user with same email
           echo '';
-        }
-        else {               //signed up
+        else                //signed up
           echo 'ok';
-        }
       }
     }
+    else
+      echo '';
     Yii::app()->end();
   }
 
