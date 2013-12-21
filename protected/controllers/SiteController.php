@@ -633,6 +633,7 @@ class SiteController extends Controller {
         }
       }
     }
+    echo '1';
     Yii::app()->end();
   }
 
