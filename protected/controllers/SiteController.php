@@ -374,6 +374,13 @@ class SiteController extends Controller {
     if (isset($_POST['CustomerProfile'])) {
       $profile->attributes = $_POST['CustomerProfile'];
       if ($profile->save()) {
+        if (Yii::app()->user->isGuest) {
+          $user = User::model()->findByAttributes(array(
+            'email' => $profile->email));
+          if (is_null($user)) {
+            $this->registerUser($profile);
+          }
+        }
         $tr = $order->dbConnection->beginTransaction();
         if (isset($_POST['Cart'])) {
           $count_products = $this->countProducts();
@@ -409,13 +416,6 @@ class SiteController extends Controller {
               throw $e;
             }
             if ($fl) {
-              if (Yii::app()->user->isGuest) {
-                $user = User::model()->findByAttributes(array(
-                  'email' => $profile->email));
-                if (is_null($user)) {
-                  $this->registerUser($profile);
-                }
-              }
               $this->redirect('orderSent');
             }
           }
@@ -561,13 +561,13 @@ class SiteController extends Controller {
     $message->setBody($params, 'text/html');
     $message->setFrom(Yii::app()->params['infoEmail']);
     $message->setTo(array($profile->email => $profile->fio));
-//              Yii::app()->mail->send($message);
+              Yii::app()->mail->send($message);
 
     $message->setSubject('Оповещение о заказе');
     $message->view = 'notifyOrder';
     $message->setBody($params, 'text/html');
     $message->setTo(array(Yii::app()->params['adminEmail']));
-//              Yii::app()->mail->send($message);
+              Yii::app()->mail->send($message);
   }
 
   public function actionRegistr() {
@@ -877,7 +877,7 @@ class SiteController extends Controller {
     if (isset($_POST['id'])) {
       $child = Child::model()->with('profile')->findByPk($_POST['id']
           , array(
-        'condition' => 'profile.user_id=19',
+        'condition' => 'profile.user_id=:uid',
         'params' => array(':uid' => Yii::app()->user->id)
           )
       );
