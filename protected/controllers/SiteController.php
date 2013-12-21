@@ -606,6 +606,7 @@ class SiteController extends Controller {
 
   public function actionCheckEmail() {
     if (isset($_POST['email'])) {
+      echo '1';
       $user = User::model()->findByAttributes(array('email' => $_POST['email']));
       if (Yii::app()->user->isGuest)
         if (is_null($user))  //new user
