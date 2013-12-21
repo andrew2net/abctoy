@@ -527,6 +527,13 @@ class SiteController extends Controller {
       if ($identity->authenticate()) {
         Yii::app()->user->login($identity, 3600 * 24 * 7);
 
+        $cart = Cart::model()->findAllByAttributes(array('session_id' => $profile->session_id));
+        foreach ($cart as $item) {
+          $item->session_id = NULL;
+          $item->user_id = Yii::app()->user->id;
+          $item->update(array('session_id', 'user_id'));
+        }
+
         $profile->session_id = null;
         $profile->user_id = $user->id;
         $profile->update(array(
@@ -561,13 +568,13 @@ class SiteController extends Controller {
     $message->setBody($params, 'text/html');
     $message->setFrom(Yii::app()->params['infoEmail']);
     $message->setTo(array($profile->email => $profile->fio));
-              Yii::app()->mail->send($message);
+    Yii::app()->mail->send($message);
 
     $message->setSubject('Оповещение о заказе');
     $message->view = 'notifyOrder';
     $message->setBody($params, 'text/html');
     $message->setTo(array(Yii::app()->params['adminEmail']));
-              Yii::app()->mail->send($message);
+    Yii::app()->mail->send($message);
   }
 
   public function actionRegistr() {
@@ -580,22 +587,15 @@ class SiteController extends Controller {
         if (!Yii::app()->user->isGuest)
           Yii::app()->user - logOut();
         else
-          $seesion_id = $this->getSession();
+          $session_id = $this->getSession();
 
         $profile = CustomerProfile::model()->findByAttributes(array('email' => $_POST['email']));
-        if ($profile)
-          $old_session_id = $profile->session_id;
-        else
+        if (is_null($profile))
           $profile = new CustomerProfile;
         $profile->email = $_POST['email'];
+        $profile->session_id = $session_id;
         $profile->save(FALSE);
         $this->registerUser($profile);
-        $cart = Cart::model()->findAllByAttributes(array('session_id' => $seesion_id));
-        foreach ($cart as $item) {
-          $item->session_id = NULL;
-          $item->user_id = Yii::app()->user->id;
-          $item->update(array('session_id', 'user_id'));
-        }
         echo json_encode(array('result' => true));
       }
     }
@@ -624,7 +624,7 @@ class SiteController extends Controller {
       }
     }
     else
-      echo '';
+      echo 'ok';
     Yii::app()->end();
   }
 

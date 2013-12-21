@@ -19,7 +19,6 @@ $cs->registerScriptFile($coreScriptUrl . '/jui/js/jquery-ui-i18n.min.js', CClien
       <div class="cufon bold" style="font-size: 14pt; width: 400px">Контактная информация</div>
       <div style="height: 20px; margin: 10px 0">
         <?php if (Yii::app()->user->hasFlash('newPassw')) { ?>
-          //$cs->registerCssFile($coreScriptUrl . '/jui/css/base/jquery-ui.css');
           <span class="cufon red bold" style="font-size: 12pt; margin-bottom: 10px"><?php echo Yii::app()->user->getFlash('newPassw'); ?></span>
         <?php } ?>
       </div>

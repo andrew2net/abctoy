@@ -18,9 +18,7 @@
     echo CHtml::tag('div', array('style' => 'margin-bottom:1em'), "Для входа в ваш личный кабинет ипользуйте следующие данные:");
     echo CHtml::tag('div', array(), "имя: {$login}");
     echo CHtml::tag('div', array(), "пароль: {$passw}");
-    echo CHtml::tag('div', array('style' => 'margin-top:1em'), 'Это письмо сформированно автоматически. Пожалуйста не отвечайте на него.');
-    echo CHtml::tag('div', array('style' => 'margin-top:1em'), 'Телефон в Новосибирске +7 (383) 375-03-22.');
-    echo CHtml::tag('a', array('href' => Yii::app()->createAbsoluteUrl('')), Yii::app()->createAbsoluteUrl(''));
+    $this->renderPartial('//mail/_footer');
     ?>
   </body>
 </html>
