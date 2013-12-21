@@ -190,8 +190,8 @@ class User extends CActiveRecord {
 
   public function usernameGenerator() {
 
-    $matches = array();
-    preg_match('/[A-Za-z0-9_]+/u', '$this->email', &$matches);
+    $matches = array('1');
+    preg_match('/[A-Za-z0-9_]+/u', $this->email);//, &$matches);
     $this->username = $matches[0];
     $n = 1;
     while (!$this->validate('username') && $n < 1000) {
