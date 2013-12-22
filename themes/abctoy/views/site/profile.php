@@ -158,7 +158,7 @@ $cs->registerScriptFile($coreScriptUrl . '/jui/js/jquery-ui-i18n.min.js', CClien
             'value' => 'Yii::app()->dateFormatter->format("dd.MM.yyyy", $data->time)'
           ),
           array(
-            'name' => '"Сумма"',
+            'name' => array("Сумма"),
             'value' => 'number_format($data->summ - $data->couponDiscount + $data->delivery_summ, 0, ".", " ") . " руб"'
           ),
           array(
