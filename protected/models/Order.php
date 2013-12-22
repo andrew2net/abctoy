@@ -80,7 +80,7 @@ class Order extends CActiveRecord {
     return array(
       array('profile_id, delivery_id, payment_id, status_id', 'required'),
       array('profile_id, delivery_id, payment_id, status_id, coupon_id', 'length', 'max' => 11),
-      array('phone', 'length', 'max' => 20  ),
+      array('phone', 'length', 'max' => 20),
       array('delivery_summ', 'numerical'),
       array('email', 'email'),
       array('fio, email', 'length', 'max' => 255),
@@ -129,6 +129,7 @@ class Order extends CActiveRecord {
       'phone' => 'Телефон',
       'city' => 'Город',
       'address' => 'Адрес',
+      'summ' => 'Сумма',
     );
   }
 
