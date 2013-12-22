@@ -22,115 +22,117 @@ $cs->registerScriptFile($coreScriptUrl . '/jui/js/jquery-ui-i18n.min.js', CClien
           <span class="cufon red bold" style="font-size: 12pt; margin-bottom: 10px"><?php echo Yii::app()->user->getFlash('newPassw'); ?></span>
         <?php } ?>
       </div>
-      <div><?php
-        echo CHtml::label('Ваше имя и фамилия<span class="red">*</span>'
-            , 'CustomerProfile_fio', array(
-          'class' => 'cufon gray bold',
-          'style' => 'font-size: 12pt'
-        ));
-        ?>
-      </div>
-      <div style="margin-bottom: 1em"><?php
-        echo $form->textField($profile, 'fio'
-            , array('class' => 'input-text'));
-        ?>
-        <?php echo CHtml::error($profile, 'fio', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
-      </div>
-      <div><?php
-        echo CHtml::label('E-mail<span class="red">*</span>', 'CustomerProfile_email'
-            , array(
-          'class' => 'cufon gray bold',
-          'style' => 'font-size: 12pt'
-        ));
-        ?>
-      </div>
-      <div style="margin-bottom: 1em"><?php
-        echo CHtml::activeEmailField($profile, 'email'
-            , array('class' => 'input-text'));
-        ?>
-        <?php echo CHtml::error($profile, 'email', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
-      </div>
-      <div><?php
-        echo CHtml::activeLabel($new_passw
-            , 'passw1', array(
-          'class' => 'cufon gray bold',
-          'style' => 'font-size: 12pt'
-        ));
-        ?>
-      </div>
-      <div style="margin-bottom: 1em"><?php
-        echo CHtml::activePasswordField($new_passw, 'passw1'
-            , array('class' => 'input-text'));
-        ?>
-        <?php echo CHtml::error($new_passw, 'passw1', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
-      </div>
-      <div><?php
-        echo CHtml::activeLabel($new_passw
-            , 'passw2', array(
-          'class' => 'cufon gray bold',
-          'style' => 'font-size: 12pt'
-        ));
-        ?>
-      </div>
-      <div style="margin-bottom: 1em"><?php
-        echo CHtml::activePasswordField($new_passw, 'passw2'
-            , array('class' => 'input-text'));
-        ?>
-        <?php echo CHtml::error($new_passw, 'passw2', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
-      </div>
-      <div><?php
-        echo CHtml::label('Телефон<span class="red">*</span>', 'CustomerProfile_phone'
-            , array(
-          'class' => 'cufon gray bold',
-          'style' => 'font-size: 12pt'
-        ));
-        ?>
-      </div>
-      <div style="margin-bottom: 1em"><?php
-        echo CHtml::activeTelField($profile, 'phone'
-            , array('class' => 'input-text'));
-        ?>
-        <?php echo CHtml::error($profile, 'phone', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
-      </div>
-      <div><?php
-        echo CHtml::label('Город<span class="red">*</span>', 'CustomerProfile_city'
-            , array(
-          'class' => 'cufon gray bold',
-          'style' => 'font-size: 12pt'
-        ));
-        ?>
-      </div>
-      <div style="margin-bottom: 1em"><?php
-        $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
-          'id' => 'cart-city',
-          'model' => $profile,
-          'attribute' => 'city',
-          'sourceUrl' => '/site/suggestcity',
-          'htmlOptions' => array('class' => 'input-text')
-        ));
-        ?>
-        <?php echo CHtml::error($profile, 'city', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
-      </div>
-      <div><?php
-        echo CHtml::activeLabel($profile, 'address'
-            , array(
-          'class' => 'cufon gray bold',
-          'style' => 'font-size: 12pt'
-        ));
-        ?>
-      </div>
-      <div style="margin-bottom: 1em"><?php
-        echo CHtml::activeTextField($profile, 'address'
-            , array('class' => 'input-text'));
-        ?></div>
-      <div style="margin: 20px 45px">
-        <a class="submit" href="#">
-          <div class="greenbutton inline-blocks">
-            <div class="left"></div>
-            <div class="center">ИЗМЕНИТЬ</div>
-            <div class="right"></div>
-          </div>
-        </a>
+      <div style="display: inline-block">
+        <div><?php
+          echo CHtml::label('Ваше имя и фамилия<span class="red">*</span>'
+              , 'CustomerProfile_fio', array(
+            'class' => 'cufon gray bold',
+            'style' => 'font-size: 12pt'
+          ));
+          ?>
+        </div>
+        <div style="margin-bottom: 1em"><?php
+          echo $form->textField($profile, 'fio'
+              , array('class' => 'input-text'));
+          ?>
+          <?php echo CHtml::error($profile, 'fio', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
+        </div>
+        <div><?php
+          echo CHtml::label('E-mail<span class="red">*</span>', 'CustomerProfile_email'
+              , array(
+            'class' => 'cufon gray bold',
+            'style' => 'font-size: 12pt'
+          ));
+          ?>
+        </div>
+        <div style="margin-bottom: 1em"><?php
+          echo CHtml::activeEmailField($profile, 'email'
+              , array('class' => 'input-text'));
+          ?>
+          <?php echo CHtml::error($profile, 'email', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
+        </div>
+        <div><?php
+          echo CHtml::activeLabel($new_passw
+              , 'passw1', array(
+            'class' => 'cufon gray bold',
+            'style' => 'font-size: 12pt'
+          ));
+          ?>
+        </div>
+        <div style="margin-bottom: 1em"><?php
+          echo CHtml::activePasswordField($new_passw, 'passw1'
+              , array('class' => 'input-text'));
+          ?>
+          <?php echo CHtml::error($new_passw, 'passw1', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
+        </div>
+        <div><?php
+          echo CHtml::activeLabel($new_passw
+              , 'passw2', array(
+            'class' => 'cufon gray bold',
+            'style' => 'font-size: 12pt'
+          ));
+          ?>
+        </div>
+        <div style="margin-bottom: 1em"><?php
+          echo CHtml::activePasswordField($new_passw, 'passw2'
+              , array('class' => 'input-text'));
+          ?>
+          <?php echo CHtml::error($new_passw, 'passw2', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
+        </div>
+        <div><?php
+          echo CHtml::label('Телефон<span class="red">*</span>', 'CustomerProfile_phone'
+              , array(
+            'class' => 'cufon gray bold',
+            'style' => 'font-size: 12pt'
+          ));
+          ?>
+        </div>
+        <div style="margin-bottom: 1em"><?php
+          echo CHtml::activeTelField($profile, 'phone'
+              , array('class' => 'input-text'));
+          ?>
+          <?php echo CHtml::error($profile, 'phone', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
+        </div>
+        <div><?php
+          echo CHtml::label('Город<span class="red">*</span>', 'CustomerProfile_city'
+              , array(
+            'class' => 'cufon gray bold',
+            'style' => 'font-size: 12pt'
+          ));
+          ?>
+        </div>
+        <div style="margin-bottom: 1em"><?php
+          $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+            'id' => 'cart-city',
+            'model' => $profile,
+            'attribute' => 'city',
+            'sourceUrl' => '/site/suggestcity',
+            'htmlOptions' => array('class' => 'input-text')
+          ));
+          ?>
+          <?php echo CHtml::error($profile, 'city', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
+        </div>
+        <div><?php
+          echo CHtml::activeLabel($profile, 'address'
+              , array(
+            'class' => 'cufon gray bold',
+            'style' => 'font-size: 12pt'
+          ));
+          ?>
+        </div>
+        <div style="margin-bottom: 1em"><?php
+          echo CHtml::activeTextField($profile, 'address'
+              , array('class' => 'input-text'));
+          ?></div>
+        <div style="margin: 20px auto; width: 168px">
+          <a class="submit" href="#">
+            <div class="greenbutton inline-blocks">
+              <div class="left"></div>
+              <div class="center">ИЗМЕНИТЬ</div>
+              <div class="right"></div>
+            </div>
+          </a>
+        </div>
       </div>
       <?php $this->endWidget(); ?>
     </div>

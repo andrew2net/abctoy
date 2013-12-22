@@ -191,7 +191,7 @@ class User extends CActiveRecord {
   public function usernameGenerator() {
 
     $matches = array();
-    preg_match('/[A-Za-z0-9_]+/u', $this->email, $matches);
+    preg_match('/[A-Za-z0-9_]+/u', str_replace('-', '_', $this->email), $matches);
     $this->username = $matches[0];
     $n = 1;
     while (!$this->validate('username') && $n < 1000) {
@@ -199,6 +199,16 @@ class User extends CActiveRecord {
       $this->username = $matches[0] . '_' . $n;
       $n += 1;
     }
+  }
+
+  public function afterFind() {
+    if (is_null($this->profile)){
+      $profile = new Profile;
+      $profile->user_id =$this->id;
+      $profile->save();
+      $this->refresh();
+    }
+    parent::afterFind();
   }
 
 }

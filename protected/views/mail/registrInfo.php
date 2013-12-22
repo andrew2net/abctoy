@@ -16,8 +16,8 @@
     echo CHtml::tag('a', array('href' => Yii::app()->createAbsoluteUrl('profile')), 'личном кабинете');
     echo CHtml::closeTag('div');
     echo CHtml::tag('div', array('style' => 'margin-bottom:1em'), "Для входа в ваш личный кабинет ипользуйте следующие данные:");
-    echo CHtml::tag('div', array(), "имя: {$login}");
-    echo CHtml::tag('div', array(), "пароль: {$passw}");
+    echo CHtml::tag('div', array(), "Имя: {$login}");
+    echo CHtml::tag('div', array(), "Пароль: {$passw}");
     $this->renderPartial('//mail/_footer');
     ?>
   </body>
