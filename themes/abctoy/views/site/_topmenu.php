@@ -41,7 +41,7 @@
     ?>
   </div>
 </div>
-<div id="login-dialog">
+<div id="login-dialog" style="display: none">
   <div id="close-login-dialog" class="blue" style="text-align: right; cursor: pointer;font-size: 8pt">Закрыть окно</div>
   <div id="login-block" class="inline-blocks">
     <div style="display: inline-block; vertical-align: top">
