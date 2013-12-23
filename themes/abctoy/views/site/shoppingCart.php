@@ -111,7 +111,7 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
           'model' => $profile,
           'attribute' => 'city',
           'sourceUrl' => '/site/suggestcity',
-          'htmlOptions' => array('class' => 'input-text')
+          'htmlOptions' => array('class' => 'input-text'),
         ));
         ?>
         <?php echo CHtml::error($profile, 'city', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
@@ -308,53 +308,67 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
     });
   });
 
+  $('#cart-city').on('autocompleteselect', function(event, elem) {
+    getDeliveries(elem.item.value);
+  });
   $('#cart-city').typing({
-    start: function(event, $elem) {
+    start: function(event, elem) {
     },
-    stop: function(event, $elem) {
-      var city = $elem.val();
-      $.get('/delivery', {
-        'city': city
-      }, function(data) {
-        $('#cart-delivery').html(data);
-        calcSumm();
-      });
+    stop: function(event, elem) {
+      getDeliveries(elem.val());
     },
     delay: 2000
   });
 
-  $('#coupon').typing({
-    start: function(event, $elem) {
-    },
-    stop: function(event, $elem) {
-      var code = $.trim($elem.val());
-      var err = 'Неверный код купона';
-      $elem.attr('type_id', '');
-      $elem.attr('discount', '');
-      if (code.length === 6) {
-        $.get('/coupon', {
-          coupon: code
-        }, function(data) {
-          var discount = JSON && JSON.parse(data) || $.parseJSON(data);
-          var coupon = $('#coupon');
-          if (discount.type === 3) {
-            $('#discount-text').html(err);
-            coupon.attr('type_id', '');
-            coupon.attr('discount', '');
-          } else {
-            coupon.attr('type_id', discount.type);
-            coupon.attr('discount', discount.discount);
-            calcSumm();
-          }
-        });
-      } else if (code.length > 0)
-        $('#discount-text').html(err);
-      else
-        $('#discount-text').html('');
+  function getDeliveries(city) {
+    $.get('/delivery', {
+      'city': city
+    }, function(data) {
+      $('#cart-delivery').html(data);
       calcSumm();
+    });
+  }
+
+  $('#coupon').typing({
+    start: function(event, elem) {
+    },
+    stop: function(event, elem) {
+      getCoupon(elem);
     },
     delay: 2000
   });
+
+  $('#coupon').focusout(function (){
+    getCoupon($(this));
+  });
+
+  function getCoupon(elem) {
+    var code = $.trim(elem.val());
+    var err = 'Неверный код купона';
+    elem.attr('type_id', '');
+    elem.attr('discount', '');
+    if (code.length === 6) {
+      $.get('/coupon', {
+        coupon: code
+      }, function(data) {
+        var discount = JSON && JSON.parse(data) || $.parseJSON(data);
+        var coupon = $('#coupon');
+        if (discount.type === 3) {
+          $('#discount-text').html(err);
+          coupon.attr('type_id', '');
+          coupon.attr('discount', '');
+        } else {
+          coupon.attr('type_id', discount.type);
+          coupon.attr('discount', discount.discount);
+          calcSumm();
+        }
+      });
+    } else if (code.length > 0)
+      $('#discount-text').html(err);
+    else
+      $('#discount-text').html('');
+    calcSumm();
+  }
 
   $('#cart-delivery').on('change', 'input[name="Order[delivery_id]"]', function() {
     calcSumm();
