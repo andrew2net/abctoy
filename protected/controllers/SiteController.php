@@ -521,8 +521,12 @@ class SiteController extends Controller {
     $user->activkey = UserModule::encrypting(microtime() . $sourcePassword);
     $user->password = UserModule::encrypting($sourcePassword);
     $user->superuser = 0;
+    $user->lastvisit = time();
     $user->status = User::STATUS_ACTIVE;
     if ($user->save()) {
+      $user_prof = new Profile;
+      $user_prof->user_id = $user->id;
+      $user_prof->save();
       $identity = new UserIdentity($user->username, $sourcePassword);
       if ($identity->authenticate()) {
         Yii::app()->user->login($identity, 3600 * 24 * 7);
@@ -640,6 +644,8 @@ class SiteController extends Controller {
       if (!is_null($user)) {
         $identity = new UserIdentity($user->username, $_POST['passw']);
         if ($identity->authenticate()) {
+          $user->lastvisit = time();
+          $user->save();
           $session_id = self::getSession();
           Yii::app()->user->login($identity, 3600 * 24 * 7);
           if (isset($_POST['email'])) { //if login from shopping cart move items to profile
