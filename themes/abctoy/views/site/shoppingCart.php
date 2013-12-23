@@ -86,15 +86,15 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
         <?php echo CHtml::error($profile, 'phone', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
       </div>
       <div><?php
-        echo CHtml::label('Удобное время звонка<span class="red">**</span>', 'CustomerProfile_call_time_id'
+        echo CHtml::label('Удобное время звонка<span class="red">**</span>', 'call_time_id'
             , array(
           'class' => 'cufon gray bold',
         ));
         ?>
       </div>
       <div class="styled-select" style="margin-top: 1em"><?php
-        echo CHtml::activeDropDownList($profile, 'call_time_id'
-            , $profile->callTimes, array('style' => 'font-size: 12pt'));
+        echo CHtml::activeDropDownList($order, 'call_time_id'
+            , $order->callTimes, array('style' => 'font-size: 12pt'));
         ?></div>
     </div>
     <div style="vertical-align: top; width: 290px; margin: 0 35px">
@@ -128,14 +128,14 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
             , array('class' => 'input-text'));
         ?></div>
       <div><?php
-        echo CHtml::label('Комментарий', 'CustomerProfile_description'
+        echo CHtml::label('Комментарий', 'description'
             , array(
           'class' => 'cufon gray bold',
         ));
         ?>
       </div>
       <div style="margin-bottom: 1em"><?php
-        echo CHtml::activeTextArea($profile, 'description'
+        echo CHtml::activeTextArea($order, 'description'
             , array(
           'class' => 'input-text',
           'cols' => 25,

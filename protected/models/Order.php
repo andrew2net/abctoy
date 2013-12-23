@@ -17,6 +17,8 @@
  * @property string $phone
  * @property string $city
  * @property string $address
+ * @property integer $call_time_id
+ * @property string $description
  *
  * The followings are the available model relations:
  * @property Coupon $coupon
@@ -48,10 +50,25 @@ class Order extends CActiveRecord {
     return $this->statuses[$this->status_id];
   }
 
-  public $profile_fio;
-  public $profile_email;
-  public $profile_phone;
+  private $call_times = array(
+    '0' => 'Любое время',
+    '1' => 'с 9 до 12',
+    '2' => 'с 12 до 14',
+    '3' => 'с 14 до 18',
+    '4' => 'с 18 до 20',
+  );
 
+  public function getCallTimes() {
+    return $this->call_times;
+  }
+
+  public function getCallTime() {
+    return $this->call_times[$this->call_time_id];
+  }
+
+//  public $profile_fio;
+//  public $profile_email;
+//  public $profile_phone;
 //  public $paiment_name;
 
   public function getDeliveryOptions() {
@@ -79,14 +96,17 @@ class Order extends CActiveRecord {
     // will receive user inputs.
     return array(
       array('profile_id, delivery_id, payment_id, status_id', 'required'),
-      array('profile_id, delivery_id, payment_id, status_id, coupon_id', 'length', 'max' => 11),
+      array('profile_id, delivery_id, payment_id, coupon_id', 'length', 'max' => 11),
+      array('status_id', 'length', 'max' => 1),
+      array('profile_id, delivery_id, payment_id, status_id, coupon_id, call_time_id',
+        'numerical', 'integerOnly' => true),
       array('phone', 'length', 'max' => 20),
       array('delivery_summ', 'numerical'),
       array('email', 'email'),
       array('fio, email', 'length', 'max' => 255),
       array('city', 'length', 'max' => 100),
-      array('time, address', 'safe'),
-      array('fio, email, address', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
+      array('time, address, description', 'safe'),
+      array('fio, email, address, description', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
       array('id, email, profile_email, fio, profile_fio, phone, profile_phone, city, address, delivery_id, payment_id, status_id, coupon_id, time', 'safe', 'on' => 'search'),
@@ -129,6 +149,8 @@ class Order extends CActiveRecord {
       'phone' => 'Телефон',
       'city' => 'Город',
       'address' => 'Адрес',
+      'call_time_id' => 'Время звонка',
+      'description' => 'Коменнтарий',
       'summ' => 'Сумма',
     );
   }
@@ -154,11 +176,11 @@ class Order extends CActiveRecord {
 
     $criteria->compare('t.id', $this->id, true);
     $criteria->compare('delivery_id', $this->delivery_id, true);
-    $criteria->compare('profile.fio', $this->profile_fio, true);
+//    $criteria->compare('profile.fio', $this->profile_fio, true);
     $criteria->compare('t.fio', $this->fio, true);
-    $criteria->compare('profile.email', $this->profile_email, true);
+//    $criteria->compare('profile.email', $this->profile_email, true);
     $criteria->compare('t.email', $this->email, true);
-    $criteria->compare('profile.phone', $this->profile_phone, true);
+//    $criteria->compare('profile.phone', $this->profile_phone, true);
     $criteria->compare('t.phone', $this->phone, true);
     $criteria->compare('coupon_id', $this->coupon_id, true);
     $criteria->compare('status_id', $this->status_id, true);

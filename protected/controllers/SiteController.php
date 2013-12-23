@@ -283,6 +283,13 @@ class SiteController extends Controller {
     Yii::app()->end();
   }
 
+  /**
+   * Add or update shopping cart
+   * @param type $id
+   * @param type $quantity
+   * @param type $change true if it's update, not add new item
+   * @return type
+   */
   private function addToCart($id, $quantity, $change = FALSE) {
 
     if (!is_numeric($quantity))
@@ -314,6 +321,10 @@ class SiteController extends Controller {
     $cart->save();
   }
 
+  /**
+   * Return text for shoppingcart link label
+   * @return string
+   */
   public function cartLabel() {
     $quantity = Cart::model()->countProduct($this->getSession())->findAll();
     if (!$quantity[0]->quantity)

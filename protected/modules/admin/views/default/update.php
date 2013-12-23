@@ -2,7 +2,6 @@
 /* @var $this DefaultController */
 /* @var $model Order */
 /* @var $product Product */
-/* @var $profile CustomerProfile */
 /* @var $form CActiveForm */
 
 $this->breadcrumbs = array(
@@ -17,6 +16,5 @@ $this->breadcrumbs = array(
 $this->renderPartial('_form', array(
   'model' => $model,
   'product' => $product,
-  'profile' => $profile,
 ));
 ?>

@@ -32,7 +32,6 @@ class DefaultController extends Controller {
     $model = $this->loadModel($id);
     $product = OrderProduct::model()->with(array('product'))
         ->findAllByAttributes(array('order_id' => $model->id));
-    $profile = CustomerProfile::model()->findByPk($model->profile_id);
 
     // Uncomment the following line if AJAX validation is needed
     // $this->performAjaxValidation($model);
@@ -43,39 +42,37 @@ class DefaultController extends Controller {
       $tr = Yii::app()->db->beginTransaction();
       try {
         if ($model->save()) {
-          $profile->attributes = $_POST['CustomerProfile'];
-          if ($profile->save()) {
-            foreach ($_POST['OrderProduct'] as $id => $value) {
-              $order_product = OrderProduct::model()->findByPk(array(
-                'order_id' => $model->id,
-                'product_id' => $id));
-              if (!is_null($order_product)) {
-                $order_product->quantity = $value['quantity'] > 0 ? $value['quantity'] : 0;
-                $order_product->price = $value['price'] > 0 ? $value['price'] : 0;
-                $order_product->save();
-              }
+          foreach ($_POST['OrderProduct'] as $id => $value) {
+            $order_product = OrderProduct::model()->findByPk(array(
+              'order_id' => $model->id,
+              'product_id' => $id));
+            if (!is_null($order_product)) {
+              $order_product->quantity = $value['quantity'] > 0 ? $value['quantity'] : 0;
+              $order_product->price = $value['price'] > 0 ? $value['price'] : 0;
+              $order_product->save();
             }
-            if ($old_status != $model->status_id) {
-              $message = new YiiMailMessage;
-              $message->view = 'processOrder';
-              $message->setFrom(Yii::app()->params['infoEmail']);
-              $message->setTo(array($profile->email => $profile->fio));
-              $params = array(
-                'profile' => $profile,
-                'order' => $model,
-              );
-              switch ($model->status_id) {
-                case 5:
-                  $message->setSubject("Отмена заказа");
-                  $params['text'] = 'отменен';
-                  $message->setBody($params, 'text/html');
-                  Yii::app()->mail->send($message);
-                  break;
-              }
-            }
-            $tr->commit();
-            $this->redirect(array('index'));
           }
+          if ($old_status != $model->status_id) {
+            $profile = CustomerProfile::model()->findByPk($model->profile_id);
+            $message = new YiiMailMessage;
+            $message->view = 'processOrder';
+            $message->setFrom(Yii::app()->params['infoEmail']);
+            $message->setTo(array($profile->email => $profile->fio));
+            $params = array(
+              'profile' => $profile,
+              'order' => $model,
+            );
+            switch ($model->status_id) {
+              case 5:
+                $message->setSubject("Отмена заказа");
+                $params['text'] = 'отменен';
+                $message->setBody($params, 'text/html');
+                Yii::app()->mail->send($message);
+                break;
+            }
+          }
+          $tr->commit();
+          $this->redirect(array('index'));
         }
       } catch (Exception $e) {
         $tr->rollback();
@@ -89,7 +86,6 @@ class DefaultController extends Controller {
     $this->render('update', array(
       'model' => $model,
       'product' => $product,
-      'profile' => $profile,
     ));
   }
 

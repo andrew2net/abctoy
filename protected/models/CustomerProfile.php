@@ -10,10 +10,8 @@
  * @property string $fio
  * @property string $email
  * @property string $phone
- * @property integer $call_time_id
  * @property string $city
  * @property string $address
- * @property string $description
  *
  * The followings are the available model relations:
  * @property Order[] $orders
@@ -52,17 +50,17 @@ class CustomerProfile extends CActiveRecord {
     // NOTE: you should only define rules for those attributes that
     // will receive user inputs.
     return array(
-      array('user_id, call_time_id', 'numerical', 'integerOnly' => true),
+      array('user_id', 'numerical', 'integerOnly' => true),
       array('session_id', 'length', 'max' => 32),
       array('fio, email, address', 'length', 'max' => 255),
       array('phone', 'length', 'max' => 20  ),
       array('city', 'length', 'max' => 100),
       array('fio, email, phone, city', 'required'),
-      array('fio, email, address, description', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
+      array('fio, email, address', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
 //      array('description', 'safe'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
-      array('id, session_id, user_id, fio, email, phone, call_time_id, city, address, description', 'safe', 'on' => 'search'),
+      array('id, session_id, user_id, fio, email, phone, city, address', 'safe', 'on' => 'search'),
     );
   }
 
@@ -88,10 +86,8 @@ class CustomerProfile extends CActiveRecord {
       'fio' => 'Имя фамилия',
       'email' => 'E-mail',
       'phone' => 'Телефон',
-      'call_time_id' => 'Время звонка',
       'city' => 'Город',
       'address' => 'Адрес',
-      'description' => 'Коменнтарий',
     );
   }
 
@@ -118,10 +114,8 @@ class CustomerProfile extends CActiveRecord {
     $criteria->compare('fio', $this->fio, true);
     $criteria->compare('email', $this->email, true);
     $criteria->compare('phone', $this->phone, true);
-    $criteria->compare('call_time_id', $this->call_time_id);
     $criteria->compare('city', $this->city, true);
     $criteria->compare('address', $this->address, true);
-    $criteria->compare('description', $this->description, true);
 
     return new CActiveDataProvider($this, array(
       'criteria' => $criteria,

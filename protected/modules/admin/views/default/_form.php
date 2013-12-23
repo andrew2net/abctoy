@@ -2,7 +2,6 @@
 /* @var $this DefaultController */
 /* @var $model Order */
 /* @var $product OrderProduct[] */
-/* @var $profile CustomerProfile */
 /* @var $form CActiveForm */
 ?>
 
@@ -28,17 +27,17 @@
       <div class="inline-blocks">
         <div class="control-group">
           <?php
-          echo TbHtml::label('ФИО', 'profile_fio');
+          echo TbHtml::label('ФИО', 'fio');
           echo TbHtml::tag('div', array(
-            'id' => 'profile_fio',
+            'id' => 'fio',
             'class' => 'display-field', 'style' => 'width:16em'));
-          echo $model->fio; //is_null($model->profile) ? '&nbsp' : $model->profile->fio;
+          echo $model->fio;
           echo TbHtml::closeTag('div');
           ?>
         </div>
         <?php echo TbHtml::activeTextFieldControlGroup($model, 'email'); ?>
         <?php echo TbHtml::activeTextFieldControlGroup($model, 'phone'); ?>
-        <?php echo TbHtml::activeDropDownListControlGroup($profile, 'call_time_id', $profile->callTimes); ?>
+        <?php echo TbHtml::activeDropDownListControlGroup($model, 'call_time_id', $model->callTimes); ?>
       </div>
       <div class="inline-blocks">
         <div>
@@ -106,7 +105,7 @@
     </div>
     <div style="vertical-align: top">
       <?php
-      echo TbHtml::activeTextAreaControlGroup($profile, 'description'
+      echo TbHtml::activeTextAreaControlGroup($model, 'description'
           , array('span' => 3, 'rows' => 8));
       ?>
     </div>
@@ -143,7 +142,7 @@
         <td>
           <?php
           echo TbHtml::tag('div', array('name' => 'product_name', 'class' => 'display-field'));
-          echo $item->product->name;
+          echo mb_substr(str_replace('<br>', ' ', $item->product->name), 0, 80, 'UTF-8');
           echo TbHtml::closeTag('div');
           ?>
         </td>
@@ -277,7 +276,7 @@
     calcSumm();
   });
 
-  $('#Order_status_id').change(function (){
+  $('#Order_status_id').change(function() {
     setStatus();
   });
 </script>
