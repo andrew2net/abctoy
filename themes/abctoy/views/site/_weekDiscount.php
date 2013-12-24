@@ -2,21 +2,13 @@
 Yii::import('application.modules.discount.models.Discount');
 Yii::import('application.modules.catalog.models.Category');
 Yii::import('application.modules.catalog.models.Product');
-$week = Discount::model()->week()->findAll();
+//$week = Discount::model()->week()->findAll();
+$week = Product::model()->week()->availableOnly()->recommended()->findAll();
 $products = array();
 $end_dates = array();
 foreach ($week as $value) {
-  $end_dates[] = DateTime::createFromFormat('d.m.Y', $value->end_date);
-  if ($value->product_id == 1) {
-    foreach ($value->category as $category)
-      foreach ($category->product as $product)
-        if ($product->remainder > 0)
-          $products[$product->id] = $product;
-  }
-  elseif ($value->product_id == 2)
-    foreach ($value->product as $product)
-      if ($product->remainder > 0)
-        $products[$product->id] = $product;
+  $end_dates[] = DateTime::createFromFormat('Y-m-d', $value->w_end_date);
+  $products[] = $value;
 }
 if (count($end_dates)) {
   $end_date = date_format(min($end_dates), 'd-m-Y');

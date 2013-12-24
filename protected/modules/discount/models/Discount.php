@@ -213,20 +213,25 @@ class Discount extends CActiveRecord {
 
   public function scopes() {
     $date = date('Y-m-d');
+    $params = Child::model()->getSelectParams();
     return array_merge(parent::scopes(), array(
       'week' => array(
         'condition' => "type_id=0 AND actual=1 AND (begin_date<='" . $date .
         "' OR begin_date='0000-00-00') AND (end_date>='" . $date .
         "' OR end_date='0000-00-00')",
         'with' => array(
-          'product' 
-          ),
+          'product' => array('alias' => 'p'),
+        ),
         'with' => array(
           'category' => array(
-            'with' => 'product',
+            'with' => array(
+              'product' => array('alias' => 'c')),
           ),
         ),
         'together' => TRUE,
+        'select'=>array(
+          't.*',
+        ),
       ),
     ));
   }

@@ -134,4 +134,26 @@ class Child extends CActiveRecord {
     return parent::beforeSave();
   }
 
+  public function getSelectParams() {
+    $childs = self::model()->userChildren()->findAll();
+    $genders = array();
+    $ages = array();
+    $now = new DateTime;
+    foreach ($childs as $child) {
+      $genders[] = $child->gender_id;
+      $age = DateTime::createFromFormat('d.m.Y', $child->birthday)->diff($now)->y;
+      $ages[] = $age;
+    }
+    $params = array();
+    if (count($ages) > 0) {
+      $params['ageFrom'] = min($ages) < 10 ? min($ages) : 10;
+      $params['ageTo'] = max($ages) < 10 ? max($ages) : 10;
+    }
+    if (count($genders) > 0 && min($genders) == max($genders))
+      $params['gender'] = min($genders);
+    else
+      $params['gender'] = 0;
+    return $params;
+  }
+
 }

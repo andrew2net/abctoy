@@ -64,7 +64,7 @@
 //      echo CHtml::hiddenField('currentCategory', $group->id); //, array('id' => 'currentGroup'));
       if ($group->level < 3) {
         $discount_products = Product::model()->subCategory($group->id)->availableOnly()
-                ->discountOrder()->findAll(array('limit' => 4, 'having' => 'percent>0'));
+                ->discountOrder()->recommended()->findAll(array('limit' => 4, 'having' => 'percent>0'));
         if (count($discount_products) > 1) {
           ?>
           <div class="inline-blocks">
@@ -96,7 +96,7 @@
           $pagination['pageSize'] = 16;
         else
           $pagination['pageSize'] = 12;
-        $data = $product->searchCategory($group->id);
+        $data = Product::model()->searchCategory($group->id);
         $data->setPagination($pagination);
         if ($data->getItemCount() > 0) {
           $widget = $this->widget('ListView', array(

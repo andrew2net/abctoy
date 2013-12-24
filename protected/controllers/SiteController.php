@@ -801,8 +801,14 @@ class SiteController extends Controller {
 
     $profile = CustomerProfile::model()->findByAttributes(
         array('user_id' => Yii::app()->user->id));
-    if (is_null($profile))
+    if (is_null($profile)) {
       $profile = new CustomerProfile;
+      if (!Yii::app()->user->isGuest) {
+        $profile->user_id = Yii::app()->user->id;
+        $profile->email = User::model()->findByPk(Yii::app()->user->id)->email;
+        $profile->save(false);
+      }
+    }
 
     $new_passw = new NewPassword;
     $child = new Child;

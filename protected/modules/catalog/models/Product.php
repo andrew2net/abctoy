@@ -37,6 +37,8 @@ class Product extends CActiveRecord {
     return $this->genders[$this->gender_id];
   }
 
+  public $w_end_date;
+
   /**
    * @return string the associated database table name
    */
@@ -263,6 +265,7 @@ class Product extends CActiveRecord {
   }
 
   public function scopes() {
+    $date = date('Y-m-d');
     return array_merge(parent::scopes(), array(
       'top' => array(
         'with' => array(
@@ -303,6 +306,38 @@ class Product extends CActiveRecord {
         'order' => 'percent DESC',
         'group' => 't.id'
       ),
+      'week' => array(
+        'with' => array(
+          'discount' => array(
+            'select' => FALSE,
+            'alias' => 'prod'
+          ),
+          'category' => array(
+            'select' => FALSE,
+            'with' => array(
+              'discount' => array(
+                'select' => FALSE,
+                'alias' => 'cat',
+              ),
+            ),
+          ),
+        ),
+        'together' => TRUE,
+        'select' => array(
+          't.*',
+          'IFNULL(prod.begin_date, cat.begin_date) AS w_begin_date',
+          'IFNULL(prod.end_date, cat.end_date) AS w_end_date',
+          'IFNULL(prod.type_id, cat.type_id) AS w_type',
+          'IFNULL(prod.actual, cat.actual) AS w_actual',
+          'MAX(IFNULL(prod.percent, cat.percent)) AS percent',
+        ),
+        'condition' => 't.show_me=1',
+        'having' => "w_type=0 AND w_actual=1 AND (w_begin_date<='" . $date .
+        "' OR w_begin_date='0000-00-00') AND (w_end_date>='" . $date .
+        "' OR w_end_date='0000-00-00')",
+        'order' => 'percent DESC',
+        'group' => 't.id'
+      ),
     ));
   }
 
@@ -314,12 +349,26 @@ class Product extends CActiveRecord {
     return $this;
   }
 
-  public function recommended($limit = NULL) {
-    if (!is_null($limit))
-      $this->getDbCriteria()->mergeWith(array(
-        'limit' => $limit,
-        'condition' => "show_me=1",
-      ));
+  public function recommended() {
+    $params = Child::model()->getSelectParams();
+    $this->getDbCriteria()->mergeWith(array(
+      'select' => array(
+        't.*',
+        'CASE WHEN :gender=0 THEN 1 WHEN t.gender_id=:gender THEN 1 ELSE 0 END AS g',
+        'CASE WHEN t.age<=:ageTo OR t.age_to>=:ageFrom THEN 1 ELSE 0 END AS a'
+      ),
+      'order' => 'a, g DESC',
+      'params' => array(
+        ':gender' => $params['gender'],
+        ':ageFrom' => isset($params['ageFrom']) ? $params['ageFrom'] : 0,
+        ':ageTo' => isset($params['ageTo']) ? $params['ageTo'] : 10,
+      ),
+    ));
+//    if (!is_null($limit))
+//      $this->getDbCriteria()->mergeWith(array(
+//        'limit' => $limit,
+//        'condition' => "show_me=1",
+//      ));
 
     return $this;
   }

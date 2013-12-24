@@ -23,6 +23,18 @@ class GiftSelection extends CFormModel {
     $this->availableOnly = 1;
     $this->priceFrom = 500;
     $this->priceTo = 4500;
+
+    if (!Yii::app()->user->isGuest) {
+      $params = Child::model()->getSelectParams();
+      if (isset($params['gender']))
+        $this->gender = $params['gender'];
+      if (isset($params['ageFrom']))
+        $this->ageFrom = $params['ageFrom'] < 10 ? $params['ageFrom'] : 9;
+      if (isset($params['ageTo'])) {
+        $this->ageTo = $params['ageFrom'] == $params['ageTo'] ?
+            ($params['ageTo'] < 10 ? $params['ageTo'] + 1 : 10) : $params['ageTo'];
+      }
+    }
   }
 
   public function rules() {
