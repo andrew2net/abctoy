@@ -916,4 +916,11 @@ class SiteController extends Controller {
     Yii::app()->end();
   }
 
+  public function actionPopupWindow() {
+    $child = new Child;
+
+    $this->renderPartial('_popupWindow', array('child' => $child));
+    Yii::app()->end();
+  }
+
 }

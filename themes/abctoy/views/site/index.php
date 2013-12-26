@@ -11,7 +11,10 @@ $cs->registerScriptFile('/js/jcarousel.skeleton.js', CClientScript::POS_END);
 $cs->registerScriptFile('/js/countdown.clock.js', CClientScript::POS_END);
 $cs->registerScriptFile('/js/moment.min.js', CClientScript::POS_HEAD);
 $cs->registerScriptFile('/js/slider.tooltip.js', CClientScript::POS_HEAD);
-$this->pageTitle = 'Детские товары и игрушки купить по низкой цене в интернет-магазине игрушек '.Yii::app()->name;
+$cs->registerScriptFile($cs->getCoreScriptUrl() . '/jui/js/jquery-ui-i18n.min.js', CClientScript::POS_HEAD);
+//$cs->registerCssFile('/js/fancybox2/jquery.fancybox.css');
+//$cs->registerScriptFile('/js/fancybox2/jquery.fancybox.pack.js', CClientScript::POS_HEAD);
+$this->pageTitle = 'Детские товары и игрушки купить по низкой цене в интернет-магазине игрушек ' . Yii::app()->name;
 
 $this->renderPartial('_topmenu');
 ?>
@@ -39,7 +42,7 @@ $this->renderPartial('_topmenu');
   $this->renderPartial('_recommended', array('product' => $product));
   echo CHtml::endForm();
   ?>
-<?php $this->renderPartial('_brands'); ?>
+  <?php $this->renderPartial('_brands'); ?>
   <div style="margin: 30px 10px">
     <div class="blue bold" style="font-size: 14pt; margin: 15px 0 10px">Рады вас приветствовать в интернет-магазине детских товаров и игрушек!</div>
     <div>ABC-toy – это интернет-магазин игрушек, который выбирают продвинутые родители. К вашему вниманию предложен широкий ассортимент детских товаров для досуга, отдыха или учебы подрастающего ребенка. У нас вы сможете приобрести подарок ребенку любого возраста и вкусовых предпочтений.</div>
@@ -58,6 +61,43 @@ $this->renderPartial('_topmenu');
     <div>Главной особенностью интернет-магазина ABC-toy является собственный большой склад в Новосибирске. Благодаря ему все предлагаемые на сайте игрушки всегда есть в наличии. Мы работает напрямую с поставщиками, которые гарантируют высокое качество продукции. ABC-toy сотрудничает с такими поставщиками как: 
       <p>ТМ ВЕСЕЛЫЙ ПОВАР, Биплант, Бомик, БрикНик, Бондибон, Крона, Лесная сказка, МДИ, ОКСВА, Принцесса, Пелси, Пома, Развивашки, Росмэн, РУ-ТОЙЗ, Томик, ADEX, Castorland, COGO, DOLU, Edushape, ERPA, Halilit, Modular, RNToys, Scotchi, Yookidoo.</p></div>
   </div>
-<?php $this->renderPartial('_addProductModal'); ?>
+  <?php $this->renderPartial('_addProductModal'); ?>
 </div><!-- page -->
 <?php $this->renderPartial('_footer', array('groups' => $groups)); ?>
+<div id="popup-window" style="display: none"></div>
+<script type="text/javascript">
+  $(function() {
+    $('#popup-window').load('/popupWindow', function() {
+      Cufon.replace('#popup-window .cufon');
+    });
+
+    $('#popup-window').dialog({
+      modal: true,
+      resizable: false,
+      width: 900,
+      height: 500,
+      dialogClass: 'popup-window',
+      draggable: false,
+      create: function(event, ui) {
+        $(event.target).parent().css('position', 'fixed');
+      }
+    });
+
+    $('#popup-window').on('click', '#popup-close', function() {
+      $('#popup-window').dialog('close');
+    });
+  });
+
+  $('#popup-window').on('focus', '.date', function() {
+    $(this).datepicker($.extend({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "-30:+00"
+    }, $.datepicker.regional['ru']));
+  });
+  
+  $('#popup-window').on('click', '.add-child', function (){
+    
+  });
+
+</script>

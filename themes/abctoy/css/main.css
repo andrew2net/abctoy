@@ -368,6 +368,37 @@ input[type=checkbox]:checked + label:before, .weekcarousel-prev,
   top: 37px;
   left: 18px;
 }
+.icon-add-child-small{
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  top: 5px;
+  border: solid 1px #AAA;
+  margin-right: 5px;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+  box-shadow: inset 0px 0px 2px 2px #e1e1e8;
+}
+.icon-add-child-small:before, .icon-add-child-small:after{
+  position: absolute;
+  background-color: #3399cc;
+}
+.icon-add-child-small:before{
+  content: " ";
+  width: 2px;
+  height: 8px;
+  top: 4px;
+  left: 7px;
+}
+.icon-add-child-small:after{
+  content: " ";
+  width: 8px;
+  height: 2px;
+  top: 7px;
+  left: 4px;
+}
 
 .valign-middle{
   vertical-align: middle;
@@ -957,4 +988,15 @@ a:hover .item-disc, a:hover .item-price{
 }
 #profile-grid-order .even{
   background-color: whitesmoke;
+}
+
+#popup-window{
+  overflow: visible;
+}
+.popup-window {
+  border-radius: 0 !important;
+  overflow: visible !important;
+}
+.popup-window .ui-dialog-titlebar{
+  display: none;
 }
