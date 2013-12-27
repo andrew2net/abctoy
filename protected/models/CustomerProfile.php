@@ -52,6 +52,7 @@ class CustomerProfile extends CActiveRecord {
     return array(
       array('user_id', 'numerical', 'integerOnly' => true),
       array('session_id', 'length', 'max' => 32),
+      array('email', 'email'),
       array('fio, email, address', 'length', 'max' => 255),
       array('phone', 'length', 'max' => 20  ),
       array('city', 'length', 'max' => 100),
