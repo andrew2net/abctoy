@@ -7,11 +7,24 @@
  * @property string $id
  * @property string $name
  * @property string $description
+ * @property string $mnt_id
+ * @property string $mnt_signature
+ * @property string $type_id
  *
  * The followings are the available model relations:
  * @property Order[] $orders
  */
 class Payment extends CActiveRecord {
+
+  private $types = array(0 => 'Наличными', 1 => 'Монета');
+
+  public function getTypes() {
+    return $this->types;
+  }
+
+  public function getType() {
+    return $this->types[$this->type_id];
+  }
 
   /**
    * @return string the associated database table name
@@ -27,8 +40,10 @@ class Payment extends CActiveRecord {
     // NOTE: you should only define rules for those attributes that
     // will receive user inputs.
     return array(
+      array('name, description, type_id','required'),
+      array('type_id', 'numerical', 'integerOnly' => true),
       array('name', 'length', 'max' => 255),
-      array('description', 'safe'),
+      array('mnt_id, mnt_signature', 'safe'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
       array('id, name, description', 'safe', 'on' => 'search'),
@@ -52,8 +67,11 @@ class Payment extends CActiveRecord {
   public function attributeLabels() {
     return array(
       'id' => 'ID',
-      'name' => 'Name',
-      'description' => 'Description',
+      'name' => 'Наименование',
+      'description' => 'Описание',
+      'mnt_id' => 'Номер счета',
+      'mnt_signature' => 'Код проверки целостности данных',
+      'type' => 'Платежная система',
     );
   }
 

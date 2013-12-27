@@ -655,13 +655,24 @@ class SiteController extends Controller {
   }
 
   public function actionLogin() {
-    if ((isset($_POST['email']) || isset($_POST['login'])) && isset($_POST['passw'])) {
+    $loginForm = new LoginForm;
+
+    if ((isset($_POST['email']) || isset($_POST['login'])) && isset($_POST['passw']) ||
+        isset($_POST['LoginForm'])) {
       if (isset($_POST['email']))
         $user = User::model()->findByAttributes(array('email' => $_POST['email']));
       else if (isset($_POST['login'])) {
         $user = User::model()->findByAttributes(array('username' => $_POST['login']));
         if (is_null($user))
           $user = User::model()->findByAttributes(array('email' => $_POST['login']));
+      } elseif (isset($_POST['LoginForm'])) {
+        $user = User::model()->findByAttributes(array(
+          'username' => $_POST['LoginForm']['username']
+        ));
+        if (is_null($user))
+          $user = User::model()->findByAttributes(array(
+            'email' => $_POST['LoginForm']['username']
+          ));
       }
       if (!is_null($user)) {
         $identity = new UserIdentity($user->username, $_POST['passw']);
@@ -692,12 +703,18 @@ class SiteController extends Controller {
           Yii::app()->end();
         }
       }
+      //ajax return false if not login
+      if (isset($_POST['login'])) { //if login was from main page
+        echo json_encode(array('result' => FALSE));
+        Yii::app()->end();
+      }
+      else if (isset($_POST['email'])) { //if login from shopping cart
+        echo '';
+        Yii::app()->end();
+      }
     }
-    if (isset($_POST['login']))  //if login from shopping cart move items to profile
-      echo json_encode(array('result' => FALSE));
-    else
-      echo '';
-    Yii::app()->end();
+
+    $this->render('login', array('loginForm' => $loginForm));
   }
 
   public function actionDelivery() {

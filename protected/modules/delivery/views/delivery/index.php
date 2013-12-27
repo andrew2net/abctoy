@@ -22,7 +22,7 @@ $this->breadcrumbs = array(
   ?>
 </div>
 
-  <?php
+<?php
 $this->widget('ext.bootstrap.widgets.TbGridView', array(
   'dataProvider' => $dataProvider,
   'columns' => array(
