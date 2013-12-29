@@ -23,7 +23,7 @@ class DefaultController extends Controller {
     if (isset($_POST['Payment'])) {
       $payment->attributes = $_POST['Payment'];
       if ($payment->save())
-        $this->redirect('/admin/payment');
+        $this->redirect('/admin/payments');
     }
 
     $this->render('update', array('payment' => $payment));

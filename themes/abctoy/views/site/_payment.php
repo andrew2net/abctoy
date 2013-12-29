@@ -12,7 +12,6 @@
       'style' => 'display: block',
       'class' => 'cart-radio',
     ),
-    'disabled'=>2
   ));
   ?>
 </div>

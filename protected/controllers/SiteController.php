@@ -5,20 +5,20 @@ class SiteController extends Controller {
   /**
    * Declares class-based actions.
    */
-  public function actions() {
-    return array(
-      // captcha action renders the CAPTCHA image displayed on the contact page
-      'captcha' => array(
-        'class' => 'CCaptchaAction',
-        'backColor' => 0xFFFFFF,
-      ),
-      // page action renders "static" pages stored under 'protected/views/site/pages'
-      // They can be accessed via: index.php?r=site/page&view=FileName
-      'page' => array(
-        'class' => 'CViewAction',
-      ),
-    );
-  }
+//  public function actions() {
+//    return array(
+//      // captcha action renders the CAPTCHA image displayed on the contact page
+//      'captcha' => array(
+//        'class' => 'CCaptchaAction',
+//        'backColor' => 0xFFFFFF,
+//      ),
+//      // page action renders "static" pages stored under 'protected/views/site/pages'
+//      // They can be accessed via: index.php?r=site/page&view=FileName
+//      'page' => array(
+//        'class' => 'CViewAction',
+//      ),
+//    );
+//  }
 
   public function actionPage($url) {
     $searc = new Search;
@@ -350,7 +350,7 @@ class SiteController extends Controller {
     Yii::import('application.modules.delivery.models.Delivery');
     Yii::import('application.modules.delivery.models.CityDelivery');
     Yii::import('application.modules.delivery.models.City');
-    Yii::import('application.modules.payment.models.Payment');
+    Yii::import('application.modules.payments.models.Payment');
     Yii::import('application.modules.discount.models.Coupon');
 
     if (Yii::app()->user->isGuest)
@@ -399,22 +399,8 @@ class SiteController extends Controller {
         }
         if (isset($_POST['Cart'])) {
           $count_products = $this->countProducts();
-          $coupon_discount = 0;
-          if (!is_null($coupon)) {
-            switch ($coupon->type_id) {
-              case 0:
-                if ($count_products['discount'] > $coupon->value)
-                  $coupon = NULL;
-                else
-                  $coupon_discount = $count_products['noDiscount'] > $coupon->value ?
-                      $coupon->value : $count_products['noDiscount'];
-                break;
-              case 1:
-                $coupon_discount = $count_products['noDiscount'] * $coupon->value / 100;
-                break;
-            }
-            $count_products['summ'] -= $coupon_discount;
-          }
+          $coupon_discount = $order->getCouponDiscount();
+          $count_products['summ'] -= $coupon_discount;
 
           $fl = FALSE;
           if ($count_products['summ'] >= 1500) {
@@ -490,7 +476,6 @@ class SiteController extends Controller {
 
     $order->attributes = $_POST['Order'];
     $order->delivery_summ = $delivery_summ;
-    $order->payment_id = 1;
     $order->profile_id = $profile->id;
     $order->fio = $profile->fio;
     $order->email = $profile->email;
@@ -666,16 +651,23 @@ class SiteController extends Controller {
         if (is_null($user))
           $user = User::model()->findByAttributes(array('email' => $_POST['login']));
       } elseif (isset($_POST['LoginForm'])) {
-        $user = User::model()->findByAttributes(array(
-          'username' => $_POST['LoginForm']['username']
-        ));
-        if (is_null($user))
+        $loginForm->attributes = $_POST['LoginForm'];
+        if ($loginForm->validate()) {
           $user = User::model()->findByAttributes(array(
-            'email' => $_POST['LoginForm']['username']
+            'username' => $_POST['LoginForm']['username']
           ));
+          if (is_null($user))
+            $user = User::model()->findByAttributes(array(
+              'email' => $_POST['LoginForm']['username']
+            ));
+        }
       }
-      if (!is_null($user)) {
-        $identity = new UserIdentity($user->username, $_POST['passw']);
+      if (isset($user) && !is_null($user)) {
+        if (isset($_POST['LoginForm']))
+          $password = $_POST['LoginForm']['password'];
+        else
+          $password = $_POST['passw'];
+        $identity = new UserIdentity($user->username, $password);
         if ($identity->authenticate()) {
           $user->lastvisit = time();
           $user->save();
@@ -700,6 +692,8 @@ class SiteController extends Controller {
           elseif (isset($_POST['login'])) {
             echo json_encode(array('result' => TRUE, 'cart' => $this->cartLabel()));
           }
+          else
+            $this->redirect('profile');
           Yii::app()->end();
         }
       }
@@ -825,8 +819,9 @@ class SiteController extends Controller {
 
   public function actionProfile() {
     Yii::import('application.modules.discount.models.Coupon');
+    Yii::import('application.modules.payments.models.Payment');
     if (Yii::app()->user->isGuest)
-      $this->redirect('/');
+      $this->redirect('/login');
 
     $profile = CustomerProfile::model()->findByAttributes(
         array('user_id' => Yii::app()->user->id));
@@ -881,6 +876,7 @@ class SiteController extends Controller {
         'with' => array(
           'orderProducts' => array('alias' => 'p'),
           'coupon' => array('alias' => 'c'),
+          'payment'
         ),
         'together' => TRUE,
         'select' => array(
@@ -890,10 +886,11 @@ class SiteController extends Controller {
           'SUM(p.price*p.quantity) AS summ',
           'status_id'
         ),
-        'group' => 't.id, t.time, t.status_id'
+        'group' => 't.id, t.time, t.status_id',
+        'order' => 't.time DESC'
       ),
       'pagination' => array(
-        'pagesize' => 5
+        'pagesize' => 6
       )
     ));
 

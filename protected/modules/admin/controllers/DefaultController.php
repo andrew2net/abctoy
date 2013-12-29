@@ -34,6 +34,7 @@ class DefaultController extends Controller {
     $product = array();
     foreach ($order_product as $key => $value)
       $product[$key] = $value->product;
+
     // Uncomment the following line if AJAX validation is needed
     // $this->performAjaxValidation($model);
 
@@ -105,24 +106,50 @@ class DefaultController extends Controller {
                   break;
               }
             }
+            if ($old_status != $model->status_id) {
+              $profile = CustomerProfile::model()->findByPk($model->profile_id);
+              $message = new YiiMailMessage;
+              $message->setFrom(Yii::app()->params['infoEmail']);
+              $message->setTo(array($profile->email => $profile->fio));
+              $params = array(
+                'profile' => $profile,
+                'order' => $model,
+              );
+              switch ($model->status_id) {
+                case 3:
+                  $message->view = 'payOrder';
+                  $message->setSubject("Оплата заказа");
+                  $params['text'] = 'готов к оплате';
+                  $message->setBody($params, 'text/html');
+                  Yii::app()->mail->send($message);
+                  break;
+                case 5:
+                  $message->view = 'processOrder';
+                  $message->setSubject("Отмена заказа");
+                  $params['text'] = 'отменен';
+                  $message->setBody($params, 'text/html');
+                  Yii::app()->mail->send($message);
+                  break;
+              }
+            }
+            $tr->commit();
+            $this->redirect(array('index'));
           }
-          $tr->commit();
-          $this->redirect(array('index'));
         } catch (Exception $e) {
           $tr->rollback();
           throw $e;
         }
       }
+
+      if ($model->status_id == 0)
+        $model->status_id = 1;
+
+      $this->render('update', array(
+        'model' => $model,
+        'order_product' => $order_product,
+        'product' => $product,
+      ));
     }
-
-    if ($model->status_id == 0)
-      $model->status_id = 1;
-
-    $this->render('update', array(
-      'model' => $model,
-      'order_product' => $order_product,
-      'product' => $product,
-    ));
   }
 
   /**

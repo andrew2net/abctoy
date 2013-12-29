@@ -28,6 +28,9 @@
  * @property array $statuses
  * @property CustomerProfile $profile
  * @property OrderProduct[] $orderProducts
+ * @property Pay[] $pay
+ * @property float $paySumm
+ * @property float $productSumm
  */
 class Order extends CActiveRecord {
 
@@ -77,6 +80,7 @@ class Order extends CActiveRecord {
   }
 
   public function getPaymentOptions() {
+    Yii::import('application.modules.payments.models.Payment');
     $payment = Payment::model()->findAll();
     return CHtml::listData($payment, 'id', 'name');
   }
@@ -123,8 +127,12 @@ class Order extends CActiveRecord {
       'coupon' => array(self::BELONGS_TO, 'Coupon', 'coupon_id'),
       'delivery' => array(self::BELONGS_TO, 'Delivery', 'delivery_id'),
       'payment' => array(self::BELONGS_TO, 'Payment', 'payment_id'),
+      'pay' => array(self::HAS_MANY, 'Pay', 'order_id'),
+      'paySumm' => array(self::STAT, 'Pay', 'order_id', 'select' => 'SUM(mnt_amount)'),
       'profile' => array(self::BELONGS_TO, 'CustomerProfile', 'profile_id'),
       'orderProducts' => array(self::HAS_MANY, 'OrderProduct', 'order_id'),
+      'productSumm' => array(self::STAT, 'OrderProduct', 'order_id',
+        'select' => 'SUM(quantity*price)'),
     );
   }
 
@@ -220,6 +228,7 @@ class Order extends CActiveRecord {
   }
 
   public function getCouponDiscount() {
+    Yii::import('application.modules.discount.models.Coupon');
     $summa = 0;
     if ($this->coupon) {
       foreach ($this->orderProducts as $product) {

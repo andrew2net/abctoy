@@ -13,7 +13,7 @@ $this->pageTitle = Yii::app()->name . ' - Вход';
   <div style="margin: 20px 0">
     <?php
     echo $form->label($loginForm, 'username', array(
-      'class' => 'bold'
+      'class' => 'cufon bold'
     ));
     ?><br>
     <?php
@@ -21,7 +21,7 @@ $this->pageTitle = Yii::app()->name . ' - Вход';
       'class' => 'input-text'
     ));
     ?><br>
-    <?php echo CHtml::error($loginForm, 'username'); ?>
+    <?php echo CHtml::error($loginForm, 'username', array('class' => 'red')); ?>
   </div>
   <div>
     <?php
@@ -34,7 +34,7 @@ $this->pageTitle = Yii::app()->name . ' - Вход';
       'class' => 'input-text'
     ));
     ?><br>
-    <?php echo CHtml::error($loginForm, 'password'); ?>
+    <?php echo CHtml::error($loginForm, 'password', array('class' => 'red')); ?>
   </div>
   <div style="margin-top: 40px">
     <a class="submit" href="#">

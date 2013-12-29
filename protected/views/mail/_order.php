@@ -1,4 +1,6 @@
 <?php
+/* @var $coupon_discount float */
+/* @var $order Order */
 
 echo CHtml::tag('div', array('style' => 'font-weight:bold;margin-top:1em'), 'Информация о заказе:');
 echo CHtml::tag('div', array(), 'Покупатель: ' . $order->fio);

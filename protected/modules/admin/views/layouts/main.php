@@ -43,8 +43,8 @@
             Yii::app()->user->checkAccess('discount.coupon.*')
           ),
           array('label' => 'Оплата',
-            'url' => '/admin/payment',
-            'active' => $this->module instanceof PaymentModule,
+            'url' => '/admin/payments',
+            'active' => $this->module instanceof PaymentsModule,
             'visible' => Yii::app()->user->checkAccess('payment.*')),
           array('label' => 'Доставка',
             'url' => '/admin/delivery',

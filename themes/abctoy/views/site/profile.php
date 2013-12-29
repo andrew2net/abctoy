@@ -168,7 +168,8 @@ $cs->registerScriptFile($coreScriptUrl . '/jui/js/jquery-ui-i18n.min.js', CClien
           ),
           array(
             'name' => 'status_id',
-            'value' => '$data->status',
+            'type' => 'html',
+            'value' => '$data->status_id==3 && $data->payment->type_id!=0 && $data->productSumm>$data->paySumm ? CHtml::link($data->status, Yii::app()->createUrl("pay/order", array("id"=>$data->id))) : $data->status',
           ),
         )
       ));

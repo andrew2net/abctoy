@@ -39,7 +39,7 @@ $this->breadcrumbs = array(
   <div class="form-actions">
     <?php
     echo TbHtml::linkButton('Закрыть', array(
-      'url' => '/admin/payment'));
+      'url' => '/admin/payments'));
     ?>
     <?php
     echo TbHtml::submitButton('Сохранить', array(
