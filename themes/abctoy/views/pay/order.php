@@ -60,10 +60,24 @@ $this->pageTitle = Yii::app()->name . ' - Оплата заказа';
         <td class="bold" colspan="4" style="text-align: right">Итого:</td>
         <td class="bold" style="text-align: right"><?php echo number_format($total, 0, '.', ' ') ?></td>
       </tr>
+      <?php
+      $paied = $order->paySumm;
+      $to_pay = $total - $paied;
+      if ($paied > 0) {
+        ?>
+        <tr>
+          <td class="bold" colspan="4" style="text-align: right">Оплачено:</td>
+          <td class="bold" style="text-align: right"><?php echo number_format($paied, 0, '.', ' ') ?></td>
+        </tr>
+        <tr>
+          <td class="bold" colspan="4" style="text-align: right">К оплате:</td>
+          <td class="bold" style="text-align: right"><?php echo number_format($to_pay, 0, '.', ' ') ?></td>
+        </tr>
+      <?php } ?>
     </table>
     <?php echo CHtml::beginForm('https://www.moneta.ru/assistant.htm'); ?>
     <?php
-    $paysumm = number_format($total, 2, '.', '');
+    $paysumm = number_format($to_pay, 2, '.', '');
     echo CHtml::hiddenField('MNT_ID', $order->payment->mnt_id);
     echo CHtml::hiddenField('MNT_TRANSACTION_ID', $order->id);
     echo CHtml::hiddenField('MNT_CURRENCY_CODE', 'RUB');
@@ -83,15 +97,17 @@ $this->pageTitle = Yii::app()->name . ' - Оплата заказа';
     $signature = md5($string_sign);
     echo CHtml::hiddenField('MNT_SIGNATURE', $signature);
     ?>
-    <div style="margin-top: 40px">
-      <a class="submit right" href="#">
-        <div class="greenbutton inline-blocks">
-          <div class="left"></div>
-          <div class="center">ОПЛАТИТЬ</div>
-          <div class="right"></div>
-        </div>
-      </a>
-    </div>
+    <?php if ($to_pay > 0) { ?>
+      <div style="margin-top: 40px">
+        <a class="submit right" href="#">
+          <div class="greenbutton inline-blocks">
+            <div class="left"></div>
+            <div class="center">ОПЛАТИТЬ</div>
+            <div class="right"></div>
+          </div>
+        </a>
+      </div>
+    <?php } ?>
     <?php echo CHtml::endForm(); ?>
   <?php } ?>
 </div>
