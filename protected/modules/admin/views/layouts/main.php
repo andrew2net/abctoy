@@ -45,7 +45,7 @@
           array('label' => 'Оплата',
             'url' => '/admin/payments',
             'active' => $this->module instanceof PaymentsModule,
-            'visible' => Yii::app()->user->checkAccess('payment.*')),
+            'visible' => Yii::app()->user->checkAccess('payments.*')),
           array('label' => 'Доставка',
             'url' => '/admin/delivery',
             'active' => $this->module instanceof DeliveryModule,
