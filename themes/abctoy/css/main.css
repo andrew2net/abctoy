@@ -368,7 +368,7 @@ input[type=checkbox]:checked + label:before, .weekcarousel-prev,
   top: 37px;
   left: 18px;
 }
-.icon-add-child-small{
+.icon-add-child-small, .icon-remove-child-small{
   width: 16px;
   height: 16px;
   border-radius: 8px;
@@ -381,7 +381,8 @@ input[type=checkbox]:checked + label:before, .weekcarousel-prev,
   vertical-align: baseline;
   box-shadow: inset 0px 0px 2px 2px #e1e1e8;
 }
-.icon-add-child-small:before, .icon-add-child-small:after{
+.icon-add-child-small:before, .icon-add-child-small:after,
+.icon-remove-child-small:after{
   position: absolute;
   background-color: #3399cc;
 }
@@ -392,7 +393,7 @@ input[type=checkbox]:checked + label:before, .weekcarousel-prev,
   top: 4px;
   left: 7px;
 }
-.icon-add-child-small:after{
+.icon-add-child-small:after, .icon-remove-child-small:after{
   content: " ";
   width: 8px;
   height: 2px;
@@ -969,7 +970,7 @@ a:hover .item-disc, a:hover .item-price{
 }
 
 .error{
-  font-size: 12pt;
+  border-color: #cc3333;
 }
 
 #profile-grid-order .items{

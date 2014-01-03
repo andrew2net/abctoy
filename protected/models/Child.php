@@ -40,15 +40,16 @@ class Child extends CActiveRecord {
     // NOTE: you should only define rules for those attributes that
     // will receive user inputs.
     return array(
-      array('profile_id, gender_id, birthday, name', 'required'),
+      array('profile_id, gender_id, birthday, name', 'required', 'on'=>'insert'),
       array('gender_id', 'numerical', 'integerOnly' => true),
-      array('profile_id', 'length', 'max' => 11),
-      array('name', 'length', 'max' => 30),
-      array('birthday', 'safe'),
+      array('profile_id', 'length', 'max' => 11, 'on'=>'insert'),
+      array('name', 'length', 'max' => 30, 'on'=>'insert'),
+      array('birthday', 'safe', 'on'=>'insert'),
       array('birthday, name', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
       array('id, profile_id, name, gender_id, birthday', 'safe', 'on' => 'search'),
+      array('name, gender_id, birthday', 'required', 'on' => 'popup'),
     );
   }
 

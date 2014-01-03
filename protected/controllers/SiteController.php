@@ -917,10 +917,34 @@ class SiteController extends Controller {
   }
 
   public function actionPopupWindow() {
-    $child = new Child;
+    $children = array();
+    $popup_form = new PopupForm();
 
-    $this->renderPartial('_popupWindow', array('child' => $child));
-    Yii::app()->end();
+    if (isset($_POST['children'])) {
+      $valid = TRUE;
+      if (isset($_POST['PopupForm'])) {
+        $popup_form->attributes = $_POST['PopupForm'];
+        $valid = $popup_form->validate() && $valid;
+      }
+      foreach ($_POST['children'] as $id => $value) {
+        $child = new Child('popup');
+        $child->attributes = $value;
+        $valid = $child->validate() && $valid;
+        $children[] = $child;
+      }
+      echo $this->renderPartial('_popupForm', array(
+        'children' => $children,
+        'popup_form' => $popup_form,
+      ));
+      Yii::app()->end();
+    }
+    else
+      $children[] = new Child('popup');
+
+    $this->renderPartial('_popupWindow', array(
+      'children' => $children,
+      'popup_form' => $popup_form,
+    ));
   }
 
 }

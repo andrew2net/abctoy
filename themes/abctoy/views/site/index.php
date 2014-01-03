@@ -88,16 +88,26 @@ $this->renderPartial('_topmenu');
     });
   });
 
-  $('#popup-window').on('focus', '.date', function() {
-    $(this).datepicker($.extend({
-      changeMonth: true,
-      changeYear: true,
-      yearRange: "-30:+00"
-    }, $.datepicker.regional['ru']));
+  $('#popup-window').on('click', '#popup-submit', function() {
+    var children = [];
+    $('.child').each(function() {
+      var name = $(this).find('.name').val();
+      var date = $(this).find('.date').val();
+      var gender = $(this).find('input[type=radio]:checked').val();
+      children.push({name: name, birthday: date, gender_id: gender});
+    });
+    var accept = $('#PopupForm_accept').prop('checked') ? 1 : 0;
+    var email = $('#PopupForm_email').val();
+    $.post('/popupWindow', {
+      children: children,
+      PopupForm: {accept: accept, email: email}
+    }, function(html) {
+      $('#popup-form').html(html);
+      $('input[type="radio"][class~="error"], input[type="checkbox"][class~="error"]')
+              .parent()
+              .css('border', '1px solid #cc3333')
+              .css('border-radius', '5px')
+              .css('padding', '4px');
+    });
   });
-  
-  $('#popup-window').on('click', '.add-child', function (){
-    
-  });
-
 </script>
