@@ -65,7 +65,7 @@
   </div>
   <div class="right blue" style="cursor: pointer;margin: 5px 0 5px" id="submit-password">Вход</div>
   <div  style="margin-top: 5px">
-    <div id="registr" class="blue" style="cursor: pointer">Зрегистрироваться</div>
+    <div id="registr" class="blue" style="cursor: pointer">Зарегистрироваться</div>
     <div style="cursor: pointer;margin-bottom: 10px; display: none" id="submit-registr" class="blue">Регистрация</div>
     <img src="/images/process.gif" style="display: none; margin: 5px 35px" id="loading-dialog" />
     <div id="sent-mail-recovery" style="font-size: 9pt; display: none; cursor: pointer"></div>
