@@ -923,6 +923,18 @@ class SiteController extends Controller {
     if (isset($_POST['children'])) {
       $valid = TRUE;
       if (isset($_POST['PopupForm'])) {
+        $user = User::model()->findByAttributes(array(
+          'email' => $_POST['PopupForm']['email']
+        ));
+        if ($user) {
+          echo json_encode(array(
+            'result' => 'exist',
+            'html' => $this->renderPartial('_popupEmailExist', array(
+              'email' => $_POST['PopupForm']['email'],
+                ), TRUE),
+          ));
+          Yii::app()->end();
+        }
         $popup_form->attributes = $_POST['PopupForm'];
         $valid = $popup_form->validate() && $valid;
       }
@@ -932,10 +944,40 @@ class SiteController extends Controller {
         $valid = $child->validate() && $valid;
         $children[] = $child;
       }
-      echo $this->renderPartial('_popupForm', array(
-        'children' => $children,
-        'popup_form' => $popup_form,
-      ));
+      if ($valid) {
+        $tr = Yii::app()->db->beginTransaction();
+        try {
+          $profile = CustomerProfile::model()->findByAttributes(array(
+            'email' => $_POST['PopupForm']['email']
+          ));
+          if (is_null($profile)) {
+            $profile = new CustomerProfile;
+            $profile->email = $_POST['PopupForm']['email'];
+            $profile->save(FALSE);
+          }
+          foreach ($_POST['children'] as $id => $value) {
+            $child = new Child;
+            $child->attributes = $value;
+            $child->profile_id = $profile->id;
+            $child->save();
+          }
+          $this->registerUser($profile);
+          $tr->commit();
+          echo json_encode(array(
+            'result' => 'register',
+            'html' => $this->renderPartial('_popupRegister', NULL, TRUE),
+          ));
+          Yii::app()->end();
+        } catch (Exception $e) {
+          $tr->rollback();
+        }
+      }
+      echo json_encode(array(
+        'result' => 'error',
+        'html' => $this->renderPartial('_popupForm', array(
+          'children' => $children,
+          'popup_form' => $popup_form,
+            ), TRUE)));
       Yii::app()->end();
     }
     else

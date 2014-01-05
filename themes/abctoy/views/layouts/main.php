@@ -22,11 +22,11 @@
     ?>
     <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
     <?php Yii::app()->clientScript->registerCoreScript('jquery.ui'); ?>
-    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.typing-0.3.0.js'); ?>
-    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/themes/abctoy/js/submenu.js'); ?>
-    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/themes/abctoy/js/cufon-yui.js'); ?>
-    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/themes/abctoy/js/RotondaC_400-RotondaC_700.font.js'); ?>
-
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl . '/js/jquery.typing-0.3.0.js'); ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl . '/themes/abctoy/js/submenu.js'); ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl . '/themes/abctoy/js/cufon-yui.js'); ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl . '/themes/abctoy/js/RotondaC_400-RotondaC_700.font.js'); ?>
+    <script type="text/javascript" src="http://vk.com/js/api/share.js?90" charset="windows-1251"></script>
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
   </head>
 

@@ -89,6 +89,8 @@ $this->renderPartial('_topmenu');
   });
 
   $('#popup-window').on('click', '#popup-submit', function() {
+    $(this).css('display', 'none');
+    $('#popup-process').css('display', 'inherit');
     var children = [];
     $('.child').each(function() {
       var name = $(this).find('.name').val();
@@ -101,13 +103,34 @@ $this->renderPartial('_topmenu');
     $.post('/popupWindow', {
       children: children,
       PopupForm: {accept: accept, email: email}
-    }, function(html) {
-      $('#popup-form').html(html);
-      $('input[type="radio"][class~="error"], input[type="checkbox"][class~="error"]')
-              .parent()
-              .css('border', '1px solid #cc3333')
-              .css('border-radius', '5px')
-              .css('padding', '4px');
+    }, function(data) {
+      $('#popup-process').css('display', 'none');
+      var result = JSON && JSON.parse(data) || $.parseJSON(data);
+      switch (result.result) {
+        case 'error':
+          $(this).css('display', 'inherit');
+          $('#popup-form').html(result.html);
+          $('input[type="radio"][class~="error"], input[type="checkbox"][class~="error"]')
+                  .parent()
+                  .css('border', '1px solid #cc3333')
+                  .css('border-radius', '5px')
+                  .css('padding', '4px');
+          break;
+        case 'exist':
+          $('#popup-window').dialog('close');
+          $('#popup-window').dialog('option', 'height', 120);
+          $('#popup-window').dialog('option', 'width', 310);
+          $('#popup-window').dialog('option', 'dialogClass', 'popup-email-exist');
+          $('#popup-window').html(result.html);
+          $('#popup-window').dialog('open');
+          setTimeout(function() {
+            $('#popup-window').dialog('close');
+          }, 5000);
+          break;
+        case 'register':
+          $('#popup-body').html(result.html);
+          break;
+      }
     });
   });
 </script>

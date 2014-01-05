@@ -7,7 +7,7 @@
   <?php foreach ($children as $key => $child) { ?>
     <div id="child-<?php echo $key; ?>" class="inline-blocks child">
       <div style="width: 20px; vertical-align: initial">
-        <span class="icon-remove-child-small" title="Удалить" style="display: <?php echo $key==0 ? 'none': 'inherit';?>"></span>
+        <span class="icon-remove-child-small" title="Удалить" style="display: <?php echo $key == 0 ? 'none' : 'inherit'; ?>"></span>
       </div>
       <div>
         <?php
@@ -41,15 +41,17 @@
         text-decoration-style: dashed; -moz-text-decoration-style: dashed;
         cursor: pointer; position: relative">У меня есть еще ребенок</span>
 </div>
-<div>
-<?php
-echo CHtml::activeCheckBox($popup_form, 'accept');
-echo CHtml::label('Я ознакомлен с <a style="color:rgb(51, 153, 204);text-decoration-style:dashed;-moz-text-decoration-style:dashed" href="/site/page/url/offer">офертой</a> и принимю ее условия, а так же соглашаюсь', 'PopupForm_accept');
-?><br>получать новости</div>
+<div style="padding: 4px">
+  <?php
+  echo CHtml::activeCheckBox($popup_form, 'accept');
+  echo CHtml::label('Я ознакомлен с <a style="color:rgb(51, 153, 204);text-decoration-style:dashed;-moz-text-decoration-style:dashed" href="/site/page/url/offer">офертой</a> и принимю ее условия, а так же соглашаюсь', 'PopupForm_accept');
+  ?><br>получать новости</div>
 <div style="margin: 10px 0">
-  <?php echo CHtml::activeEmailField($popup_form, 'email', array(
+  <?php
+  echo CHtml::activeEmailField($popup_form, 'email', array(
     'placeholder' => 'Электронная почта',
     'class' => 'input-text',
-    )); ?>
+  ));
+  ?>
 </div>
-</div>
+
