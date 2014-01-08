@@ -277,8 +277,15 @@
   function setStatus() {
     var stat = $('#Order_status_id').val();
     var read = true;
-    if (stat === '0' || stat === '1')
+    if (stat === '0' || stat === '1') {
       read = false;
+      $('#add-product').css('display', 'inherit');
+      if ($('.row-product').length > 1)
+        $('.row-del').css('display', 'block');
+    } else {
+      $('#add-product').css('display', 'none');
+      $('.row-del').css('display', 'none');
+    }
     $('.row-quantity, .row-price').each(function() {
       $(this).prop('readonly', read);
     });
@@ -342,12 +349,13 @@
     price[0].name = price[0].name.replace(/\d+/, incAttr);
     price[0].value = '0.00';
     $(newrow).insertAfter(row);
-    $('.row-del').css('display', 'block');
+//    $('.row-del').css('display', 'block');
+    setStatus();
   });
 
   $('table').on('click', '.row-del', function() {
     $(this).parent().parent().remove();
-    if ($('.row-product').length ===1)
+    if ($('.row-product').length < 2)
       $('.row-del').css('display', 'none');
     calcSumm();
   });
