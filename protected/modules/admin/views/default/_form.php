@@ -1,7 +1,8 @@
 <?php
 /* @var $this DefaultController */
 /* @var $model Order */
-/* @var $product OrderProduct[] */
+/* @var $order_product OrderProduct[] */
+/* @var $product Product[] */
 /* @var $form CActiveForm */
 ?>
 
@@ -124,44 +125,56 @@
       <th style="width: 4em">
         <?php echo TbHtml::label('Цена', 'product_price'); ?>
       </th>
+      <th></th>
     </tr>
     <?php
     $total = 0;
-    foreach ($product as $item) {
+    $n = 0;
+    foreach ($order_product as $key => $item) {
+      $n++;
       $total += $item->quantity * $item->price;
-//      $discount = $item->product->getActualDiscount();
       ?>
-      <tr>
+      <tr id="product-<?php echo $n; ?>" class="row-product">
         <td>
           <?php
-          echo TbHtml::tag('div', array('name' => 'product_articles', 'class' => 'display-field'));
-          echo $item->product->article;
-          echo TbHtml::closeTag('div');
+          echo TbHtml::activeTextField($product[$key], "[$n]article", array(
+            'readonly' => TRUE,
+            'class' => 'row-article',
+          ));
+          ?>
+        </td>
+        <td style="width: 100%">
+          <?php
+          echo TbHtml::activeTextField($product[$key], "[$n]name", array(
+            'class' => 'row-name',
+            'block' => TRUE,
+          ));
           ?>
         </td>
         <td>
           <?php
-          echo TbHtml::tag('div', array('name' => 'product_name', 'class' => 'display-field'));
-          echo mb_substr(str_replace('<br>', ' ', $item->product->name), 0, 80, 'UTF-8');
-          echo TbHtml::closeTag('div');
-          ?>
-        </td>
-        <td>
-          <?php
-          echo TbHtml::activeNumberField($item, "[$item->product_id]quantity"
+          echo TbHtml::activeNumberField($item, "[$n]quantity"
               , array('class' => 'row-quantity'));
           ?>
         </td>
         <td>
           <?php
-          echo TbHtml::activeNumberField($item, "[$item->product_id]price"
-              , array('class' => 'row-price', 'noDisc' => $item->discount == 0));
+          echo TbHtml::activeNumberField($item, "[$n]price"
+              , array('class' => 'row-price', 'disc' => $item->discount));
           ?>
         </td>
+        <td><?php
+          echo TbHtml::icon(TbHtml::ICON_TRASH, array(
+            'class' => 'row-del',
+            'style' => 'cursor:pointer',
+            'rel' => 'tooltip',
+            'title' => 'Удалить',
+          ));
+          ?></td>
       </tr>
     <?php } ?>
     <tr>
-      <td></td><td></td><td><div style="text-align: right">Стоимость доставки: </div></td>
+      <td colspan="3"><div style="text-align: right">Стоимость доставки: </div></td>
       <td>
         <?php
         echo TbHtml::activeNumberField($model, 'delivery_summ', array(
@@ -171,7 +184,7 @@
       </td>
     </tr>
     <tr>
-      <td></td><td></td><td><div style="text-align: right">Скидка по купону: </div></td>
+      <td colspan="3"><div style="text-align: right">Скидка по купону: </div></td>
       <td>
         <?php
         echo TbHtml::tag('div', array(
@@ -185,7 +198,14 @@
       </td>
     </tr>
     <tr>
-      <td></td><td></td><td><div style="text-align: right">Итого: </div></td>
+      <td>
+        <?php
+        echo TbHtml::linkButton('Добавить', array(
+          'id' => 'add-product',
+          'color' => TbHtml::BUTTON_COLOR_PRIMARY,
+        ));
+        ?>
+      </td><td colspan="2"><div style="text-align: right">Итого: </div></td>
       <td>
         <?php
         $total += $model->delivery_summ;
@@ -228,9 +248,9 @@
       var quantity = parseInt($('#' + quantityid).val());
       if (isNaN(quantity))
         quantity = 0;
-      var noDisc = $(this).attr('noDisc');
+      var disc = $(this).attr('disc');
       var s = price * quantity;
-      if (noDisc)
+      if (disc == 0)
         noDiscSum += s;
       sum += s;
     });
@@ -268,15 +288,73 @@
   calcSumm();
   setStatus();
 
-  $('.row-price, .row-quantity, #order-delivery-summ').keyup(function() {
-    calcSumm();
-  });
-
-  $('.row-price, .row-quantity, #order-delivery-summ').change(function() {
+  $('table').on('keyup change', '.row-price, .row-quantity, #order-delivery-summ', function() {
     calcSumm();
   });
 
   $('#Order_status_id').change(function() {
     setStatus();
   });
+
+  var response = function(event, ui) {
+    for (var i = 0; i < ui.content.length; i++) {
+      ui.content[i].label = ui.content[i].article + ', ' + ui.content[i].value;
+    }
+  }
+
+  var selectItem = function(event, ui) {
+    var row = $(this).parent().parent();
+    row.find('.row-article').val(ui.item.article);
+    var price = row.find('.row-price');
+    $(price).val(ui.item.price);
+    $(price).attr('disc', ui.item.disc);
+    calcSumm();
+  }
+
+  var incAttr = function(match) {
+    return parseInt(match) + 1;
+  }
+
+  $('#add-product').click(function(event) {
+    event.preventDefault();
+    var row = $('.row-product').last();
+    var newrow = row.clone();
+    newrow[0].id = newrow[0].id.replace(/\d+/, incAttr);
+    var art = $(newrow).find('.row-article');
+    art[0].id = art[0].id.replace(/\d+/, incAttr);
+    art[0].name = art[0].name.replace(/\d+/, incAttr);
+    art[0].value = '';
+    var name = $(newrow).find('.row-name');
+    name[0].id = name[0].id.replace(/\d+/, incAttr);
+    name[0].name = name[0].name.replace(/\d+/, incAttr);
+    name[0].value = '';
+    $(name).autocomplete({
+      source: '/admin/default/orderproduct',
+      response: response,
+      select: selectItem
+    });
+    var quantity = $(newrow).find('.row-quantity');
+    quantity[0].id = quantity[0].id.replace(/\d+/, incAttr);
+    quantity[0].name = quantity[0].name.replace(/\d+/, incAttr);
+    quantity[0].value = '1';
+    var price = $(newrow).find('.row-price')
+    price[0].id = price[0].id.replace(/\d+/, incAttr);
+    price[0].name = price[0].name.replace(/\d+/, incAttr);
+    price[0].value = '0.00';
+    $(newrow).insertAfter(row);
+  });
+
+  $('table').on('click', '.row-del', function() {
+    $(this).parent().parent().remove();
+    calcSumm();
+  });
+
+  $(function() {
+    ($('.row-name').autocomplete({
+      source: '/admin/default/orderproduct',
+      response: response,
+      select: selectItem
+    }))
+  });
+
 </script>

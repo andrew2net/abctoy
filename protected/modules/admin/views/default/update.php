@@ -1,7 +1,8 @@
 <?php
 /* @var $this DefaultController */
 /* @var $model Order */
-/* @var $product Product */
+/* @var $order_product OrderProduct[] */
+/* @var $product Product[] */
 /* @var $form CActiveForm */
 
 $this->breadcrumbs = array(
@@ -15,6 +16,7 @@ $this->breadcrumbs = array(
 <?php
 $this->renderPartial('_form', array(
   'model' => $model,
+  'order_product' => $order_product,
   'product' => $product,
 ));
 ?>
