@@ -166,7 +166,7 @@
         <td><?php
           echo TbHtml::icon(TbHtml::ICON_TRASH, array(
             'class' => 'row-del',
-            'style' => 'cursor:pointer',
+            'style' => 'cursor:pointer' . (count($order_product) == 1 ? ';display:none' : ''),
             'rel' => 'tooltip',
             'title' => 'Удалить',
           ));
@@ -342,10 +342,13 @@
     price[0].name = price[0].name.replace(/\d+/, incAttr);
     price[0].value = '0.00';
     $(newrow).insertAfter(row);
+    $('.row-del').css('display', 'block');
   });
 
   $('table').on('click', '.row-del', function() {
     $(this).parent().parent().remove();
+    if ($('.row-product').length ===1)
+      $('.row-del').css('display', 'none');
     calcSumm();
   });
 
