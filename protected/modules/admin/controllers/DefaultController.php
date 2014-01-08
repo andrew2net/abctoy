@@ -140,6 +140,7 @@ class DefaultController extends Controller {
           throw $e;
         }
       }
+    }
 
       if ($model->status_id == 0)
         $model->status_id = 1;
@@ -149,7 +150,6 @@ class DefaultController extends Controller {
         'order_product' => $order_product,
         'product' => $product,
       ));
-    }
   }
 
   /**
