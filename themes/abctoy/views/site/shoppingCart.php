@@ -230,11 +230,15 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
         var discNum = parseFloat(discountDisc);
         switch (discountType) {
           case '0':
-            var couponDisc = cartSummNoDisc > discNum ? discNum : cartSummNoDisc;
-            discountSumm += couponDisc;
-            cartSumm -= couponDisc;
-            discountText += discountDisc + ' руб.';
-            $('#discount-text').html(discountText);
+            if (discountSumm > discNum)
+              $('#discount-text').html('Общая сумма скидки больше скидки по купону. Купон не используется.');
+            else {
+              var couponDisc = cartSummNoDisc > discNum ? discNum : cartSummNoDisc;
+              discountSumm += couponDisc;
+              cartSumm -= couponDisc;
+              discountText += discountDisc + ' руб.';
+              $('#discount-text').html(discountText);
+            }
             break;
           case '1':
             var couponDisc = cartSummNoDisc * discNum / 100;
@@ -338,7 +342,7 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
     delay: 2000
   });
 
-  $('#coupon').focusout(function (){
+  $('#coupon').focusout(function() {
     getCoupon($(this));
   });
 

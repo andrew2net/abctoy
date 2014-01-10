@@ -399,8 +399,11 @@ class SiteController extends Controller {
           if (!is_null($coupon)) {
             switch ($coupon->type_id) {
               case 0:
-                $coupon_discount = $count_products['noDiscount'] > $coupon->value ?
-                    $coupon->value : $count_products['noDiscount'];
+                if ($count_products['discount'] > $coupon->value)
+                  $coupon = NULL;
+                else
+                  $coupon_discount = $count_products['noDiscount'] > $coupon->value ?
+                      $coupon->value : $count_products['noDiscount'];
                 break;
               case 1:
                 $coupon_discount = $count_products['noDiscount'] * $coupon->value / 100;
@@ -456,14 +459,16 @@ class SiteController extends Controller {
   }
 
   private function countProducts() {
-    $result = array('count' => 0, 'summ' => 0, 'noDiscount' => 0);
+    $result = array('count' => 0, 'summ' => 0, 'noDiscount' => 0, 'discount' => 0);
     foreach ($_POST['Cart'] as $k => $q) {
       $quantity = $q['quantity'] > 0 ? $q['quantity'] : 0;
       $result['count'] += $quantity;
       $product = Product::model()->findByPk($k);
       $discount = $product->getActualDiscount();
-      if (is_array($discount))
+      if (is_array($discount)) {
         $price = $discount['price'];
+        $result['discount'] += ($product->price - $price) * $quantity;
+      }
       else {
         $price = $product->price;
         $result['noDiscount'] += $product->price * $quantity;
@@ -505,7 +510,7 @@ class SiteController extends Controller {
           $discount = $product->getActualDiscount();
           if (is_array($discount)) {
             $order_product->price = $discount['price'];
-            $order_product->discount = $discount['discount'];
+            $order_product->discount = $product->price - $discount['price'];
           }
           else {
             $order_product->price = $product->price;

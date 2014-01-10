@@ -3,26 +3,14 @@
 ?>
 <?php
 if (is_array($discount)) {
-//  $percent = '-' . $discount['discount'] . '%';
   $old_price = number_format($product->product->price, 0, '.', ' ');
   $price = $discount['price'];
   $disc = $product->product->price - $discount['price'];
-//  $remainder = $data->remainder > 0 ? 'Осталось ' . $data->remainder . ' шт' : '';
-//  $remainder_class = 'gray';
-//  $glass = 'red-glass';
-//  $item = 'red-item';
-//  $button = 'red-item-bt';
 }
 else {
-//  $percent = '';
   $price = $product->product->price;
   $old_price = '';
   $disc = 0;
-//  $remainder = $data->remainder > 0 ? 'В наличии' : '';
-//  $remainder_class = 'green';
-//  $glass = 'green-glass';
-//  $item = 'green-item';
-//  $button = 'green-item-bt';
 }
 ?>
 <div class="inline-blocks">

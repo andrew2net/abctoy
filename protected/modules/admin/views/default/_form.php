@@ -160,7 +160,7 @@
         <td>
           <?php
           echo TbHtml::activeNumberField($item, "[$n]price"
-              , array('class' => 'row-price', 'disc' => $item->discount));
+              , array('class' => 'row-price', 'price' => $item->product->price));
           ?>
         </td>
         <td><?php
@@ -239,6 +239,7 @@
   function calcSumm() {
     var sum = 0;
     var noDiscSum = 0;
+    var discount = 0;
     $('.row-price').each(function() {
       var price = parseFloat(this.value);
       if (isNaN(price))
@@ -248,9 +249,11 @@
       var quantity = parseInt($('#' + quantityid).val());
       if (isNaN(quantity))
         quantity = 0;
-      var disc = $(this).attr('disc');
+      var noDiscPrice = parseFloat($(this).attr('price'));
       var s = price * quantity;
-      if (disc == 0)
+      if (noDiscPrice > price)
+        discount += (noDiscPrice - price) * quantity;
+      else
         noDiscSum += s;
       sum += s;
     });
@@ -259,7 +262,10 @@
     var couponSum = 0;
     switch (couponType) {
       case '0':
-        couponSum = noDiscSum > couponDisc ? couponDisc : noDiscSum;
+        if (discount > couponDisc)
+          couponSum = 0;
+        else
+          couponSum = noDiscSum > couponDisc ? couponDisc : noDiscSum;
         break;
       case '1':
         couponSum = noDiscSum * couponDisc / 100;

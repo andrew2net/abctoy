@@ -54,32 +54,37 @@ class DefaultController extends Controller {
         else
           $product[$key] = new Product;
         $valid = $order_product[$key]->validate() && $valid;
-        $valid = $product[$key] && $valid;
-//              if ($order_product) {
-//                $order_product->quantity = $value['quantity'] > 0 ? $value['quantity'] : 0;
-//                $order_product->price = $value['price'] > 0 ? $value['price'] : 0;
-//                $order_product->save();
-//              }
-//          }
-//          else {
-//            Yii::app()->user->setFlash('error', 'Товар не найден');
-//          }
+        $valid = $product[$key]->validate() && $valid;
       }
       if ($valid) {
         $tr = Yii::app()->db->beginTransaction();
         try {
           if ($model->save()) {
-//        foreach ($model->orderProducts as $value)
             OrderProduct::model()->deleteAllByAttributes(array('order_id' => $model->id));
+            $dicount_summ = 0;
             foreach ($order_product as $value) {
               $item = new OrderProduct;
               $item->attributes = $value->attributes;
-              $disc = $item->product->getActualDiscount();
-              if ($disc)
-                $item->discount = $disc['discount'];
-              else
-                $item->discount = 0;
+//              $disc = $item->product->getActualDiscount();
+//              if ($disc)
+              $item->discount = $item->product->price - $item->price;
+              $dicount_summ += $item->discount;
+//              else
+//                $item->discount = 0;
               $item->save();
+            }
+            if ($model->coupon && $model->coupon->type_id == 0 &&
+                $model->coupon->used_id != 1) {
+              if ($dicount_summ > $model->coupon->value) {
+                $model->coupon->used_id = 0;
+                $model->coupon->time_used = '0000-00-00 00:00:00';
+              }
+              else {
+                $model->coupon->used_id = 2;
+                $model->coupon->time_used = Yii::app()->
+                    dateFormatter->format('yyyy-MM-dd HH:mm:ss', $model->time);
+              }
+              $model->coupon->update(array('used_id', 'time_used'));
             }
             if ($old_status != $model->status_id) {
               $profile = CustomerProfile::model()->findByPk($model->profile_id);
@@ -151,7 +156,7 @@ class DefaultController extends Controller {
       $discount = $value->getActualDiscount();
       if ($discount) {
         $price = $discount['price'];
-        $disc = $discount['discount'];
+        $disc = ($value->price - $price) * $value->quantity;
       }
       else {
         $price = $value->price;
