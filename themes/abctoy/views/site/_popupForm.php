@@ -44,7 +44,7 @@
 <div style="padding: 4px">
   <?php
   echo CHtml::activeCheckBox($popup_form, 'accept');
-  echo CHtml::label('Я ознакомлен с <a style="color:rgb(51, 153, 204);text-decoration-style:dashed;-moz-text-decoration-style:dashed" href="/site/page/url/offer">офертой</a> и принимю ее условия, а так же соглашаюсь', 'PopupForm_accept');
+  echo CHtml::label('Я ознакомлен с <a style="color:rgb(51, 153, 204);text-decoration-style:dashed;-moz-text-decoration-style:dashed" href="/site/page/url/offer" target="_blank">офертой</a> и принимю ее условия, а так же соглашаюсь', 'PopupForm_accept');
   ?><br>получать новости</div>
 <div style="margin: 10px 0">
   <?php
