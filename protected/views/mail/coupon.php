@@ -9,11 +9,11 @@
     <title></title>
   </head>
   <body>
-    <?php
-    echo CHtml::tag('div', array('style' => 'font-size:16pt;font-weight:bold;margin-bottom:1em'), 'Здравствуйте ' . $profile->fio . '!');
-    echo CHtml::tag('div', array(), "Спасибо что зарегистрировались на нашем сайте. Каждому новому покупателю мы дарим в подарок купон со скидкой $coupon->value рублей. Для получения скидки используйте код купона $coupon->code при оформлении заказа.", FALSE);
-    echo CHtml::closeTag('div');
-    $this->renderPartial('//mail/_footer');
-    ?>
+    <div style="font-size:16pt;font-weight:bold;margin-bottom:1em">Здравствуйте!</div>
+    <p style="font-weight:bold">Благодарим Вас за регистрацию в интернет-магазине <a href="<?php echo Yii::app()->createAbsoluteUrl(''); ?>">abc-toy.ru</a></p><br>
+    <p>Каждому новому покупателю мы дарим купон со скидкой <span style="font-weight:bold"><?php echo $coupon->value; ?> рублей</span> на первую покупку!</p>
+    <p>Введите купон при оформлении заказа и получите скидку.</p><br>
+    <p style="font-size:14pt;">Купон:<span style="font-weight: bold"><?php echo $coupon->code; ?></span></p><br>
+    <?php $this->renderPartial('//mail/_footer'); ?>
   </body>
 </html>

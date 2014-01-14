@@ -568,7 +568,7 @@ class SiteController extends Controller {
 
         $params = array(
           'profile' => $profile,
-          'login' => $user->username,
+          'login' => $user->email,
           'passw' => $sourcePassword,
         );
         $message = new YiiMailMessage('Личный кабинет');
@@ -823,19 +823,33 @@ class SiteController extends Controller {
     $new_passw = new NewPassword;
     $child = new Child;
 
-    if (isset($_POST['CustomerProfile']) && isset($_POST['NewPassword'])) {
-      $new_passw->attributes = $_POST['NewPassword'];
+    if (isset($_POST['CustomerProfile'])) {
       $profile->attributes = $_POST['CustomerProfile'];
-      $profile->save();
-      if ($new_passw->validate()) {
-        if (strlen($new_passw->passw1) > 0) {
-          $new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
-          $new_password->password = UserModule::encrypting($new_passw->passw1);
-          $new_password->activkey = UserModule::encrypting(microtime() . $new_passw->passw1);
-          if ($new_password->save()) {
-            Yii::app()->user->setFlash('newPassw', "Новый пароль сохранен.");
-            $new_passw->passw1 = '';
-            $new_passw->passw2 = '';
+      $user = User::model()->findByPk(Yii::app()->user->id);
+      $valid = TRUE;
+      if ($user->email != $_POST['CustomerProfile']['email']) {
+        $user->email = $_POST['CustomerProfile']['email'];
+        if (!$user->save()) {
+          Yii::app()->user->setFlash('newEmail', "Есть другой пользователь с таким E-mail");
+          $valid = FALSE;
+        }
+      }
+      if ($valid){
+        $profile->save();
+        Yii::app()->user->setFlash('saveProfile', "Контактная информация обновлена");
+      }
+      if (isset($_POST['NewPassword'])) {
+        $new_passw->attributes = $_POST['NewPassword'];
+        if ($new_passw->validate()) {
+          if (strlen($new_passw->passw1) > 0) {
+            $new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
+            $new_password->password = UserModule::encrypting($new_passw->passw1);
+            $new_password->activkey = UserModule::encrypting(microtime() . $new_passw->passw1);
+            if ($new_password->save()) {
+              Yii::app()->user->setFlash('newPassw', "Новый пароль сохранен.");
+              $new_passw->passw1 = '';
+              $new_passw->passw2 = '';
+            }
           }
         }
       }

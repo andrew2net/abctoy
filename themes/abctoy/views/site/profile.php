@@ -17,11 +17,14 @@ $cs->registerScriptFile($coreScriptUrl . '/jui/js/jquery-ui-i18n.min.js', CClien
     <div style="vertical-align: top">
       <?php $form = $this->beginWidget('CActiveForm', array('id' => 'profile')) ?>
       <div class="cufon bold" style="font-size: 14pt; width: 400px">Контактная информация</div>
-      <div style="height: 20px; margin: 10px 0">
-        <?php if (Yii::app()->user->hasFlash('newPassw')) { ?>
-          <span class="cufon red bold" style="font-size: 12pt; margin-bottom: 10px"><?php echo Yii::app()->user->getFlash('newPassw'); ?></span>
-        <?php } ?>
-      </div>
+      <!--<div style="height: 20px; margin: 10px 0">-->
+        <?php
+        foreach (Yii::app()->user->flashes as $key => $flash) {
+//        if (Yii::app()->user->hasFlash('newPassw')) { 
+          ?>
+        <div style="height: 20px; margin: 10px 0"><span class="cufon red bold" style="font-size: 12pt; margin-bottom: 10px"><?php echo $flash; ?></span></div>
+<?php } ?>
+      <!--</div>-->
       <div style="display: inline-block">
         <div><?php
           echo CHtml::label('Ваше имя и фамилия<span class="red">*</span>'
@@ -35,7 +38,7 @@ $cs->registerScriptFile($coreScriptUrl . '/jui/js/jquery-ui-i18n.min.js', CClien
           echo $form->textField($profile, 'fio'
               , array('class' => 'input-text'));
           ?>
-          <?php echo CHtml::error($profile, 'fio', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
+<?php echo CHtml::error($profile, 'fio', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
         </div>
         <div><?php
           echo CHtml::label('E-mail<span class="red">*</span>', 'CustomerProfile_email'
@@ -49,7 +52,7 @@ $cs->registerScriptFile($coreScriptUrl . '/jui/js/jquery-ui-i18n.min.js', CClien
           echo CHtml::activeEmailField($profile, 'email'
               , array('class' => 'input-text'));
           ?>
-          <?php echo CHtml::error($profile, 'email', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
+<?php echo CHtml::error($profile, 'email', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
         </div>
         <div><?php
           echo CHtml::activeLabel($new_passw
@@ -63,7 +66,7 @@ $cs->registerScriptFile($coreScriptUrl . '/jui/js/jquery-ui-i18n.min.js', CClien
           echo CHtml::activePasswordField($new_passw, 'passw1'
               , array('class' => 'input-text'));
           ?>
-          <?php echo CHtml::error($new_passw, 'passw1', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
+<?php echo CHtml::error($new_passw, 'passw1', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
         </div>
         <div><?php
           echo CHtml::activeLabel($new_passw
@@ -77,7 +80,7 @@ $cs->registerScriptFile($coreScriptUrl . '/jui/js/jquery-ui-i18n.min.js', CClien
           echo CHtml::activePasswordField($new_passw, 'passw2'
               , array('class' => 'input-text'));
           ?>
-          <?php echo CHtml::error($new_passw, 'passw2', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
+<?php echo CHtml::error($new_passw, 'passw2', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
         </div>
         <div><?php
           echo CHtml::label('Телефон<span class="red">*</span>', 'CustomerProfile_phone'
@@ -91,7 +94,7 @@ $cs->registerScriptFile($coreScriptUrl . '/jui/js/jquery-ui-i18n.min.js', CClien
           echo CHtml::activeTelField($profile, 'phone'
               , array('class' => 'input-text'));
           ?>
-          <?php echo CHtml::error($profile, 'phone', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
+<?php echo CHtml::error($profile, 'phone', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
         </div>
         <div><?php
           echo CHtml::label('Город<span class="red">*</span>', 'CustomerProfile_city'
@@ -110,7 +113,7 @@ $cs->registerScriptFile($coreScriptUrl . '/jui/js/jquery-ui-i18n.min.js', CClien
             'htmlOptions' => array('class' => 'input-text')
           ));
           ?>
-          <?php echo CHtml::error($profile, 'city', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
+<?php echo CHtml::error($profile, 'city', array('style' => 'font-size:10pt', 'class' => 'red')); ?>
         </div>
         <div><?php
           echo CHtml::activeLabel($profile, 'address'
@@ -134,7 +137,7 @@ $cs->registerScriptFile($coreScriptUrl . '/jui/js/jquery-ui-i18n.min.js', CClien
           </a>
         </div>
       </div>
-      <?php $this->endWidget(); ?>
+<?php $this->endWidget(); ?>
     </div>
     <div style="vertical-align: top">
       <div class="cufon green bold" style="font-size: 22pt; position: relative;
@@ -142,7 +145,7 @@ $cs->registerScriptFile($coreScriptUrl . '/jui/js/jquery-ui-i18n.min.js', CClien
            z-index: 10">Дети</div>
       <div id="children-block" style="border: #99cc33 solid 4px; border-radius: 4px; position: relative; 
            width: 538px; min-height: 250px; top: -15px" class="inline-blocks">
-           <?php $this->renderPartial('_child', array('child' => $child)); ?>
+<?php $this->renderPartial('_child', array('child' => $child)); ?>
       </div>
       <div class="cufon bold" style="font-size: 16pt; margin: 20px 0 0px">Мои заказы</div>
       <?php
