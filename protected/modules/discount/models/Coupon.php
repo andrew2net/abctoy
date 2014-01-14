@@ -180,7 +180,6 @@ class Coupon extends CActiveRecord {
     };
 
     $date = date('Y-m-d', strtotime('-' . self::DAYS_BEFORE_REUSE_CODE . ' day'));
-
     $sql = array(
       'select' => array('code'),
       'from' => $this->tableName(),
