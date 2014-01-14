@@ -6,3 +6,5 @@ RewriteCond %{REQUEST_FILENAME} !-d
 
 # otherwise forward it to index.php
 RewriteRule . index.php
+
+php_value eaccelerator.optimizer 0
