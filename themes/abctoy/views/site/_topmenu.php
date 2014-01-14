@@ -126,6 +126,8 @@
         $('#login-menu').css('display', 'none');
         $('#profile-menu').css('display', 'inherit');
         $('#shoppingCart').html(result.cart);
+        $('#bottom-bar').css('display', 'none');
+        $('#footer').css('margin-bottom', '0');
       } else {
         $('#error-msg').html('Неверное имя или пароль');
         $('.passw-err').css('display', 'inline');

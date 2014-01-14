@@ -47,6 +47,11 @@ class SiteController extends Controller {
     Yii::import('application.modules.catalog.models.Product');
     Yii::import('application.modules.catalog.models.Category');
 
+    if (!Yii::app()->user->isGuest)
+      Yii::app()->request->cookies['popup'] = new CHttpCookie('popup', '2', array(
+        'expire' => time() + 2592000,
+      ));
+
     $searc = new Search;
     $giftSelection = new GiftSelection;
     $groups = Category::model()->roots()->findAll();
@@ -963,6 +968,24 @@ class SiteController extends Controller {
           }
           $this->registerUser($profile);
           $tr->commit();
+          Yii::import('application.modules.discount.models.Coupon');
+          $coupon = new Coupon;
+          $coupon->generateCode();
+          $coupon->type_id = 0;
+          $coupon->value = 400;
+          $coupon->used_id = 0;
+          if ($coupon->save()) {
+            $message = new YiiMailMessage('Купон со скидкой');
+            $message->view = 'coupon';
+            $params = array(
+              'profile' => $profile,
+              'coupon' => $coupon,
+            );
+            $message->setBody($params, 'text/html');
+            $message->setFrom(Yii::app()->params['infoEmail']);
+            $message->setTo(array($profile->email => $profile->fio));
+            Yii::app()->mail->send($message);
+          }
           echo json_encode(array(
             'result' => 'register',
             'html' => $this->renderPartial('_popupRegister', NULL, TRUE),

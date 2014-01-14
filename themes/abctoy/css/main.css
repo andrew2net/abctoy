@@ -998,3 +998,16 @@ a:hover .item-disc, a:hover .item-price{
 .popup-window .ui-dialog-titlebar{
   display: none;
 }
+#bottom-bar{
+  display: none;
+  background: url('/themes/abctoy/css/bottom-bar.png') repeat-x;
+  z-index: 10;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  height: 44px;
+  line-height: 50px;
+  font-weight: bold;
+  font-size: 11pt;
+}

@@ -65,27 +65,54 @@ $this->renderPartial('_topmenu');
 </div><!-- page -->
 <?php $this->renderPartial('_footer', array('groups' => $groups)); ?>
 <div id="popup-window" style="display: none"></div>
+<div id="bottom-bar">УКАЖИТЕ ВОЗРАСТ ВАШЕГО РЕБЕНКА И ПОЛУЧИТЕ СКИДКУ <span class="red">400 РУБЛЕЙ</span> НА ПЕРВУЮ ПОКУПКУ!<span id="get-discount" class="red" style="margin-left: 50px; text-decoration-line: underline; -moz-text-decoration-line: underline; cursor: pointer">ПОЛУЧИТЬ СКИДКУ</span></div>
+<?php Yii::app()->clientScript->registerScriptFile('http://vk.com/js/api/share.js?90', CClientScript::POS_HEAD); ?>
 <script type="text/javascript">
   $(function() {
-    $('#popup-window').load('/popupWindow', function() {
-      Cufon.replace('#popup-window .cufon');
-    });
 
     $('#popup-window').dialog({
       modal: true,
       resizable: false,
       width: 900,
       height: 500,
+      autoOpen: false,
       dialogClass: 'popup-window',
       draggable: false,
       create: function(event, ui) {
         $(event.target).parent().css('position', 'fixed');
       }
     });
-
-    $('#popup-window').on('click', '#popup-close', function() {
+    $('#popup-window').on('click', '.popup-close', function() {
       $('#popup-window').dialog('close');
+      if (getCookie('popup') !== '2') {
+        setCookie('popup', '1', {expires: 2592000});
+        $('#bottom-bar').css('display', 'inherit');
+        $('#footer').css('margin-bottom', '44px');
+      }
     });
+
+    $('#get-discount').click(function() {
+      $('#bottom-bar').css('display', 'none');
+      $('#footer').css('margin-bottom', '0');
+      $('#popup-window').dialog('open');
+    });
+    var popup = getCookie('popup');
+    switch (popup) {
+      case undefined:
+        setCookie('popup', '0', {expires: 2592000});
+      case '0':
+        $('#popup-window').load('/popupWindow', function() {
+          Cufon.replace('#popup-window .cufon');
+        });
+        $('#popup-window').dialog('open');
+        break;
+      case '1':
+        $('#popup-window').load('/popupWindow', function() {
+          Cufon.replace('#popup-window .cufon');
+        });
+        $('#bottom-bar').css('display', 'inherit');
+        $('#footer').css('margin-bottom', '44px');
+    }
   });
 
   $('#popup-window').on('click', '#popup-submit', function() {
@@ -108,7 +135,7 @@ $this->renderPartial('_topmenu');
       var result = JSON && JSON.parse(data) || $.parseJSON(data);
       switch (result.result) {
         case 'error':
-          $(this).css('display', 'inherit');
+          $('#popup-submit').css('display', 'inherit');
           $('#popup-form').html(result.html);
           $('input[type="radio"][class~="error"], input[type="checkbox"][class~="error"]')
                   .parent()
@@ -129,8 +156,57 @@ $this->renderPartial('_topmenu');
           break;
         case 'register':
           $('#popup-body').html(result.html);
+          Cufon.replace('#popup-window .cufon');
+          setCookie('popup', '2', {expires: 2592000});
+          $('#login-menu').css('display', 'none');
+          $('#profile-menu').css('display', 'inherit');
           break;
       }
     });
   });
+
+// возвращает cookie с именем name, если есть, если нет, то undefined
+  function getCookie(name) {
+    var matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+            ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+  }
+
+// устанавливает cookie c именем name и значением value
+// options - объект с свойствами cookie (expires, path, domain, secure)
+  function setCookie(name, value, options) {
+    options = options || {};
+
+    var expires = options.expires;
+
+    if (typeof expires == "number" && expires) {
+      var d = new Date();
+      d.setTime(d.getTime() + expires * 1000);
+      expires = options.expires = d;
+    }
+    if (expires && expires.toUTCString) {
+      options.expires = expires.toUTCString();
+    }
+
+    value = encodeURIComponent(value);
+
+    var updatedCookie = name + "=" + value;
+
+    for (var propName in options) {
+      updatedCookie += "; " + propName;
+      var propValue = options[propName];
+      if (propValue !== true) {
+        updatedCookie += "=" + propValue;
+      }
+    }
+
+    document.cookie = updatedCookie;
+  }
+
+// удаляет cookie с именем name
+  function deleteCookie(name) {
+    setCookie(name, "", {expires: -1})
+  }
+
 </script>

@@ -3,13 +3,7 @@
 /* @var $children Child[] */
 /* @var $popup_form PopupForm */
 ?>
-<img id="popup-close" style="position: absolute; right: -16px; top: -16px; z-index: 1005; cursor: pointer" src="/images/close.png">
-<div class="inline-blocks" style="text-align: center">
-  <div style="margin: 20px">
-    <img width="173" height="57" alt="ABC toy" src="/themes/abctoy/css/logo_shadow.png">
-  </div>
-  <div class="cufon gray bold" style="text-align: left">Интернет магазин<br>детских товаров и игрушек</div>
-</div>
+<?php $this->renderPartial('_popupTopBlock'); ?>
 <div id="popup-body">
   <div class="inline-blocks">
     <div style="width: 365px; text-align: center; margin: 0 10px">
@@ -40,17 +34,17 @@
           'popup_form' => $popup_form,
         ));
         ?>
-        <span>Мы обещаем не слать спам, а только сообщать об интересных Вам акциях :)</span>
-        <div style="position: relative; margin-top: 10px">
-          <a id="popup-submit" href="#">
-            <div class="greenbutton inline-blocks">
-              <div class="left"></div>
-              <div class="center">Получить скидку</div>
-              <div class="right"></div>
-            </div>
-          </a>
-          <img id="popup-process" style="display: none" src="/images/process.gif">
-        </div>
+      </div>
+      <span>Мы обещаем не слать спам, а только сообщать об интересных Вам акциях :)</span>
+      <div style="position: relative; margin-top: 10px">
+        <a id="popup-submit" href="#">
+          <div class="greenbutton inline-blocks">
+            <div class="left"></div>
+            <div class="center">Получить скидку</div>
+            <div class="right"></div>
+          </div>
+        </a>
+        <img id="popup-process" style="display: none" src="/images/process.gif">
       </div>
     </div>
   </div>

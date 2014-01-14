@@ -172,11 +172,12 @@ class Coupon extends CActiveRecord {
     $this->code = $code;
   }
 
+  
   private function getExcludeCodes() {
 
-    function formatArray($element) {
+    $formatArray = function ($element) {
       return $element['code'];
-    }
+    };
 
     $date = date('Y-m-d', strtotime('-' . self::DAYS_BEFORE_REUSE_CODE . ' day'));
 
@@ -195,7 +196,7 @@ class Coupon extends CActiveRecord {
     $command = Yii::app()->db->createCommand($sql);
     $result = $command->queryAll();
     if (is_array($result))
-      $exclude_codes = array_map('formatArray', $result);
+      $exclude_codes = array_map($formatArray, $result);
     else
       $exclude_codes = array();
     return $exclude_codes;
