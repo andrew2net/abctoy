@@ -101,17 +101,17 @@ $this->renderPartial('_topmenu');
       case undefined:
         setCookie('popup', '0', {expires: 2592000});
       case '0':
-        $('#popup-window').load('/popupWindow', function() {
-          Cufon.replace('#popup-window .cufon');
-        });
-        $('#popup-window').dialog('open');
+//        $('#popup-window').load('/popupWindow', function() {
+//          Cufon.replace('#popup-window .cufon');
+//        });
+//        $('#popup-window').dialog('open');
         break;
       case '1':
-        $('#popup-window').load('/popupWindow', function() {
-          Cufon.replace('#popup-window .cufon');
-        });
-        $('#bottom-bar').css('display', 'inherit');
-        $('#footer').css('margin-bottom', '44px');
+//        $('#popup-window').load('/popupWindow', function() {
+//          Cufon.replace('#popup-window .cufon');
+//        });
+//        $('#bottom-bar').css('display', 'inherit');
+//        $('#footer').css('margin-bottom', '44px');
     }
   });
 
