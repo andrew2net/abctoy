@@ -355,9 +355,9 @@ class Product extends CActiveRecord {
       'select' => array(
         't.*',
         'CASE WHEN :gender=0 THEN 1 WHEN t.gender_id=:gender THEN 1 ELSE 0 END AS g',
-        'CASE WHEN t.age<=:ageTo OR t.age_to>=:ageFrom THEN 1 ELSE 0 END AS a'
+        'CASE WHEN t.age<=:ageTo AND t.age_to>=:ageFrom THEN 1 ELSE 0 END AS a'
       ),
-      'order' => 'a, g DESC',
+      'order' => 'a DESC, g DESC',
       'params' => array(
         ':gender' => $params['gender'],
         ':ageFrom' => isset($params['ageFrom']) ? $params['ageFrom'] : 0,

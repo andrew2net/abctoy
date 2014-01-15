@@ -834,9 +834,9 @@ class SiteController extends Controller {
           $valid = FALSE;
         }
       }
-      if ($valid){
-        $profile->save();
-        Yii::app()->user->setFlash('saveProfile', "Контактная информация обновлена");
+      if ($valid) {
+        if ($profile->save())
+          Yii::app()->user->setFlash('saveProfile', "Контактная информация обновлена");
       }
       if (isset($_POST['NewPassword'])) {
         $new_passw->attributes = $_POST['NewPassword'];
