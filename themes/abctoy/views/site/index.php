@@ -14,7 +14,7 @@ $cs->registerScriptFile('/js/slider.tooltip.js', CClientScript::POS_HEAD);
 $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jui/js/jquery-ui-i18n.min.js', CClientScript::POS_HEAD);
 //$cs->registerCssFile('/js/fancybox2/jquery.fancybox.css');
 //$cs->registerScriptFile('/js/fancybox2/jquery.fancybox.pack.js', CClientScript::POS_HEAD);
-$this->pageTitle = 'Детские товары и игрушки купить по низкой цене в интернет-магазине игрушек ' . Yii::app()->name;
+$this->pageTitle = Yii::app()->name . ' Детские товары и игрушки купить по низкой цене в интернет-магазине игрушек';
 
 $this->renderPartial('_topmenu');
 ?>
