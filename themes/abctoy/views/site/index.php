@@ -65,7 +65,7 @@ $this->renderPartial('_topmenu');
 </div><!-- page -->
 <?php $this->renderPartial('_footer', array('groups' => $groups)); ?>
 <div id="popup-window" style="display: none"></div>
-<div id="bottom-bar">УКАЖИТЕ ВОЗРАСТ ВАШЕГО РЕБЕНКА И ПОЛУЧИТЕ СКИДКУ <span class="red">400 РУБЛЕЙ</span> НА ПЕРВУЮ ПОКУПКУ!<span id="get-discount" class="red" style="margin-left: 50px; text-decoration-line: underline; -moz-text-decoration-line: underline; cursor: pointer">ПОЛУЧИТЬ СКИДКУ</span></div>
+<div id="bottom-bar">УКАЖИТЕ ВОЗРАСТ ВАШЕГО РЕБЕНКА И ПОЛУЧИТЕ СКИДКУ <span class="red">400 РУБЛЕЙ</span> НА ПЕРВУЮ ПОКУПКУ!<span id="get-discount" class="red" style="margin-left: 50px; text-decoration: underline; -moz-text-decoration-line: underline; cursor: pointer">ПОЛУЧИТЬ СКИДКУ</span></div>
 <?php Yii::app()->clientScript->registerScriptFile('http://vk.com/js/api/share.js?90', CClientScript::POS_HEAD); ?>
 <script type="text/javascript">
   $(function() {
@@ -73,7 +73,7 @@ $this->renderPartial('_topmenu');
     $('#popup-window').dialog({
       modal: true,
       resizable: false,
-      width: 900,
+      width: 930,
       height: 500,
       autoOpen: false,
       dialogClass: 'popup-window',
@@ -101,17 +101,17 @@ $this->renderPartial('_topmenu');
       case undefined:
         setCookie('popup', '0', {expires: 2592000});
       case '0':
-//        $('#popup-window').load('/popupWindow', function() {
-//          Cufon.replace('#popup-window .cufon');
-//        });
-//        $('#popup-window').dialog('open');
+        $('#popup-window').load('/popupWindow', function() {
+          Cufon.replace('#popup-window .cufon');
+        });
+        $('#popup-window').dialog('open');
         break;
       case '1':
-//        $('#popup-window').load('/popupWindow', function() {
-//          Cufon.replace('#popup-window .cufon');
-//        });
-//        $('#bottom-bar').css('display', 'inherit');
-//        $('#footer').css('margin-bottom', '44px');
+        $('#popup-window').load('/popupWindow', function() {
+          Cufon.replace('#popup-window .cufon');
+        });
+        $('#bottom-bar').css('display', 'inherit');
+        $('#footer').css('margin-bottom', '44px');
     }
   });
 
