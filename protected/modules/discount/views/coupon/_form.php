@@ -40,7 +40,7 @@
       if (!$model->isNotUsed && !is_null($model->time_used))
         $used_options['disabled'] = TRUE;
       echo $form->dropDownListControlGroup($model, 'used_id'
-      , $model->usedValues, $used_options);
+          , $model->usedValues, $used_options);
       ?>
     </div>
   </div>
@@ -62,6 +62,15 @@
       ?>
     </div>
   </div>
+  <?php
+  echo CHtml::activeLabel($model, 'date_limit');
+  $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+    'model' => $model,
+    'attribute' => 'date_limit',
+    'language' => 'ru',
+    'htmlOptions' => array('style' => 'width: 80px')
+  ));
+  ?>
   <div class="form-actions">
     <?php
     echo TbHtml::linkButton('Закрыть', array(

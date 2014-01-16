@@ -376,8 +376,10 @@ class SiteController extends Controller {
     $coupon_data = array('code' => '', 'type' => '', 'value' => '');
     if (isset($_POST['coupon'])) {
       $coupon = Coupon::model()->findByAttributes(array(
-        'code' => $_POST['coupon']), 'used_id<>2');
-      if (!is_null($coupon))
+        'code' => $_POST['coupon'])
+          , 'used_id<>2 AND (date_limit>=:date OR date_limit IS NULL)'
+          , array(':date' => date('Y-m-d')));
+      if ($coupon)
         $coupon_data = array(
           'code' => $coupon->code,
           'type' => $coupon->type_id,
@@ -397,7 +399,6 @@ class SiteController extends Controller {
             $this->registerUser($profile);
           }
         }
-        $tr = $order->dbConnection->beginTransaction();
         if (isset($_POST['Cart'])) {
           $count_products = $this->countProducts();
           $coupon_discount = 0;
@@ -419,22 +420,22 @@ class SiteController extends Controller {
 
           $fl = FALSE;
           if ($count_products['summ'] >= 1500) {
+            $tr = $order->dbConnection->beginTransaction();
             try {
               if (count($cart) > 0) {
                 $this->saveOrderProducts($order, $profile, $coupon);
 
                 foreach ($cart as $item)
                   $item->delete();
-
-                $this->sendConfirmOrderMessage($order, $profile, $coupon_discount);
+                $fl = TRUE;
               }
-              $fl = TRUE;
               $tr->commit();
             } catch (Exception $e) {
               $tr->rollback();
               throw $e;
             }
             if ($fl) {
+              $this->sendConfirmOrderMessage($order, $profile, $coupon_discount);
               $this->redirect('orderSent');
             }
           }
@@ -501,7 +502,7 @@ class SiteController extends Controller {
     $order->status_id = 0;
     $order->time = date('Y-m-d H:i:s');
 
-    if (!is_null($coupon))
+    if ($coupon)
       $order->coupon_id = $coupon->id;
 
     if ($order->save()) {
@@ -524,11 +525,13 @@ class SiteController extends Controller {
           $order_product->save();
         }
       }
-      if (!is_null($coupon)) {
+      if ($coupon) {
         if ($coupon->used_id == 0) {
-          $coupon->used_id = 2;
-          $coupon->time_used = date('Y-m-d H:i:s');
-          $coupon->update(array('used_id', 'time_used'));
+          $command = Yii::app()->db->createCommand();
+          $command->update('store_coupon', array(
+            'used_id' => 2,
+            'time_used' => date('Y-m-d H:i:s'),
+              ), 'id=:id', array(':id' => $coupon->id));
         }
       }
     }
@@ -780,7 +783,8 @@ class SiteController extends Controller {
     if (isset($_GET['coupon'])) {
       Yii::import('application.modules.discount.models.Coupon');
       $coupon = Coupon::model()->findByAttributes(array(
-        'code' => $_GET['coupon']), 'used_id<>2');
+        'code' => $_GET['coupon']), 'used_id<>2 AND (date_limit>=:date OR date_limit IS NULL)'
+          , array(':date' => date('Y-m-d')));
       if (is_null($coupon))
         $data = array('type' => 3, 'discount' => 0);
       else
@@ -988,6 +992,7 @@ class SiteController extends Controller {
           $coupon->type_id = 0;
           $coupon->value = 400;
           $coupon->used_id = 0;
+          $coupon->date_limit = date('d.m.Y', strtotime('+3 days'));
           if ($coupon->save()) {
             $message = new YiiMailMessage('Купон со скидкой');
             $message->view = 'coupon';

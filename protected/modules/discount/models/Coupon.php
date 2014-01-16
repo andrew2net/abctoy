@@ -11,6 +11,7 @@
  * @property integer $used_id
  * @property string $time_issue
  * @property string $time_used
+ * @property string $date_limit
  * 
  * @property-read array $types 
  * @property-read string $type 0-summa, 1-percent
@@ -37,8 +38,8 @@ class Coupon extends CActiveRecord {
   }
 
   public function getUsedValues() {
-    if (!$this->isNotUsed && 
-        ($this->used_id==1 || $this->used_id==2 && is_null($this->time_used))){
+    if (!$this->isNotUsed &&
+        ($this->used_id == 1 || $this->used_id == 2 && is_null($this->time_used))) {
       $used_values = $this->used;
       unset($used_values[0]);
       return $used_values;
@@ -70,6 +71,7 @@ class Coupon extends CActiveRecord {
       array('value', 'length', 'max' => 5),
       array('code', 'notUsedCode'),
       array('value', 'validValue'),
+      array('date_limit', 'date', 'format'=>'dd.MM.yyyy'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
       array('id, code, type_id, value, used_id, time_issue, time_used', 'safe', 'on' => 'search'),
@@ -112,6 +114,7 @@ class Coupon extends CActiveRecord {
       'used_id' => 'Статус',
       'time_issue' => 'Время создания',
       'time_used' => 'Время использования',
+      'date_limit' => 'Дата действия'
     );
   }
 
@@ -172,12 +175,11 @@ class Coupon extends CActiveRecord {
     $this->code = $code;
   }
 
-  
   private function getExcludeCodes() {
 
     $formatArray = function ($element) {
-      return $element['code'];
-    };
+          return $element['code'];
+        };
 
     $date = date('Y-m-d', strtotime('-' . self::DAYS_BEFORE_REUSE_CODE . ' day'));
     $sql = array(
@@ -212,6 +214,12 @@ class Coupon extends CActiveRecord {
       $date = Yii::app()->dateFormatter->formatDateTime($this->time_used);
     $this->time_used = $date;
 
+    if ($this->date_limit == '0000-00-00')
+      $date = '';
+    else
+      $date = Yii::app()->dateFormatter->formatDateTime($this->date_limit, 'medium', NULL);
+    $this->date_limit = $date;
+
     parent::afterFind();
     return TRUE;
   }
@@ -224,6 +232,12 @@ class Coupon extends CActiveRecord {
       $date = Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm:ss', $this->time_used);
       $this->time_used = $date;
     }
+
+    if (!empty($this->date_limit)) {
+      $date = Yii::app()->dateFormatter->format('yyyy-MM-dd', $this->date_limit);
+      $this->date_limit = $date;
+    }
+
     return parent::beforeSave();
   }
 
@@ -238,8 +252,8 @@ class Coupon extends CActiveRecord {
     $order = Order::model()->findAllByAttributes(array('coupon_id' => $this->id));
     return count($order) == 0;
   }
-  
-  public function getHasUsedTime(){
+
+  public function getHasUsedTime() {
     return !is_null($this->time_used);
   }
 

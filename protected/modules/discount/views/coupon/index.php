@@ -41,6 +41,7 @@ $this->breadcrumbs=array(
     ),
     'time_issue',
     'time_used',
+    'date_limit',
     array(
       'class' => 'bootstrap.widgets.TbButtonColumn',
       'template' => '{update}{delete}',
