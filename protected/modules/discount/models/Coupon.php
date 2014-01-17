@@ -13,6 +13,7 @@
  * @property string $time_used
  * @property string $date_limit
  * 
+ * @property-read Order[] $order 
  * @property-read array $types 
  * @property-read string $type 0-summa, 1-percent
  * @property-read array $usedValues 
@@ -99,6 +100,7 @@ class Coupon extends CActiveRecord {
     // NOTE: you may need to adjust the relation name and the related
     // class name for the relations automatically generated below.
     return array(
+      'order' => array(self::HAS_MANY, 'Order', 'coupon_id'),
     );
   }
 
@@ -249,9 +251,9 @@ class Coupon extends CActiveRecord {
   }
 
   public function getIsNotUsed() {
-    Yii::import('application.models.Order');
-    $order = Order::model()->findAllByAttributes(array('coupon_id' => $this->id));
-    return true;// count($order) == 0;
+//    Yii::import('application.models.Order');
+//    $order = Order::model()->findAllByAttributes(array('coupon_id' => $this->id));
+    return count($this->order) == 0;
   }
 
   public function getHasUsedTime() {
