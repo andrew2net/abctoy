@@ -783,7 +783,7 @@ class SiteController extends Controller {
     if (isset($_GET['coupon'])) {
       Yii::import('application.modules.discount.models.Coupon');
       $coupon = Coupon::model()->findByAttributes(array(
-        'code' => $_GET['coupon']), 'used_id<>2 AND (date_limit>=:date OR date_limit IS NULL)'
+        'code' => $_GET['coupon']), "used_id<>2 AND (date_limit>=:date OR date_limit IS NULL OR date_limit='0000-00-00')"
           , array(':date' => date('Y-m-d')));
       if (is_null($coupon))
         $data = array('type' => 3, 'discount' => 0);
