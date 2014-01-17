@@ -249,6 +249,7 @@ class Coupon extends CActiveRecord {
   }
 
   public function getIsNotUsed() {
+    Yii::import('application.models.Order');
     $order = Order::model()->findAllByAttributes(array('coupon_id' => $this->id));
     return count($order) == 0;
   }
