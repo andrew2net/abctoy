@@ -134,11 +134,11 @@ $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jui/js/jquery-ui-i18n.min.js
     Yii::import('application.modules.catalog.models.Product');
     Yii::import('application.modules.discount.models.Discount');
     $product = Product::model()->findAll(array(
-      'with' => array(
-        'discount'
-      ),
+//      'with' => array(
+//        'discount'
+//      ),
 //    'limit' => 5,
-      'condition' => 'discount.id IS NULL AND t.price > 410',
+      'condition' => 't.price > 410',
       'order' => 't.price'
         )
     );
