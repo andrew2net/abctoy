@@ -3,14 +3,16 @@
 /* @var $children Child[] */
 /* @var $popup_form PopupForm */
 ?>
-<div id="children">
+<div id="children-<?php echo (isset($suff) ? $suff : ''); ?>">
   <?php foreach ($children as $key => $child) { ?>
-    <div id="child-<?php echo $key; ?>" class="inline-blocks child">
+    <div id="child-<?php echo (isset($suff) ? $suff : '') . $key; ?>" class="inline-blocks child">
       <div style="width: 20px; vertical-align: initial">
         <span class="icon-remove-child-small" title="Удалить" style="display: <?php echo $key == 0 ? 'none' : 'inherit'; ?>"></span>
       </div>
       <div>
         <?php
+        if (isset($suff))
+          $key = $suff . $key;
         echo CHtml::activeTextField($child, "[$key]name", array(
           'class' => 'input-text name',
           'style' => 'width:120px',
@@ -43,8 +45,16 @@
 </div>
 <div style="padding: 4px">
   <?php
-  echo CHtml::activeCheckBox($popup_form, 'accept');
-  echo CHtml::label('Я ознакомлен с <a style="color:rgb(51, 153, 204);text-decoration-style:dashed;-moz-text-decoration-style:dashed" href="/site/page/url/offer" target="_blank">офертой</a> и принимю ее условия, а так же соглашаюсь', 'PopupForm_accept');
+  if (isset($suff)) {
+    $id = 'PopupForm_accept' . $suff;
+    $name = 'PopupForm' . $suff . '[accept]';
+  }
+  else {
+    $id = 'PopupForm_accept';
+    $name = 'PopupForm[accept]';
+  }
+  echo CHtml::activeCheckBox($popup_form, 'accept', array('name' => $name, 'id' => $id));
+  echo CHtml::label('Я ознакомлен с <a style="color:rgb(51, 153, 204);text-decoration-style:dashed;-moz-text-decoration-style:dashed" href="/site/page/url/offer" target="_blank">офертой</a> и принимю ее условия, а так же соглашаюсь', $id);
   ?><br>получать новости</div>
 <div style="margin: 10px 0">
   <?php

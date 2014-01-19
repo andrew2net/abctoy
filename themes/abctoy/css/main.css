@@ -328,10 +328,14 @@ input[type=checkbox]:checked + label:before, .weekcarousel-prev,
   width: 25px;
   height: 25px;
 }
-.icon-boy, .icon-girl{
+.icon-boy, .icon-girl, .icon-delivery-medium, .icon-sclad-medium,
+.icon-guarantee-medium, .icon-payment-medium, .icon-brands-medium,
+.icon-5yeasr-medium{
   background: url(/themes/abctoy/css/icons1.png) no-repeat;
   width: 75px;
   height: 75px;
+}
+.icon-boy, .icon-girl{
   margin: 20px;
   cursor: pointer;
 }
@@ -341,6 +345,22 @@ input[type=checkbox]:checked + label:before, .weekcarousel-prev,
 .icon-girl{
   background-position: 0 -162px;
 }
+.icon-sclad-medium{
+  background-position: -78px 0;
+}
+.icon-guarantee-medium{
+  background-position: -234px 0;
+}
+.icon-payment-medium{
+  background-position: 0 -78px;
+}
+.icon-brands-medium{
+  background-position: -78px;
+}
+.icon-5yeasr-medium{
+  background-position: -312px 0;
+}
+
 .icon-add-child{
   width: 75px;
   height: 75px;

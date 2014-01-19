@@ -56,9 +56,7 @@ class SiteController extends Controller {
     $giftSelection = new GiftSelection;
     $groups = Category::model()->roots()->findAll();
 
-    $product = Product::model(); //->discountOrder();
-//    $product_data = new CActiveDataProvider('Product'
-//        , array('criteria' => $product->getDbCriteria()));
+    $product = Product::model(); 
 
     $this->render('index', array(
       'product' => $product,
