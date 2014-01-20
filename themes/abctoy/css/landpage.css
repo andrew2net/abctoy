@@ -30,6 +30,11 @@
   background: url(/themes/abctoy/css/btn.png) no-repeat;
 }
 
+.catalog-link{
+  text-decoration-line: none;
+  -moz-text-decoration-line: none;
+}
+
 #grayblock{
   background: url(/themes/abctoy/css/shattered.png);
   height: 205px;

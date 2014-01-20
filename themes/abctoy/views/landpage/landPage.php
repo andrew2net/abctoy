@@ -152,7 +152,7 @@ $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jui/js/jquery-ui-i18n.min.js
   </div>
   <div class="cufon bold" style="font-size: 22pt">У нас есть еще <span class="red" style="font-size: 32pt">49 995</span> игрушек по таким же детским ценам!</div>
   <div style="padding: 20px 0 30px">
-    <a href="/"><div class="land-page-redbutton bold">Смотреть все игрушки</div></a>
+    <a class="catalog-link" href="/"><div class="land-page-redbutton bold">Смотреть все игрушки</div></a>
   </div>
 </div>
 <?php
@@ -211,7 +211,7 @@ $this->renderPartial('_regform', array(
       </div>
     </div>
   </div>
-  <a href="/"><div class="land-page-redbutton bold" style="margin: 50px auto">ПОСМОТРЕТЬ КАТАЛОГ</div></a>
+  <a class="catalog-link" href="/"><div class="land-page-redbutton bold" style="margin: 50px auto">ПОСМОТРЕТЬ КАТАЛОГ</div></a>
 </div>
 <div class="triangle"></div>
 <div class="container">
