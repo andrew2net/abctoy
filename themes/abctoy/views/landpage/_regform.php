@@ -1,4 +1,4 @@
-<div class="woodblock" style="box-shadow: 0px 0px 20px">
+<div id="wb<?php echo isset($suff) ? $suff : ''; ?>" class="woodblock" style="box-shadow: 0px 0px 20px">
   <div class="container">
     <div class="inline-blocks">
       <div style="width: 365px; text-align: center; margin: 30px 10px">
@@ -25,7 +25,7 @@
               ?>
             </div>
           </div>
-          <div id="form-<?php echo (isset($suff) ? $suff : ''); ?>">
+          <div class="regform">
             <?php
             $params = array(
               'children' => $children,
@@ -39,8 +39,8 @@
           <span>Мы обещаем не слать спам, а только сообщать об интересных Вам акциях :)</span>
         </div>
         <div style="position: relative; bottom: -20px">
-          <div class="land-page-redbutton bold">ПОЛУЧИТЬ 400 РУБЛЕЙ</div>
-          <img id="popup-process" style="display: none" src="/images/process.gif">
+          <div class="land-page-redbutton bold submit-form">ПОЛУЧИТЬ 400 РУБЛЕЙ</div>
+          <img class="submit-process" style="display: none; margin: 0 auto" src="/images/process.gif">
         </div>
       </div>
     </div>

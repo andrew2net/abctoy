@@ -3,7 +3,7 @@
 /* @var $children Child[] */
 /* @var $popup_form PopupForm */
 ?>
-<div id="children-<?php echo (isset($suff) ? $suff : ''); ?>">
+<div id="children<?php echo (isset($suff) ? '-' . $suff : ''); ?>" class="children">
   <?php foreach ($children as $key => $child) { ?>
     <div id="child-<?php echo (isset($suff) ? $suff : '') . $key; ?>" class="inline-blocks child">
       <div style="width: 20px; vertical-align: initial">
@@ -58,7 +58,17 @@
   ?><br>получать новости</div>
 <div style="margin: 10px 0">
   <?php
+  if (isset($suff)) {
+    $id = 'PopupForm_email' . $suff;
+    $name = 'PopupForm' . $suff . '[email]';
+  }
+  else {
+    $id = 'PopupForm_email';
+    $name = 'PopupForm[accept]';
+  }
   echo CHtml::activeEmailField($popup_form, 'email', array(
+    'id' => $id,
+    'name' => $name,
     'placeholder' => 'Электронная почта',
     'class' => 'input-text',
   ));

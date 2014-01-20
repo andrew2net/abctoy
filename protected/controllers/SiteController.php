@@ -56,7 +56,7 @@ class SiteController extends Controller {
     $giftSelection = new GiftSelection;
     $groups = Category::model()->roots()->findAll();
 
-    $product = Product::model(); 
+    $product = Product::model();
 
     $this->render('index', array(
       'product' => $product,
@@ -942,6 +942,13 @@ class SiteController extends Controller {
     $popup_form = new PopupForm();
 
     if (isset($_POST['children'])) {
+      if (!Yii::app()->user->isGuest) {
+        echo json_encode(array(
+          'result' => 'exist',
+          'html' => $this->renderPartial('_popupIsLogin', array(), TRUE),
+        ));
+        Yii::app()->end();
+      }
       $valid = TRUE;
       if (isset($_POST['PopupForm'])) {
         $user = User::model()->findByAttributes(array(
@@ -1012,12 +1019,15 @@ class SiteController extends Controller {
           $tr->rollback();
         }
       }
+      $par = array(
+        'children' => $children,
+        'popup_form' => $popup_form,
+      );
+      if (isset($_POST['suff']) && $_POST['suff'] != 0)
+        $par['suff'] = $_POST['suff'];
       echo json_encode(array(
         'result' => 'error',
-        'html' => $this->renderPartial('_popupForm', array(
-          'children' => $children,
-          'popup_form' => $popup_form,
-            ), TRUE)));
+        'html' => $this->renderPartial('_popupForm', $par, TRUE)));
       Yii::app()->end();
     }
     else

@@ -31,9 +31,9 @@ $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jui/js/jquery-ui-i18n.min.js
   </div>
 </div>
 <div id="greenblock">
-  <span> <span class="cufon bold">Интернет-магазин <span class="red">игрушек</span> для РАЗУМНЫХ родителей!</span> </span>
+  <div class="cufon bold">Интернет-магазин <span class="red">игрушек</span> для РАЗУМНЫХ родителей!</div>
 </div>
-<div class="woodblock">
+<div id="wb0" class="woodblock">
   <div class="container">
     <div class="inline-blocks">
       <div style="width: 365px; text-align: center; margin: 0 10px">
@@ -63,7 +63,7 @@ $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jui/js/jquery-ui-i18n.min.js
               ?>
             </div>
           </div>
-          <div id="popup-form">
+          <div class="regform">
             <?php
             $this->renderPartial('//site/_popupForm', array(
               'children' => $children,
@@ -74,8 +74,8 @@ $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jui/js/jquery-ui-i18n.min.js
           <span>Мы обещаем не слать спам, а только сообщать об интересных Вам акциях :)</span>
         </div>
         <div style="position: relativ; margin: 20px">
-          <div class="land-page-redbutton bold">ПОЛУЧИТЬ 400 РУБЛЕЙ</div>
-          <img id="popup-process" style="display: none" src="/images/process.gif">
+          <div class="land-page-redbutton bold submit-form">ПОЛУЧИТЬ 400 РУБЛЕЙ</div>
+          <img class="submit-process" style="display: none; margin: 0 auto" src="/images/process.gif">
         </div>
       </div>
     </div>
@@ -134,11 +134,11 @@ $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jui/js/jquery-ui-i18n.min.js
     Yii::import('application.modules.catalog.models.Product');
     Yii::import('application.modules.discount.models.Discount');
     $product = Product::model()->findAll(array(
-//      'with' => array(
-//        'discount'
-//      ),
+      'with' => array(
+        'discount'
+      ),
 //    'limit' => 5,
-      'condition' => 't.price > 410',
+      'condition' => 'discount.id IS NULL AND t.price > 410',
       'order' => 't.price'
         )
     );
@@ -303,6 +303,9 @@ $this->renderPartial('_regform', array(
     </div>
   </div>
 </div>
+<?php $this->renderPartial('//site/_addProductModal'); ?>
+<div id="popup-window" style="display: none"></div>
+<?php Yii::app()->clientScript->registerScriptFile('http://vk.com/js/api/share.js?90', CClientScript::POS_HEAD); ?>
 <script type="text/javascript">
   $('.woodblock').on('focus', '.date', function() {
     $('.woodblock .date').datepicker($.extend({
@@ -312,7 +315,6 @@ $this->renderPartial('_regform', array(
     }, $.datepicker.regional['ru']));
   });
 
-  var child_n = 0;
   var n = 1;
   var incAttr = function(match) {
     return parseInt(match) + 1;
@@ -321,52 +323,116 @@ $this->renderPartial('_regform', array(
   $('.woodblock').on('click', '.add-child', function() {
     if (n > 3)
       return;
-    child_n++;
     n++;
     $('.woodblock .date').datepicker('destroy');
     var child = $(this).parent().parent().find('.child:last-child').clone(true);
-//    var child = $('#child-0').clone(true);
-//    var id = child[0].id.replace('-0', '-' + child_n);
     child[0].id = child[0].id.replace(/\d+/, incAttr);
     child.find('.icon-remove-child-small').css('display', 'inherit');
     var chname = child.find('.name');
-//    id = chname[0].id.replace('_0_', '_' + child_n + '_');
     chname[0].id = chname[0].id.replace(/\d+/, incAttr);
-//    var name = chname[0].name.replace('[0]', '[' + child_n + ']');
     chname[0].name = chname[0].name.replace(/\d+/, incAttr);
     chname[0].value = '';
-    var chbday = child.find('.birthday');
-//    var idbd = chbday[0].id.replace('_0_', '_' + child_n + '_');
+    var chbday = child.find('.date');
     chbday[0].id = chbday[0].id.replace(/\d+/, incAttr);
     chbday[0].name = chbday[0].name.replace(/\d+/, incAttr);
-//    chbday[0].name = name;
     chbday[0].value = '';
-    var gender = child.find('#ytChild_0_gender_id');
-    id = gender[0].id.replace('_0_', '_' + child_n + '_');
-    gender[0].id = id;
-    name = gender[0].name.replace('[0]', '[' + child_n + ']');
+    var gender = child.find('input[type=hidden]');
+    gender[0].id = gender[0].id.replace(/\d+/, incAttr);
+    name = gender[0].name.replace(/\d+/, incAttr);
     gender[0].name = name;
-    var gender0 = child.find('#Child_0_gender_id_0');
-    id = gender0[0].id.replace('_0_', '_' + child_n + '_');
-    gender0[0].id = id;
+    var gender0 = child.find('input[type=radio][value=1]');
+    gender0[0].id = gender0[0].id.replace(/\d+/, incAttr);
     gender0[0].name = name;
     gender0.prop('checked', false);
-    var gender0l = child.find('label[for=Child_0_gender_id_0]');
-    var lfor = $(gender0l[0]).attr('for').replace('_0_', '_' + child_n + '_');
-    $(gender0l[0]).attr('for', lfor);
-    var gender1 = child.find('#Child_0_gender_id_1');
-    id = gender1[0].id.replace('_0_', '_' + child_n + '_');
-    gender1[0].id = id;
+    var gender0l = $(gender0).next();
+    $(gender0l[0]).attr('for', $(gender0l[0]).attr('for').replace(/\d+/, incAttr));
+    var gender1 = child.find('input[type=radio][value=2]');
+    gender1[0].id = gender1[0].id.replace(/\d+/, incAttr);
     gender1[0].name = name;
     gender1.prop('checked', false);
-    var gender1l = child.find('label[for=Child_0_gender_id_1]');
-    lfor = $(gender1l[0]).attr('for').replace('_0_', '_' + child_n + '_');
-    $(gender1l[0]).attr('for', lfor);
-    child.appendTo('#children');
+    var gender1l = $(gender1).next();//child.find('label[for=Child_0_gender_id_1]');
+    $(gender1l[0]).attr('for', $(gender1l[0]).attr('for').replace(/\d+/, incAttr));
+    var children = $(this).parent().parent().find('.children');
+    child.appendTo(children);
   });
 
   $('.woodblock').on('click', '.icon-remove-child-small', function() {
     $(this).parent().parent().remove();
     n--;
+  });
+
+  $('.woodblock').on('click', '.submit-form', function() {
+    $(this).css('display', 'none');
+    $(this).next().css('display', 'inherit');
+    var children = [];
+    var wb = $(this).closest('.woodblock');
+    var suff = wb[0].id.match(/\d+/)[0];
+    $(wb).find('.child').each(function() {
+      var name = $(this).find('.name').val();
+      var date = $(this).find('.date').val();
+      var gender = $(this).find('input[type=radio]:checked').val();
+      children.push({name: name, birthday: date, gender_id: gender});
+    });
+    var accept = $(wb).find('input[type=checkbox]').prop('checked') ? 1 : 0;
+    var email = $(wb).find('input[type=email]').val();
+    $.post('/popupWindow', {
+      children: children,
+      PopupForm: {accept: accept, email: email},
+      suff: suff
+    }, function(data) {
+      $(wb).find('.submit-process').css('display', 'none');
+      $(wb).find('.submit-form').css('display', 'inherit');
+      var result = JSON && JSON.parse(data) || $.parseJSON(data);
+      switch (result.result) {
+        case 'error':
+          $(wb).find('.regform').html(result.html);
+          $(wb).find('input[type="radio"][class~="error"], input[type="checkbox"][class~="error"]')
+                  .parent()
+                  .css('border', '1px solid #cc3333')
+                  .css('border-radius', '5px')
+                  .css('padding', '4px');
+          break;
+        case 'exist':
+          $('#popup-window').dialog('option', 'height', 120);
+          $('#popup-window').dialog('option', 'width', 310);
+          $('#popup-window').dialog('option', 'dialogClass', 'popup-email-exist');
+          $('#popup-window').html(result.html);
+          $('#popup-window').dialog('open');
+          setTimeout(function() {
+            $('#popup-window').dialog('close');
+          }, 5000);
+          break;
+        case 'register':
+          $.cookie('popup', '2', {expires: 30});
+          $('#popup-window').dialog('option', 'height', 500);
+          $('#popup-window').dialog('option', 'width', 930);
+          $('#popup-window').dialog('option', 'dialogClass', 'popup-window');
+          $('#popup-window').load('/popupWindow', function() {
+            $('#popup-body').html(result.html);
+            Cufon.replace('#popup-window .cufon');
+            $('#popup-window').on('dialogclose', function(event, ui) {
+              window.location.href = '/';
+            });
+            $('#popup-window').dialog('open');
+          });
+          break;
+      }
+    });
+  });
+
+  $('#popup-window').dialog({
+    modal: true,
+    resizable: false,
+    width: 930,
+    height: 500,
+    autoOpen: false,
+    dialogClass: 'popup-window',
+    draggable: false,
+    create: function(event, ui) {
+      $(event.target).parent().css('position', 'fixed');
+    }
+  });
+  $('#popup-window').on('click', '.popup-close', function() {
+    $('#popup-window').dialog('close');
   });
 </script>

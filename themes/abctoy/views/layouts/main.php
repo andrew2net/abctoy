@@ -22,6 +22,7 @@
         '/jui/css/base/jquery-ui.css');
     ?>
     <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
+    <?php Yii::app()->clientScript->registerCoreScript('cookie'); ?>
     <?php Yii::app()->clientScript->registerCoreScript('jquery.ui'); ?>
     <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl . '/js/jquery.typing-0.3.0.js'); ?>
     <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl . '/themes/abctoy/js/submenu.js'); ?>

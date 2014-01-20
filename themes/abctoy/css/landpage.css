@@ -5,8 +5,8 @@
   height: 120px;
   box-shadow: inset 0 0 5px;
 }
-#greenblock span{
-  line-height: 120px;
+#greenblock div{
+  padding-top: 50px;
 }
 
 .woodblock{
