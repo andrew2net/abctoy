@@ -31,7 +31,7 @@
 }
 
 .catalog-link{
-  text-decoration-line: none;
+  text-decoration-line: initial;
   -moz-text-decoration-line: none;
 }
 
