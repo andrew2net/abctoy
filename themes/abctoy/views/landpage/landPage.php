@@ -4,6 +4,7 @@ $cs->registerCssFile('/themes/abctoy/css/landpage.css');
 $cs->registerScriptFile('/js/countdown.clock.js', CClientScript::POS_END);
 $cs->registerScriptFile('/js/moment.min.js', CClientScript::POS_HEAD);
 $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jui/js/jquery-ui-i18n.min.js', CClientScript::POS_HEAD);
+$this->pageTitle = Yii::app()->name . ' Детские товары и игрушки купить по низкой цене в интернет-магазине игрушек';
 ?>
 <div class="container" style="margin-top: 5px">
   <div class="table" style="padding-bottom: 10px">
