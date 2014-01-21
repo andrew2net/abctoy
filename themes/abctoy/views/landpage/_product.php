@@ -17,7 +17,7 @@
     <div style=""><?php echo $product->description; ?></div>
     <div>
       <span class="product-price cufon bold"><?php echo number_format($product->price, 0, '.', ' '); ?></span>
-      <span> (скидка <?php echo round(40000 / ($product->price>0?$product->price:1)); ?>%)</span>
+      <span> (скидка <?php echo round(40000 / ($product->price>0?$product->price:1)); ?>%) цена с учетом скидки 400 руб.</span>
     </div>
     <div class="inline-blocks" style="position: relative">
       <div class="cufon bold red" style="font-size: 54pt"><?php echo number_format($product->price - 400, 0, '.', ' '); ?>.-</div>

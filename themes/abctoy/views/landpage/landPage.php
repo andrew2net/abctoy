@@ -85,17 +85,17 @@ $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jui/js/jquery-ui-i18n.min.js
   <div class="container">
     <div class="inline-blocks">
       <div class="icon-delivery-medium"></div>
-      <div style="width: 190px">
+      <div style="width: 190px; margin-top: 15px">
         <div class="bold">Бесплатная доставка</div>
         <div>на следующий день</div>
       </div>
       <div class="icon-sclad-medium"></div>
-      <div style="width: 190px">
+      <div style="width: 190px; margin-top: 15px">
         <div><span class="bold">50 000</span> товаров</div>
         <div>на складе</div>
       </div>
       <div class="icon-guarantee-medium"></div>
-      <div style="width: 190px">
+      <div style="width: 190px; margin-top: 15px">
         <div>Гарантия на товар</div>
         <div>в течении года</div>
       </div>
@@ -107,18 +107,18 @@ $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jui/js/jquery-ui-i18n.min.js
     </div>
     <div class="inline-blocks">
       <div class="icon-payment-medium"></div>
-      <div style="width: 190px">
+      <div style="width: 190px; margin-bottom: 15px">
         <div>Удобнные способы</div>
         <div>оплаты</div>
       </div>
       <div class="icon-brands-medium"></div>
-      <div style="width: 190px">
+      <div style="width: 190px; margin-bottom: 15px">
         <div>Более 25</div>
         <div>производителей</div>
         <div>сотрудничают с нами</div>
       </div>
       <div class="icon-5yeasr-medium"></div>
-      <div style="width: 190px">
+      <div style="width: 190px; margin-bottom: 15px">
         <div class="bold">Более 5 лет</div>
         <div>на рынке</div>
         <div>детских игрушек</div>
@@ -132,22 +132,13 @@ $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jui/js/jquery-ui-i18n.min.js
   <div>
     <?php
     Yii::import('application.modules.catalog.models.Product');
-    Yii::import('application.modules.discount.models.Discount');
     $product = Product::model()->findAll(array(
-      'with' => array(
-        'discount'
-      ),
-//    'limit' => 5,
-      'condition' => 'discount.id IS NULL AND t.price > 410',
+      'condition' => "t.article IN ('Д033', 'Д117', 'Т1405', 'ГД7030', 'Д116')",
       'order' => 't.price'
         )
     );
-    for ($index = 0; $index < 250; $index++) {
-      $this->renderPartial('_product', array('product' => $product[$index]));
-      for ($i = 0; $i < 50; $i++) {
-        $index++;
-      }
-    }
+    foreach ($product as $item)
+      $this->renderPartial('_product', array('product' => $item));
     ?>
   </div>
   <div class="cufon bold" style="font-size: 22pt">У нас есть еще <span class="red" style="font-size: 32pt">49 995</span> игрушек по таким же детским ценам!</div>
@@ -167,7 +158,7 @@ $this->renderPartial('_regform', array(
   <div style="margin-bottom: 20px">Только реальные отзывы от реальных клиентов</div>
   <div class="container inline-blocks">
     <div style="margin: 0 15px">
-      <div class="review-img"></div>
+      <div class="review-img"><img src="/images/1.jpg"></div>
       <div>Лидия Аврам</div>
       <div>дочка, 3 года</div>
       <div class="gray" style="font-size: 9pt">lidaavram@mail.ru</div>
@@ -178,7 +169,7 @@ $this->renderPartial('_regform', array(
       </div>
     </div>
     <div style="margin: 0 15px">
-      <div class="review-img"></div>
+      <div class="review-img"><img src="/images/2.jpg"></div>
       <div>Лидия Аврам</div>
       <div>дочка, 3 года</div>
       <div class="gray" style="font-size: 9pt">lidaavram@mail.ru</div>
@@ -189,7 +180,7 @@ $this->renderPartial('_regform', array(
       </div>
     </div>
     <div style="margin: 0 15px">
-      <div class="review-img"></div>
+      <div class="review-img"><img src="/images/3.jpg"></div>
       <div>Лидия Аврам</div>
       <div>дочка, 3 года</div>
       <div class="gray" style="font-size: 9pt">lidaavram@mail.ru</div>
@@ -200,7 +191,7 @@ $this->renderPartial('_regform', array(
       </div>
     </div>
     <div style="margin: 0 15px">
-      <div class="review-img"></div>
+      <div class="review-img"><img src="/images/4.jpg"></div>
       <div>Лидия Аврам</div>
       <div>дочка, 3 года</div>
       <div class="gray" style="font-size: 9pt">lidaavram@mail.ru</div>
@@ -315,15 +306,16 @@ $this->renderPartial('_regform', array(
     }, $.datepicker.regional['ru']));
   });
 
-  var n = 1;
   var incAttr = function(match) {
     return parseInt(match) + 1;
   }
 
   $('.woodblock').on('click', '.add-child', function() {
-    if (n > 3)
+    var count = $(this).parent().parent().find('.child').length;
+    if (count>3)
       return;
-    n++;
+    else if(count>2)
+      $(this).parent().css('display', 'none');
     $('.woodblock .date').datepicker('destroy');
     var child = $(this).parent().parent().find('.child:last-child').clone(true);
     child[0].id = child[0].id.replace(/\d+/, incAttr);
@@ -357,8 +349,8 @@ $this->renderPartial('_regform', array(
   });
 
   $('.woodblock').on('click', '.icon-remove-child-small', function() {
+    $(this).parents('.regform').find('.add-block').css('display', 'inherit');
     $(this).parent().parent().remove();
-    n--;
   });
 
   $('.woodblock').on('click', '.submit-form', function() {

@@ -37,13 +37,13 @@
     </div>
   <?php } ?>
 </div>
-<div style="margin: 10px 0 20px">
+<div style="margin: 10px 0 10px" class="add-block">
   <span class="icon-add-child-small add-child" title="Добавить"></span>
   <span class="blue add-child" title="Добавить" style="text-decoration: underline;
         text-decoration-style: dashed; -moz-text-decoration-style: dashed;
         cursor: pointer; position: relative">У меня есть еще ребенок</span>
 </div>
-<div style="padding: 4px">
+<div style="padding: 4px; margin-top: 10px">
   <?php
   if (isset($suff)) {
     $id = 'PopupForm_accept' . $suff;
