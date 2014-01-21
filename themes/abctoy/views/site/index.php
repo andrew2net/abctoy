@@ -160,6 +160,7 @@ $this->renderPartial('_topmenu');
           setCookie('popup', '2', {expires: 2592000});
           $('#login-menu').css('display', 'none');
           $('#profile-menu').css('display', 'inherit');
+          yaCounter23309737.reachGoal('discount');
           break;
       }
     });
