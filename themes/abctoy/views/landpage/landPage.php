@@ -45,7 +45,7 @@ $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jui/js/jquery-ui-i18n.min.js
         <div class="cufon bold" style="font-size: 18pt; margin: 10px 0">на первую покупку</div>
         <div class="cufon red" style="margin-bottom: 20px">Так же мы будем рекомендовать только те игрушки которые будут интересны вашему ребенку.</div>
       </div>
-      <div style="vertical-align: top; font-size: 9pt; position: relative; margin-top: 10px">
+      <div style="vertical-align: top; font-size: 9pt; position: relative; margin-top: 10px; min-height: 460px">
         <div>
           <span class="cufon red" style="font-size: 24pt;margin: 10px 0">осталось </span>
           <span class="clock red cufon bold" style="font-size: 32pt" date="<?php echo date('d.m.Y', strtotime("+1 days")); ?>"></span></div>
@@ -73,7 +73,7 @@ $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jui/js/jquery-ui-i18n.min.js
           </div>
           <span>Мы обещаем не слать спам, а только сообщать об интересных Вам акциях :)</span>
         </div>
-        <div style="position: relativ; margin: 20px">
+        <div style="position: relativ; margin: 40px">
           <div class="land-page-redbutton bold submit-form">ПОЛУЧИТЬ 400 РУБЛЕЙ</div>
           <img class="submit-process" style="display: none; margin: 0 auto" src="/images/process.gif">
         </div>
