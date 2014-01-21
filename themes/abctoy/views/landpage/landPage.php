@@ -159,9 +159,9 @@ $this->renderPartial('_regform', array(
   <div class="container inline-blocks">
     <div style="margin: 0 15px">
       <div class="review-img"><img src="/images/1.jpg"></div>
-      <div>Лидия Аврам</div>
-      <div>дочка, 3 года</div>
-      <div class="gray" style="font-size: 9pt">lidaavram@mail.ru</div>
+      <div>Марина Звонова</div>
+      <div>дочка, 5 лет</div>
+      <div class="gray" style="font-size: 9pt">marina1536@gmail.com</div>
       <div class="note-img"></div>
       <div class="note-txt" style="text-align: left">
         <p>Делала неоднократно заказ в этом магазине, и всегда оставалась очень довольна скоростью обслуживания, начиная от операторов заканчивая доставкой.</p>
@@ -170,35 +170,35 @@ $this->renderPartial('_regform', array(
     </div>
     <div style="margin: 0 15px">
       <div class="review-img"><img src="/images/2.jpg"></div>
-      <div>Лидия Аврам</div>
-      <div>дочка, 3 года</div>
-      <div class="gray" style="font-size: 9pt">lidaavram@mail.ru</div>
+      <div>Светлана Артемьева</div>
+      <div>сын и дочка, 5 лет и 1 год</div>
+      <div class="gray" style="font-size: 9pt">atr-sveta@mail.ru</div>
       <div class="note-img"></div>
       <div class="note-txt" style="text-align: left">
-        <p>Делала неоднократно заказ в этом магазине, и всегда оставалась очень довольна скоростью обслуживания, начиная от операторов заканчивая доставкой.</p>
-        <p>Весь персонал очень вежливый, вещи хорошего качества по достойной цене.</p>
+        <p>Очень понравился магазин, получила скидку на 400 руб. и сразу оформила заказ.</p>
+        <p>Была приятно удивлена, когда заказав товар с утра получила его уже вечером в этот же день. Однозначно буду продолжать заказывать игрушки в этом интернет-магазине.</p>
       </div>
     </div>
     <div style="margin: 0 15px">
       <div class="review-img"><img src="/images/3.jpg"></div>
-      <div>Лидия Аврам</div>
-      <div>дочка, 3 года</div>
-      <div class="gray" style="font-size: 9pt">lidaavram@mail.ru</div>
+      <div>Екатерина Маркова</div>
+      <div>сын, 4 года</div>
+      <div class="gray" style="font-size: 9pt">ekaterinamar@mail.ru</div>
       <div class="note-img"></div>
       <div class="note-txt" style="text-align: left">
-        <p>Делала неоднократно заказ в этом магазине, и всегда оставалась очень довольна скоростью обслуживания, начиная от операторов заканчивая доставкой.</p>
-        <p>Весь персонал очень вежливый, вещи хорошего качества по достойной цене.</p>
+        <p>Заказывала сыну подарок на новый год, но того что изначально хотела не было в наличии. Мне сразу предложили замену на другой товар и дали скидочку за неудобства:) Заказ в Москву мне доставили на третий день.</p>
+        <p>Порадовало отсутствие предоплаты при заказе из другого города.</p>
       </div>
     </div>
     <div style="margin: 0 15px">
       <div class="review-img"><img src="/images/4.jpg"></div>
-      <div>Лидия Аврам</div>
-      <div>дочка, 3 года</div>
-      <div class="gray" style="font-size: 9pt">lidaavram@mail.ru</div>
+      <div>Людмила Аршинова</div>
+      <div>внук, 2 года</div>
+      <div class="gray" style="font-size: 9pt">89529429575@mail.ru</div>
       <div class="note-img"></div>
       <div class="note-txt" style="text-align: left">
-        <p>Делала неоднократно заказ в этом магазине, и всегда оставалась очень довольна скоростью обслуживания, начиная от операторов заканчивая доставкой.</p>
-        <p>Весь персонал очень вежливый, вещи хорошего качества по достойной цене.</p>
+        <p>Впервые покупала игрушки через интернет. Заказала игрушки с доставкой на дом. С утра мне позвонили и уточнили информацию о доставке, а в обед нам уже доставили заказ.</p>
+        <p>Это был мой первый опыт покупки через интернет и в дальнейшем с удовольствием, приобрету здесь что-нибудь еще!</p>
       </div>
     </div>
   </div>
