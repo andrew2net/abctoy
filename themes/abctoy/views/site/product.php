@@ -36,7 +36,7 @@
     <div style="position: relative">
       <div class="<?php echo empty($percent) ? '' : 'discount-label-big'; ?>"><?php echo $percent; ?></div>
       <div class="img-container" style="width: 450px; height: 450px">
-        <img style="max-width: 450px; max-height: 450px" src="<?php echo $product->img; ?>">
+        <a class="fancybox" href="<?php echo $product->img; ?>"><img style="max-width: 450px; max-height: 450px" src="<?php echo $product->img; ?>"></a>
       </div>
     </div>
     <div class="helper"></div>
@@ -92,3 +92,8 @@
 </div>
 <?php $this->renderPartial('_footer', array('groups' => $groups)); ?>
 <?php $this->renderPartial('_addProductModal'); ?>
+<script>
+  $(document).ready(function() {
+    $(".fancybox").fancybox();
+  });
+</script>

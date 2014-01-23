@@ -59,10 +59,10 @@ $(document).ready(function() {
   });
 
   $(document).on('click', '.item-link', function(event) {
-    event.preventDefault();
-    var action = this.pathname;
-    $('#item-submit').attr('action', action);
-    $('#item-submit').submit();
+    window.location.href = $(this).attr('href');
+  });
+  $(document).on('click', '.fancybox', function (event){
+    event.stopPropagation();
   });
 
   $("#add-product-dialog").dialog({

@@ -12,8 +12,6 @@ $cs->registerScriptFile('/js/countdown.clock.js', CClientScript::POS_END);
 $cs->registerScriptFile('/js/moment.min.js', CClientScript::POS_HEAD);
 $cs->registerScriptFile('/js/slider.tooltip.js', CClientScript::POS_HEAD);
 $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jui/js/jquery-ui-i18n.min.js', CClientScript::POS_HEAD);
-//$cs->registerCssFile('/js/fancybox2/jquery.fancybox.css');
-//$cs->registerScriptFile('/js/fancybox2/jquery.fancybox.pack.js', CClientScript::POS_HEAD);
 $this->pageTitle = Yii::app()->name . ' Детские товары и игрушки купить по низкой цене в интернет-магазине игрушек';
 
 $this->renderPartial('_topmenu');

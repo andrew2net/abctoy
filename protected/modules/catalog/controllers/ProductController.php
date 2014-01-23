@@ -300,7 +300,7 @@ class ProductController extends Controller {
           if ($_POST['uploadImage'] == 'true') {
             try {
               $imageUrl = $data[3];
-              $ext = substr(basename($imageUrl), strrpos($imageUrl, '.', -1));
+              $ext = substr(basename($imageUrl), strrpos(basename($imageUrl), '.', -1));
               $productData['img'] = '/productimages/' . $product->id . $ext;
               $ch = curl_init($imageUrl);
               $fp = fopen($productImagePath . $product->id . $ext, 'w+');
@@ -310,7 +310,7 @@ class ProductController extends Controller {
               fclose($fp);
 
               $smallImgUrl = $data[4];
-              $small_ext = substr($smallImgUrl, strrpos($smallImgUrl, '.', -1));
+              $small_ext = substr(basename($smallImgUrl), strrpos(basename($smallImgUrl), '.', -1));
               $productData['small_img'] = '/productimages/'
                   . $product->id . 's' . $small_ext;
               $sfp = fopen($productImagePath . $product->id . 's' . $small_ext, 'w+');
