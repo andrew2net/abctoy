@@ -918,7 +918,7 @@ span:hover .item-disc, span:hover .item-price{
   color: rgb(0, 153, 255);
 }
 
-.img-container > img{
+.img-container > a > img{
   position: absolute;
   margin: auto;
   top: 0;
