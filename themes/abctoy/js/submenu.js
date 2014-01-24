@@ -59,7 +59,6 @@ $(document).ready(function() {
   });
 
   $(document).on('click', '.item-link', function(event) {
-//    window.location.href = $(this).attr('href');
     $('#item-submit').attr('action', $(this).attr('href'));
     $('#item-submit').submit();
   });
