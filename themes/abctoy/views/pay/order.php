@@ -93,7 +93,7 @@ $this->pageTitle = Yii::app()->name . ' - Оплата заказа';
     echo CHtml::hiddenField('MNT_RETURN_URL'
         , Yii::app()->createAbsoluteUrl(''));
     $string_sign = $order->payment->mnt_id . $order->id
-        . $paysumm . 'RUB' . '1' . $order->payment->mnt_signature;
+        . $paysumm . 'RUB' . '0' . $order->payment->mnt_signature;
     $signature = md5($string_sign);
     echo CHtml::hiddenField('MNT_SIGNATURE', $signature);
     ?>
