@@ -93,16 +93,16 @@
         if (isset($page))
           $pagination['currentPage'] = $page;
         if ($group->level > 2)
-          $pagination['pageSize'] = 16;
+          $pagination['pageSize'] = Yii::app()->request->getQuery('size', 16);
         else
-          $pagination['pageSize'] = 12;
+          $pagination['pageSize'] = Yii::app()->request->getQuery('size', 12);
         $data = Product::model()->searchCategory($group->id);
         $data->setPagination($pagination);
         if ($data->getItemCount() > 0) {
           $widget = $this->widget('ListView', array(
             'dataProvider' => $data,
             'itemView' => '_item',
-            'template' => '{sorter}{pager}{items}{pager}',
+            'template' => "{sizer}{sorter}{pager}{items}{pager}",
             'sorterHeader' => 'Сортировать:',
             'sortableAttributes' => array('price'),
             'htmlOptions' => array('style' => 'margin-top:30px'),
