@@ -40,7 +40,7 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
   <div class="bold" style="font-size: 14pt">
     <span class="cufon red">*</span>
     <span class="cufon"> Минимальная сумма заказа </span>
-    <span class="cufon red">1500р.</span>
+    <span class="cufon red">700р.</span>
   </div>
   <div class="cufon gray bold" style="font-size: 26pt; text-align: center; margin: 40px 0">Контактная информация</div>
   <div class="inline-blocks" style="font-size: 12pt">

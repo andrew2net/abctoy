@@ -403,7 +403,7 @@ class SiteController extends Controller {
           $count_products['summ'] -= $coupon_discount;
 
           $fl = FALSE;
-          if ($count_products['summ'] >= 1500) {
+          if ($count_products['summ'] >= 700) {
             $tr = $order->dbConnection->beginTransaction();
             try {
               if (count($cart) > 0) {
