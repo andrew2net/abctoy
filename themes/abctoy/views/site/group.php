@@ -92,20 +92,26 @@
         $pagination = array();
         if (isset($page))
           $pagination['currentPage'] = $page;
-        if ($group->level > 2)
+        if ($group->level > 2){
           $pagination['pageSize'] = Yii::app()->request->getQuery('size', 16);
-        else
+          $sizes = array(16, 28, 40);
+        }
+        else{
           $pagination['pageSize'] = Yii::app()->request->getQuery('size', 12);
+          $sizes = array(12, 24, 36);
+        }
         $data = Product::model()->searchCategory($group->id);
         $data->setPagination($pagination);
         if ($data->getItemCount() > 0) {
           $widget = $this->widget('ListView', array(
             'dataProvider' => $data,
             'itemView' => '_item',
-            'template' => "{sorter}{pager}{items}{pager}",
+            'cssFile'=>'/themes/abctoy/css/listview.css',
+            'template' => "{pager}{sizer}{sorter}{items}{pager}",
             'sorterHeader' => 'Сортировать:',
             'sortableAttributes' => array('price'),
             'htmlOptions' => array('style' => 'margin-top:30px'),
+            'viewData'=>array('sizes'=>$sizes),
               )
           );
         }
