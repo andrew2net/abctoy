@@ -102,7 +102,7 @@
           $widget = $this->widget('ListView', array(
             'dataProvider' => $data,
             'itemView' => '_item',
-            'template' => "{sizer}{sorter}{pager}{items}{pager}",
+            'template' => "{sorter}{pager}{items}{pager}",
             'sorterHeader' => 'Сортировать:',
             'sortableAttributes' => array('price'),
             'htmlOptions' => array('style' => 'margin-top:30px'),
