@@ -425,7 +425,7 @@ input[type=checkbox]:checked + label:before, .weekcarousel-prev,
   vertical-align: middle;
 }
 
-.uderline-dashed{
+.underline-dashed{
   text-decoration: underline;
   text-decoration-style: dashed;
   -moz-text-decoration-line: underline;

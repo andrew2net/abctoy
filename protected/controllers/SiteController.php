@@ -353,43 +353,7 @@ class SiteController extends Controller {
     Yii::import('application.modules.payments.models.Payment');
     Yii::import('application.modules.discount.models.Coupon');
 
-    if (Yii::app()->user->isGuest)
-      $profile = CustomerProfile::model()->findByAttributes(array(
-        'session_id' => $this->getSession()));
-    else
-      $profile = CustomerProfile::model()->findByAttributes(array(
-        'user_id' => Yii::app()->user->id));
-
-    if (is_null($profile)) {
-      $profile = new CustomerProfile;
-      if (Yii::app()->user->isGuest)
-        $profile->session_id = $this->getSession();
-      else
-        $profile->user_id = Yii::app()->user->id;
-    }
-
-    if (empty($profile->city)) {
-      $req = new CHttpRequest;
-      $ip = $req->userHostAddress;
-      $int = sprintf("%u", ip2long($ip));
-      $ru_data = Yii::app()->db->createCommand("select * from (select * from net_ru where begin_ip<=$int order by begin_ip desc limit 1) as t where end_ip>=$int")->query();
-      if ($row = $ru_data->read()) {
-        $city_id = $row['city_id'];
-        $ru_city = Yii::app()->db->createCommand("select * from net_city where id='$city_id'")->query();
-        if ($city = $ru_city->read())
-          $profile->city = $city['name_ru'];
-      }
-      if (empty($profile->city)) {
-        $glob_data = Yii::app()->db->createCommand("select * from (select * from net_city_ip where begin_ip<=$int order by begin_ip desc limit 1) as t where end_ip>=$int")->query();
-        if ($row = $glob_data->read()) {
-          $city_id = $row['city_id'];
-          $glob_city = Yii::app()->db->createCommand("select * from net_city where id='$city_id'")->query();
-          if ($city = $glob_city->read())
-            $profile->city = $city['name_ru'];
-        }
-      }
-    }
-
+    $profile = $this->getProfile();
     $cart = Cart::model()->shoppingCart($this->getSession())
             ->with('product.brand')->findAll();
 
@@ -468,6 +432,46 @@ class SiteController extends Controller {
       'coupon' => $coupon_data,
       'has_err' => $has_err,
     ));
+  }
+
+  public function getProfile() {
+    if (Yii::app()->user->isGuest)
+      $profile = CustomerProfile::model()->findByAttributes(array(
+        'session_id' => $this->getSession()));
+    else
+      $profile = CustomerProfile::model()->findByAttributes(array(
+        'user_id' => Yii::app()->user->id));
+
+    if (is_null($profile)) {
+      $profile = new CustomerProfile;
+      if (Yii::app()->user->isGuest)
+        $profile->session_id = $this->getSession();
+      else
+        $profile->user_id = Yii::app()->user->id;
+    }
+
+    if (empty($profile->city)) {
+      $req = new CHttpRequest;
+      $ip = $req->userHostAddress;
+      $int = sprintf("%u", ip2long($ip));
+      $ru_data = Yii::app()->db->createCommand("select * from (select * from net_ru where begin_ip<=$int order by begin_ip desc limit 1) as t where end_ip>=$int")->query();
+      if ($row = $ru_data->read()) {
+        $city_id = $row['city_id'];
+        $ru_city = Yii::app()->db->createCommand("select * from net_city where id='$city_id'")->query();
+        if ($city = $ru_city->read())
+          $profile->city = $city['name_ru'];
+      }
+      if (empty($profile->city)) {
+        $glob_data = Yii::app()->db->createCommand("select * from (select * from net_city_ip where begin_ip<=$int order by begin_ip desc limit 1) as t where end_ip>=$int")->query();
+        if ($row = $glob_data->read()) {
+          $city_id = $row['city_id'];
+          $glob_city = Yii::app()->db->createCommand("select * from net_city where id='$city_id'")->query();
+          if ($city = $glob_city->read())
+            $profile->city = $city['name_ru'];
+        }
+      }
+    }
+    return $profile;
   }
 
   private function countProducts() {
@@ -1073,6 +1077,15 @@ class SiteController extends Controller {
       'children' => $children,
       'popup_form' => $popup_form,
     ));
+  }
+
+  public function actionSaveCity() {
+    if (isset($_POST['city'])){
+      $profile = $this->getProfile();
+      $profile->city = $_POST['city'];
+      $profile->save(FALSE);
+    }
+    Yii::app()->end();
   }
 
 }
