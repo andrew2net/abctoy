@@ -15,6 +15,11 @@
     'groups' => $groups,
   ));
   ?>
+  <?php 
+  $categories = $product->category;
+  if(isset($categories[0]))
+    
+  ?>
   <?php
   $date_tomorrow = new DateTime('tomorrow');
   $aMonth = array('января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря');
