@@ -370,17 +370,22 @@ class SiteController extends Controller {
 
     if (empty($profile->city)) {
       $req = new CHttpRequest;
-      $ip = '85.26.227.234';//$req->userHostAddress;
+      $ip = $req->userHostAddress;
       $int = sprintf("%u", ip2long($ip));
       $ru_data = Yii::app()->db->createCommand("select * from (select * from net_ru where begin_ip<=$int order by begin_ip desc limit 1) as t where end_ip>=$int")->query();
       if ($row = $ru_data->read()) {
         $city_id = $row['city_id'];
         $ru_city = Yii::app()->db->createCommand("select * from net_city where id='$city_id'")->query();
-        if ($city_row = $ru_city->read()) {
-          $profile->city = $city_row['name_ru'];
-        }
-        else {
-          $city_id = 0;
+        if ($city = $ru_city->read())
+          $profile->city = $city['name_ru'];
+      }
+      if (empty($profile->city)) {
+        $glob_data = Yii::app()->db->createCommand("select * from (select * from net_city_ip where begin_ip<=$int order by begin_ip desc limit 1) as t where end_ip>=$int")->query();
+        if ($row = $glob_data->read()) {
+          $city_id = $row['city_id'];
+          $glob_city = Yii::app()->db->createCommand("select * from net_city where id='$city_id'")->query();
+          if ($city = $glob_city->read())
+            $profile->city = $city['name_ru'];
         }
       }
     }
