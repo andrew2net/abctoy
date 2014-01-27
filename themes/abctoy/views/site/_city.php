@@ -23,12 +23,23 @@
   $('#change-city').click(function() {
     $('#city, #change-city').css('display', 'none');
     $('#input-city').css('display', 'inherit');
+    var input = $('#suggest-city').get(0);
+    var length = input.value.length;
+    input.selectionStart = length;
+    input.selectionEnd = length;
+    input.focus();
   });
 
   $('#suggest-city').on('keypress', function(e) {
     var code = e.keyCode || e.which;
     if (code == 13)
       changeCity();
+    else if(code == 27)
+      closeEdit();
+  });
+
+  $('#suggest-city').focusout(function() {
+    changeCity();
   });
 
   $('#suggest-city').on('autocompleteselect', function(event, elem) {
@@ -38,8 +49,11 @@
   function changeCity() {
     var city = $('#suggest-city').val();
     $('#city').html(city);
+    closeEdit()
+    $.post('/site/savecity', {city: city});
+  }
+  function closeEdit (){
     $('#city, #change-city').css('display', 'block');
     $('#input-city').css('display', 'none');
-    $.post('/site/savecity', {city: city});
   }
 </script>
