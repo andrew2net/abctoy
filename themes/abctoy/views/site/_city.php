@@ -26,7 +26,7 @@
     $('#city, #change-city').css('display', 'none');
     $('#input-city').css('display', 'inherit');
     var input = $('#suggest-city').get(0);
-    input.value = $('#city').html();
+    input.value = $.trim($('#city').html());
     var length = input.value.length;
     input.selectionStart = length;
     input.selectionEnd = length;
@@ -44,10 +44,9 @@
   });
 
   $('#suggest-city').focusout(function() {
-    if (!esc) {
+    if (!esc) 
       changeCity();
-      esc = false;
-    }
+    esc = false;
   });
 
   $('#suggest-city').on('autocompleteselect', function(event, elem) {
@@ -55,7 +54,7 @@
   });
 
   function changeCity() {
-    var city = $('#suggest-city').val();
+    var city = $.trim($('#suggest-city').val());
     if (city.length) {
       $('#city').html(city);
       $.post('/site/savecity', {city: city});
