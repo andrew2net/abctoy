@@ -20,10 +20,13 @@
   ?>
 </div>
 <script type="text/javascript">
+  var esc = false;
+
   $('#change-city').click(function() {
     $('#city, #change-city').css('display', 'none');
     $('#input-city').css('display', 'inherit');
     var input = $('#suggest-city').get(0);
+    input.value = $('#city').html();
     var length = input.value.length;
     input.selectionStart = length;
     input.selectionEnd = length;
@@ -34,12 +37,17 @@
     var code = e.keyCode || e.which;
     if (code == 13)
       changeCity();
-    else if(code == 27)
+    else if (code == 27) {
+      esc = true;
       closeEdit();
+    }
   });
 
   $('#suggest-city').focusout(function() {
-    changeCity();
+    if (!esc) {
+      changeCity();
+      esc = false;
+    }
   });
 
   $('#suggest-city').on('autocompleteselect', function(event, elem) {
@@ -48,11 +56,13 @@
 
   function changeCity() {
     var city = $('#suggest-city').val();
-    $('#city').html(city);
+    if (city.length) {
+      $('#city').html(city);
+      $.post('/site/savecity', {city: city});
+    }
     closeEdit()
-    $.post('/site/savecity', {city: city});
   }
-  function closeEdit (){
+  function closeEdit() {
     $('#city, #change-city').css('display', 'block');
     $('#input-city').css('display', 'none');
   }
