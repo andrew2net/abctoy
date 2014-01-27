@@ -1,6 +1,8 @@
 <div id="city" class="gray lager underline-dashed">
   <?php
-  $profile = $this->getProfile();
+  Yii::import('application.controllers.SiteController');
+  Yii::import('application.models.CustomerProfile');
+  $profile = SiteController::getProfile();
   $value = empty($profile->city) ? 'Новосибирск' : $profile->city;
   echo $value;
   ?>

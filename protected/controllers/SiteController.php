@@ -434,10 +434,10 @@ class SiteController extends Controller {
     ));
   }
 
-  public function getProfile() {
+  public static function getProfile() {
     if (Yii::app()->user->isGuest)
       $profile = CustomerProfile::model()->findByAttributes(array(
-        'session_id' => $this->getSession()));
+        'session_id' => self::getSession()));
     else
       $profile = CustomerProfile::model()->findByAttributes(array(
         'user_id' => Yii::app()->user->id));
@@ -445,7 +445,7 @@ class SiteController extends Controller {
     if (is_null($profile)) {
       $profile = new CustomerProfile;
       if (Yii::app()->user->isGuest)
-        $profile->session_id = $this->getSession();
+        $profile->session_id = self::getSession();
       else
         $profile->user_id = Yii::app()->user->id;
     }

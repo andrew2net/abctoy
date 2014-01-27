@@ -1,3 +1,6 @@
+<?php
+/* @var $profile CustomerProfile */
+?>
 <div class="table" style="padding-bottom: 10px">
   <div class="table-cell valign-middle" style="width: 200px;">
     <a href="/"><img width="173" height="57" alt="ABC toy" src="/themes/abctoy/css/logo_shadow.png"></a>
@@ -15,8 +18,7 @@
     <div style="text-align: right">
       <div class="cufon gray" style="font-size: medium; padding-bottom: 0.5em">(10:00 - 18:00 пн.-пт.)</div>
     </div>
-    <div class="gray lager">г. Новосибирск</div>
-    <!--<div><a href="#" class="gray uderline-dashed">я в другом городе</a></div>-->
+    <div class="gray lager"><?php echo $profile->city; ?></div>
   </div>
   <div style="position: relative; top: 35px">
     <div class="cufon yellow bold" style="font-size: 24pt; text-align: right">Личный кабинет</div>

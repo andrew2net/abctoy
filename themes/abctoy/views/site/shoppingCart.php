@@ -8,7 +8,7 @@
 $this->pageTitle = Yii::app()->name . ' - Корзина';
 ?>
 <div class="container" id="page" style="margin-top: 0">
-  <?php $this->renderPartial('_shoppingCartTopBlock'); ?>
+  <?php $this->renderPartial('_shoppingCartTopBlock', array('profile' => $profile)); ?>
   <div class="cufon gray bold" style="font-size: 28pt; margin: 20px 0">Ваша корзина</div>
   <?php
   $form = $this->beginWidget('CActiveForm', array(
