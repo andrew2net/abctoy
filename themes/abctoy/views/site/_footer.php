@@ -9,7 +9,7 @@
         <div class="gray">
           2013. Все права защищены.<br>ABC toy - продажа игрушек.<br>Все торговые марки являются<br>собственностью их<br>правообладателей.
         </div>
-        <dev style="margin-top: 4px; display: block">Программирование<br><a style="text-decoration-line: none; -moz-text-decoration-line: none" href="mailto:andriano@ngs.ru?subject=Разработка сайта">Андрей Кисличенко</a></dev>
+        <dev style="margin-top: 4px; display: block">Программирование<br><a style="text-decoration-line: initial; -moz-text-decoration-line: none" href="mailto:andriano@ngs.ru?subject=Разработка сайта">Андрей Кисличенко</a></dev>
       </div>
 
       <div class="table-cell" style="vertical-align: middle">
