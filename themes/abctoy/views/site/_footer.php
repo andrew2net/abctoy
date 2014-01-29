@@ -9,6 +9,7 @@
         <div class="gray">
           2013. Все права защищены.<br>ABC toy - продажа игрушек.<br>Все торговые марки являются<br>собственностью их<br>правообладателей.
         </div>
+        <dev style="margin-top: 4px; display: block">Программирование<br><a style="text-decoration-line: none; -moz-text-decoration-line: none" href="mailto:andriano@ngs.ru?subject=Разработка сайта">Андрей Кисличенко</a></dev>
       </div>
 
       <div class="table-cell" style="vertical-align: middle">
@@ -32,17 +33,19 @@
               <?php
               foreach ($groups as $group) {
                 ?>
-                <div><?php echo CHtml::link($group->name
-                    , $this->createUrl('group', array('id'=>$group->id))); ?></div>
+                <div><?php
+                  echo CHtml::link($group->name
+                      , $this->createUrl('group', array('id' => $group->id)));
+                  ?></div>
               <?php } ?>
             </div>
-<!--            <div class="table-cell footer-menu">
-              <div class="bold">Акции</div>
-              <div><a href="#">Скидка недели</a></div>
-              <div><a href="#">ТОП 10 подарков</a></div>
-              <div><a href="#">Вам рекомендовано</a></div>
-              <div><a href="#">Бренды</a></div>
-            </div>-->
+            <!--            <div class="table-cell footer-menu">
+                          <div class="bold">Акции</div>
+                          <div><a href="#">Скидка недели</a></div>
+                          <div><a href="#">ТОП 10 подарков</a></div>
+                          <div><a href="#">Вам рекомендовано</a></div>
+                          <div><a href="#">Бренды</a></div>
+                        </div>-->
             <div class="table-cell">
               <div class="bold" style="height: 2.5em">Звоните</div>
               <!--<div class="cufon gray bold x-lage" style="height: 1.5em">8 800 913-12-12</div>-->
