@@ -18,7 +18,12 @@
     <div style="text-align: right">
       <div class="cufon gray" style="font-size: medium; padding-bottom: 0.5em">(10:00 - 18:00 пн.-пт.)</div>
     </div>
-    <div class="gray lager"><?php echo $profile->city; ?></div>
+    <div class="gray lager">
+      <?php
+      $profile = $this->getProfile();
+      echo $profile->city;
+      ?>
+    </div>
   </div>
   <div style="position: relative; top: 35px">
     <div class="cufon green bold" style="font-size: 24pt; text-align: right">Оформление заказа</div>

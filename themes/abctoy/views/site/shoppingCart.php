@@ -232,7 +232,9 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
           case '0':
             if (discountSumm > discNum)
               $('#discount-text').html('Общая сумма скидки больше скидки по купону. Купон не используется.');
-            else {
+            else if(cartSumm < 1800){
+              $('#discount-text').html('Сумма закза должна быть не менее 1800 рублей. Купон не используется.');
+            }else {
               var couponDisc = cartSummNoDisc > discNum ? discNum : cartSummNoDisc;
               discountSumm += couponDisc;
               cartSumm -= couponDisc;

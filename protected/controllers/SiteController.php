@@ -384,9 +384,8 @@ class SiteController extends Controller {
           }
         }
         if (isset($_POST['Cart'])) {
-          $count_products = $this->countProducts();
-          $coupon_discount = $order->getCouponDiscount();
-          $count_products['summ'] -= $coupon_discount;
+          $count_products = $this->countProducts($coupon);
+          $count_products['summ'] -= $count_products['couponDisc'];
 
           $fl = FALSE;
           if ($count_products['summ'] >= 700) {
@@ -405,7 +404,7 @@ class SiteController extends Controller {
               throw $e;
             }
             if ($fl) {
-              $this->sendConfirmOrderMessage($order, $profile, $coupon_discount);
+              $this->sendConfirmOrderMessage($order, $profile, $count_products['couponDisc']);
               $this->redirect('orderSent');
             }
           }
@@ -474,8 +473,13 @@ class SiteController extends Controller {
     return $profile;
   }
 
-  private function countProducts() {
-    $result = array('count' => 0, 'summ' => 0, 'noDiscount' => 0, 'discount' => 0);
+  private function countProducts(Coupon $coupon) {
+    $result = array('count' => 0,
+      'summ' => 0,
+      'noDiscount' => 0,
+      'discount' => 0,
+      'couponDisc' => 0
+    );
     foreach ($_POST['Cart'] as $k => $q) {
       $quantity = $q['quantity'] > 0 ? $q['quantity'] : 0;
       $result['count'] += $quantity;
@@ -488,9 +492,20 @@ class SiteController extends Controller {
       else {
         $price = $product->price;
         $result['noDiscount'] += $product->price * $quantity;
+        if ($coupon) {
+          if ($coupon->type_id)
+            $result['couponDisc'] += $price * $quantity * $coupon->value / 100;
+          else
+            $result['couponDisc'] += $price * $quantity;
+        }
       }
       $result['summ'] += $quantity * $price;
     }
+    if (!$coupon->type_id)
+      if ($result['summ'] < 1800)
+        $result['couponDisc'] = 0;
+      else if ($coupon->value < $result['couponDisc'])
+        $result['couponDisc'] = $coupon->value;
     return $result;
   }
 
@@ -1080,7 +1095,7 @@ class SiteController extends Controller {
   }
 
   public function actionSaveCity() {
-    if (isset($_POST['city'])){
+    if (isset($_POST['city'])) {
       $profile = $this->getProfile();
       $profile->city = $_POST['city'];
       $profile->save(FALSE);

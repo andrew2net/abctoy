@@ -170,7 +170,7 @@
     var couponSum = 0;
     switch (couponType) {
       case '0':
-        if (discount > couponDisc)
+        if (discount > couponDisc || sum < 1800)
           couponSum = 0;
         else
           couponSum = noDiscSum > couponDisc ? couponDisc : noDiscSum;
@@ -263,7 +263,6 @@
     price[0].name = price[0].name.replace(/\d+/, incAttr);
     price[0].value = '0.00';
     $(newrow).insertAfter(row);
-//    $('.row-del').css('display', 'block');
     setStatus();
   });
 

@@ -230,18 +230,21 @@ class Order extends CActiveRecord {
   public function getCouponDiscount() {
     Yii::import('application.modules.discount.models.Coupon');
     $summa = 0;
+    $total = 0;
     if ($this->coupon) {
       foreach ($this->orderProducts as $product) {
+        $total += $product->price * $product->quantity;
         if ($product->discount == 0)
-          if ($this->coupon->type_id) {
+          if ($this->coupon->type_id)
             $summa += $product->price * $product->quantity * $this->coupon->value / 100;
-          }
-          else {
+          else
             $summa += $product->price * $product->quantity;
-          }
       }
-      if (!$this->coupon->type_id && $this->coupon->value < $summa)
-        $summa = $this->coupon->value;
+      if (!$this->coupon->type_id)
+        if ($total < 1800)
+          $summa = 0;
+        else if ($this->coupon->value < $summa)
+          $summa = $this->coupon->value;
     }
     return $summa;
   }
