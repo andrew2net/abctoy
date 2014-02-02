@@ -473,7 +473,7 @@ class SiteController extends Controller {
     return $profile;
   }
 
-  private function countProducts(Coupon $coupon) {
+  private function countProducts($coupon) {
     $result = array('count' => 0,
       'summ' => 0,
       'noDiscount' => 0,
@@ -501,7 +501,7 @@ class SiteController extends Controller {
       }
       $result['summ'] += $quantity * $price;
     }
-    if (!$coupon->type_id)
+    if ($coupon && !$coupon->type_id)
       if ($result['summ'] < 1800)
         $result['couponDisc'] = 0;
       else if ($coupon->value < $result['couponDisc'])
