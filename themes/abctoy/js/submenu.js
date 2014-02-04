@@ -11,14 +11,15 @@ Number.prototype.formatMoney = function(c, d, t) {
 
 
 $(document).ready(function() {
-  $('.mainmenulink').hover(function() {
-    $('.submenu').css('display', 'none');
+  $('.mainmenulink').mouseenter(function() {
+      $('.submenu').hide('fade');//css('display', 'none');
     var id = '#' + $(this).attr('submenu');
-    $(id).css('display', 'inherit');
+    $(id).show('fade');//css('display', 'inherit');
   });
 
   $('.mainmenuarea').mouseleave(function() {
-    $('.submenu').css('display', 'none');
+    $('.submenu').hide('fade');//css('display', 'none');
+    menu = '';
   });
 
   $('#aSubmit').click(function() {
@@ -62,7 +63,7 @@ $(document).ready(function() {
     $('#item-submit').attr('action', $(this).attr('href'));
     $('#item-submit').submit();
   });
-  $(document).on('click', '.fancybox', function (event){
+  $(document).on('click', '.fancybox', function(event) {
     event.stopPropagation();
   });
 
