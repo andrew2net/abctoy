@@ -14,11 +14,11 @@ $(document).ready(function() {
   $('.mainmenulink').mouseenter(function() {
       $('.submenu').hide('fade');//css('display', 'none');
     var id = '#' + $(this).attr('submenu');
-    $(id).show('fade');//css('display', 'inherit');
+    $(id).show('fade', 'fast');//css('display', 'inherit');
   });
 
   $('.mainmenuarea').mouseleave(function() {
-    $('.submenu').hide('fade');//css('display', 'none');
+    $('.submenu').hide('fade', 'fast');//css('display', 'none');
     menu = '';
   });
 
