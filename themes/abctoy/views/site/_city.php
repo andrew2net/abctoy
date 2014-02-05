@@ -44,17 +44,18 @@
   });
 
   $('#suggest-city').focusout(function() {
-    if (!esc) 
-      changeCity();
+    if (!esc) {
+      var city = $.trim(this.value);
+      changeCity(city);
+    }
     esc = false;
   });
 
   $('#suggest-city').on('autocompleteselect', function(event, elem) {
-    changeCity();
+    changeCity(elem.item.value);
   });
 
-  function changeCity() {
-    var city = $.trim($('#suggest-city').val());
+  function changeCity(city) {
     if (city.length) {
       $('#city').html(city);
       $.post('/site/savecity', {city: city});
