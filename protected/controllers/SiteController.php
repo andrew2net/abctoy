@@ -630,29 +630,46 @@ class SiteController extends Controller {
   }
 
   public function actionRegistr() {
+    Yii::log('Start registration', CLogger::LEVEL_TRACE);
     if (isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+      Yii::log('Email is setted', CLogger::LEVEL_TRACE);
       $user = User::model()->findByAttributes(array('email' => $_POST['email']));
-      if ($user)
+      if ($user) {
+        Yii::log('User exist', CLogger::LEVEL_TRACE);
         echo json_encode(array('result' => false, 'msg' => 'Пользователь с таким адресом уже зарегистрирован'));
+      }
       else {
+        Yii::log('New user', CLogger::LEVEL_TRACE);
         $session_id = '';
-        if (!Yii::app()->user->isGuest)
+        if (!Yii::app()->user->isGuest) {
+          Yii::log('User login', CLogger::LEVEL_TRACE);
           Yii::app()->user - logOut();
-        else
+        }
+        else {
+          Yii::log('Before get session', CLogger::LEVEL_TRACE);
           $session_id = $this->getSession();
+        }
 
+        Yii::log('Berfore find profile', CLogger::LEVEL_TRACE);
         $profile = CustomerProfile::model()->findByAttributes(array('email' => $_POST['email']));
-        if (is_null($profile))
+        if (is_null($profile)) {
+          Yii::log('Profile is not find', CLogger::LEVEL_TRACE);
           $profile = new CustomerProfile;
+        }
         $profile->email = $_POST['email'];
         $profile->session_id = $session_id;
+        Yii::log('Before save profile', CLogger::LEVEL_TRACE);
         $profile->save(FALSE);
+        Yii::log('Before register user', CLogger::LEVEL_TRACE);
         $this->registerUser($profile);
+        Yii::log('After register user', CLogger::LEVEL_TRACE);
         echo json_encode(array('result' => true));
       }
     }
-    else
+    else {
+      Yii::log('Email is not set', CLogger::LEVEL_TRACE);
       echo json_encode(array('result' => false, 'msg' => 'Адрес задан неверно'));
+    }
     Yii::app()->end();
   }
 

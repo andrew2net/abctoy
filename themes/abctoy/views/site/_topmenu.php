@@ -158,18 +158,18 @@
 
   $('#submit-registr').click(function() {
     var email = $('#email').val();
-    $(this).css('display', 'none');
-    $('#loading-dialog').css('display', 'inline')
+    $(this).hide();//css('display', 'none');
+    $('#loading-dialog').show();//css('display', 'inline')
     $.post('/registr', {email: email}, function(data) {
-      $('#loading-dialog').css('display', 'none')
+      $('#loading-dialog').hide();//css('display', 'none')
       var result = JSON && JSON.parse(data) || $.parseJSON(data);
       if (result.result) {
         $("#login-dialog").dialog('close');
         window.location.href = '/profile';
       } else {
         $('#error-msg').html(result.msg);
-        $('#error-msg').css('display', 'inline');
-        $('#submit-registr').css('display', 'inline');
+        $('#error-msg').show();//css('display', 'inline');
+        $('#submit-registr').show();//css('display', 'inline');
       }
     });
   });
