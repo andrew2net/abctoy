@@ -50,6 +50,7 @@ class SiteController extends Controller {
     if (!Yii::app()->user->isGuest)
       Yii::app()->request->cookies['popup'] = new CHttpCookie('popup', '2', array(
         'expire' => time() + 2592000,
+        'path' => '/',
       ));
 
     $searc = new Search;
