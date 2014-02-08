@@ -6,7 +6,7 @@
     </div>
 
     <div class="table-cell valign-middle" style="width: 20%">
-      <div class="cufon gray bold" style="position: relative; bottom: 12px">Интернет-магазин<br>детских товаров и игрушек</div>
+      <div class="cufon gray bold" style="position: relative; bottom: 5px">Интернет-магазин<br>детских товаров и игрушек<br>с Быстрой доставкой<br>по всей России</div>
     </div>
     <div class="table-cell valign-middle" style="width: 90px; padding-left: 20px">
       <a href="/about">
@@ -19,9 +19,9 @@
         <div class="cufon">детских товаров<br>на собственном складе</div>
       </a>
     </div>
-    <div class="table-cell bold" style="width: 19%">
+    <div class="table-cell bold" style="width: 125px">
       <!--<a href="/contact">-->
-      <div class="cufon lager" style="padding-bottom: 0.4em">Телефон для справок</div>
+      <div class="cufon lager" style="padding-bottom: 0.4em">Есть вопросы? Звоните!</div>
       <div class="cufon x-lage" style="padding-bottom: 0.2em">
         <span class="red">(383)</span><span class="blue"> 375</span><span>-</span><span class="green">03</span><span>-</span><span class="yellow">22</span>
       </div>

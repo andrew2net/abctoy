@@ -12,13 +12,13 @@ Number.prototype.formatMoney = function(c, d, t) {
 
 $(document).ready(function() {
   $('.mainmenulink').mouseenter(function() {
-      $('.submenu').hide('fade');//css('display', 'none');
+      $('.submenu').hide();
     var id = '#' + $(this).attr('submenu');
-    $(id).show('fade', 'fast');//css('display', 'inherit');
+    $(id).show();
   });
 
   $('.mainmenuarea').mouseleave(function() {
-    $('.submenu').hide('fade', 'fast');//css('display', 'none');
+    $('.submenu').hide();
     menu = '';
   });
 

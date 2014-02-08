@@ -69,10 +69,7 @@
     $('#popup-window').dialog({
       modal: true,
       resizable: false,
-//      width: 930,
-//      height: 500,
       autoOpen: false,
-//      dialogClass: 'popup-window',
       draggable: false,
       create: function(event, ui) {
         $(event.target).parent().css('position', 'fixed');
@@ -89,7 +86,7 @@
     });
 
     $('#get-discount').click(function() {
-      $('#bottom-bar').hide();//css('display', 'none');
+      $('#bottom-bar').hide();
       $('#footer').css('margin-bottom', '0');
       if ($('#popup-window').dialog('option', 'width') < 900)
         loadPopup();
@@ -126,8 +123,8 @@
   }
 
   $('#popup-window').on('click', '#popup-submit', function() {
-    $(this).hide();//css('display', 'none');
-    $('#popup-process').show();//css('display', 'inherit');
+    $(this).hide();
+    $('#popup-process').show();
     var children = [];
     $('.child').each(function() {
       var name = $(this).find('.name').val();
@@ -141,11 +138,11 @@
       children: children,
       PopupForm: {accept: accept, email: email}
     }, function(data) {
-      $('#popup-process').hide();//css('display', 'none');
+      $('#popup-process').hide();
       var result = JSON && JSON.parse(data) || $.parseJSON(data);
       switch (result.result) {
         case 'error':
-          $('#popup-submit').show();//css('display', 'inherit');
+          $('#popup-submit').show();
           $('#popup-form').html(result.html);
           $('input[type="radio"][class~="error"], input[type="checkbox"][class~="error"]')
                   .parent()
@@ -163,14 +160,13 @@
           timeout_id = setTimeout(function() {
             $('#popup-window').dialog('close');
           }, 5000);
-//          showBottomBar();
           break;
         case 'register':
           $('#popup-body').html(result.html);
           Cufon.replace('#popup-window .cufon');
           $.cookie('popup', '2', {expires: 2592000, path: '/'});
-          $('#login-menu').hide();//css('display', 'none');
-          $('#profile-menu').show();//css('display', 'inherit');
+          $('#login-menu').hide();
+          $('#profile-menu').show();
           yaCounter23309737.reachGoal('discount');
           break;
       }
