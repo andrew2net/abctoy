@@ -518,9 +518,9 @@ class SiteController extends Controller {
     $delivery = CityDelivery::model()->with('city')->findByAttributes(array(
       'delivery_id' => $_POST['Order']['delivery_id'])
         , 'city.name=:city', array(':city' => $profile->city));
-    if ($delivery && $delivery->summ > $product_summ) 
+    if ($delivery && ($delivery->summ == 0 || $delivery->summ > $product_summ))
       $delivery_summ = $delivery->price;
-    else 
+    else
       $delivery_summ = 0;
 
     $order->attributes = $_POST['Order'];

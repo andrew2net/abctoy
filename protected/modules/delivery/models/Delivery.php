@@ -116,8 +116,8 @@ class Delivery extends CActiveRecord {
   }
 
   public static function getDeliveryList($city) {
-//    Yii::import('application.modules.delivery.models.CityDelivery');
-//    Yii::import('application.modules.delivery.models.City');
+    Yii::import('application.modules.delivery.models.CityDelivery');
+    Yii::import('application.modules.delivery.models.City');
     $models = self::model()->city($city)->findAll();
     if (count($models) == 0) {
       $models = self::model()->findAllByAttributes(array('name' => 'Другой город'));
