@@ -8,7 +8,7 @@
   ?>
 </div>
 <div id="change-city" class="gray underline-dashed" style="cursor: pointer">я в другом городе</div>
-<div id="input-city" style="display: none">
+<div id="input-city" style="display: none; width: 125px">
   <?php
   $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
     'id' => 'suggest-city',
@@ -23,8 +23,8 @@
   var esc = false;
 
   $('#change-city').click(function() {
-    $('#city, #change-city').css('display', 'none');
-    $('#input-city').css('display', 'inherit');
+    $('#city, #change-city').hide();//css('display', 'none');
+    $('#input-city').show();//css('display', 'inherit');
     var input = $('#suggest-city').get(0);
     input.value = $.trim($('#city').html());
     var length = input.value.length;
@@ -63,7 +63,7 @@
     closeEdit()
   }
   function closeEdit() {
-    $('#city, #change-city').css('display', 'block');
-    $('#input-city').css('display', 'none');
+    $('#city, #change-city').show();//css('display', 'block');
+    $('#input-city').hide();//css('display', 'none');
   }
 </script>

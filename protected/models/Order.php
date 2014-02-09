@@ -75,7 +75,15 @@ class Order extends CActiveRecord {
 //  public $paiment_name;
 
   public function getDeliveryOptions() {
-    $delivery = Delivery::model()->findAll();
+    if ($this->city) {
+      Yii::import('application.modules.delivery.models.CityDelivery');
+      Yii::import('application.modules.delivery.models.City');
+      $delivery = Delivery::model()->city($this->city)->findAll();
+      if (count($delivery)==0)
+        $delivery = Delivery::model()->findAllByAttributes(array('name' => 'Другой город'));
+    }
+    else
+      $delivery = Delivery::model()->findAll();
     return CHtml::listData($delivery, 'id', 'name');
   }
 

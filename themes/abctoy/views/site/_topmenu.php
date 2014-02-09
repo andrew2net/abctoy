@@ -81,7 +81,6 @@
       resizable: false,
       width: 350,
       position: {
-//        my: 'left top+20',
         at: 'right-400 top+90',
         of: '#topmenu'
       },

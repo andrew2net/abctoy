@@ -374,8 +374,20 @@ class SiteController extends Controller {
 
     $has_err = '';
     $order = new Order;
+
+    $order->payment_id = 1;
+    $delivery = Delivery::model()->getDeliveryList($profile->city);
+    if (is_array($delivery))
+      $order->delivery_id = key($delivery);
+    else
+      $order->delivery_id = 1;
+
+    $payment = Payment::model()->getPaymentList();
+
     if (isset($_POST['CustomerProfile'])) {
       $profile->attributes = $_POST['CustomerProfile'];
+      if (isset($_POST['Order']))
+        $order->attributes = $_POST['Order'];
       if ($profile->save()) {
         if (Yii::app()->user->isGuest) {
           $user = User::model()->findByAttributes(array(
@@ -393,7 +405,7 @@ class SiteController extends Controller {
             $tr = $order->dbConnection->beginTransaction();
             try {
               if (count($cart) > 0) {
-                $this->saveOrderProducts($order, $profile, $coupon);
+                $this->saveOrderProducts($order, $profile, $coupon, $count_products['summ']);
 
                 foreach ($cart as $item)
                   $item->delete();
@@ -414,14 +426,6 @@ class SiteController extends Controller {
       else
         $has_err = 'prof';
     }
-    $order->payment_id = 1;
-    $delivery = Delivery::model()->getDeliveryList($profile->city);
-    if (is_array($delivery))
-      $order->delivery_id = key($delivery);
-    else
-      $order->delivery_id = 1;
-
-    $payment = Payment::model()->getPaymentList();
 
     $this->render('shoppingCart', array(
       'cart' => $cart,
@@ -510,11 +514,14 @@ class SiteController extends Controller {
     return $result;
   }
 
-  private function saveOrderProducts($order, $profile, $coupon) {
+  private function saveOrderProducts($order, $profile, $coupon, $product_summ) {
     $delivery = CityDelivery::model()->with('city')->findByAttributes(array(
       'delivery_id' => $_POST['Order']['delivery_id'])
         , 'city.name=:city', array(':city' => $profile->city));
-    $delivery_summ = is_null($delivery) ? 0 : $delivery->price;
+    if ($delivery && $delivery->summ > $product_summ) 
+      $delivery_summ = $delivery->price;
+    else 
+      $delivery_summ = 0;
 
     $order->attributes = $_POST['Order'];
     $order->delivery_summ = $delivery_summ;

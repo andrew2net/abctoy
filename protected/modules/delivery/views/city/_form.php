@@ -42,6 +42,9 @@
       <th>
         <?php echo TbHtml::label('Стоимость', 'price'); ?>
       </th>
+      <th>
+        <?php echo TbHtml::label('Сумма заказа', 'summ'); ?>
+      </th>
       <?php
       $delivery = Delivery::model()
           ->with(array(
@@ -50,27 +53,30 @@
               'params' => array(':city_id' => $model->id),
         )))
           ->findAll();
-//      $sql = $delivery->
       foreach ($delivery as $value) {
         if (isset($value->cityDeliveries[0])) {
           $checked = TRUE;
           $priceValue = $value->cityDeliveries[0]->price;
+          $summValue = $value->cityDeliveries[0]->summ;
         }
         else {
           $checked = FALSE;
           $priceValue = '';
+          $summValue = '';
         }
         ?>
         <tr>
-          <!--<div class="inline-blocks">-->
           <td style="width: 1em">
             <?php echo TbHtml::checkBox('delivery[' . $value->id . ']', $checked); ?>
           </td>
           <td><?php echo $value->name; ?></td>
           <td><?php echo $value->description; ?></td>
-          <td><?php echo TbHtml::textField('price[' . $value->id . ']', $priceValue);
-            ?></td>
-          <!--</div>-->
+          <td>
+            <?php echo TbHtml::textField('price[' . $value->id . ']', $priceValue); ?>
+          </td>
+          <td>
+            <?php echo TbHtml::textField('summ[' . $value->id . ']', $summValue); ?>
+          </td>
         </tr>
         <?php
       }

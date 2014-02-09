@@ -68,6 +68,7 @@ class CityController extends Controller {
         $cityDelivery->city_id = $model->id;
         $cityDelivery->delivery_id = $key;
         $cityDelivery->price = $_POST['price'][$key];
+        $cityDelivery->summ = $_POST['summ'][$key];
         $cityDelivery->save();
       }
   }

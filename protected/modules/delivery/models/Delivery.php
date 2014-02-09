@@ -97,7 +97,10 @@ class Delivery extends CActiveRecord {
     $this->getDbCriteria()->mergeWith(array(
       'with' => array(
         'cityDeliveries' => array(
-          'select' => 'price AS price',
+          'select' => array(
+            'price AS price',
+            'summ AS summ',
+            ),
           'with' => array(
             'city' => array(
               'condition' => 'city.name=:city'
@@ -113,8 +116,8 @@ class Delivery extends CActiveRecord {
   }
 
   public static function getDeliveryList($city) {
-    Yii::import('application.modules.delivery.models.CityDelivery');
-    Yii::import('application.modules.delivery.models.City');
+//    Yii::import('application.modules.delivery.models.CityDelivery');
+//    Yii::import('application.modules.delivery.models.City');
     $models = self::model()->city($city)->findAll();
     if (count($models) == 0) {
       $models = self::model()->findAllByAttributes(array('name' => 'Другой город'));
@@ -124,17 +127,18 @@ class Delivery extends CActiveRecord {
       if (count($delivery->cityDeliveries) > 0) {
         foreach ($delivery->cityDeliveries as $item) {
           $output = CHtml::tag('span', array(
-                'class' => 'bold',
+                'class' => 'bold delivery-data',
                 'price' => (float)$item->price,
+                'summ' => (float)$item->summ,
                   ), $delivery->name);
           if ($delivery->name == 'ЭКСПРЕСС ДОСТАВКА')
             $output .= CHtml::tag('span', array('class' => 'bold'), ' (' . $delivery->description . ') ');
           else
             $output .= ' (' . $delivery->description . ') ';
           if ($item->price > 0)
-            $output .= CHtml::tag('span', array('class' => 'red'), $item->price . ' руб.');
+            $output .= CHtml::tag('span', array('class' => 'red delivery-price'), $item->price . ' руб.');
           else
-            $output .= CHtml::tag('span', array('class' => 'red'), 'бесплатно');
+            $output .= CHtml::tag('span', array('class' => 'red delivery-price'), 'бесплатно');
           $list[$delivery->id] = $output;
         }
       }else {

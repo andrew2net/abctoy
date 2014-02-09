@@ -23,7 +23,7 @@
         ));
         ?>
       </div>
-      <div style="float: right; margin: 5px 20px;">
+      <div style="float: right; margin: 5px 15px;">
         <?php echo CHtml::beginForm('/search', 'get'); ?>
         <?php
         echo CHtml::activeTextField($search, 'text', array(

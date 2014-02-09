@@ -142,14 +142,14 @@ class DefaultController extends Controller {
       }
     }
 
-      if ($model->status_id == 0)
-        $model->status_id = 1;
+    if ($model->status_id == 0)
+      $model->status_id = 1;
 
-      $this->render('update', array(
-        'model' => $model,
-        'order_product' => $order_product,
-        'product' => $product,
-      ));
+    $this->render('update', array(
+      'model' => $model,
+      'order_product' => $order_product,
+      'product' => $product,
+    ));
   }
 
   /**
@@ -197,6 +197,27 @@ class DefaultController extends Controller {
       );
     }
     echo CJSON::encode($products);
+    Yii::app()->end();
+  }
+
+  public function actionCitydeliveries() {
+    if (isset($_POST['city'])) {
+      Yii::import('application.modules.delivery.models.CityDelivery');
+      Yii::import('application.modules.delivery.models.Delivery');
+      Yii::import('application.modules.delivery.models.City');
+      $delivery = Delivery::model()->city($_POST['city'])->findAll();
+      if (count($delivery) == 0)
+        $delivery = Delivery::model()->findAllByAttributes(array('name' => 'Другой город'));
+      $result = array();
+      foreach ($delivery as $value) {
+        $result[$value->id] = array(
+          'price' => $value->price,
+          'summ' => $value->summ,
+          'text' => $value->name,
+        );
+      }
+      echo json_encode($result);
+    }
     Yii::app()->end();
   }
 

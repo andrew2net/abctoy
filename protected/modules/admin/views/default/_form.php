@@ -120,7 +120,7 @@
         'model' => $model,
         'order_product' => $order_product,
         'product' => $product,
-        ), TRUE),
+          ), TRUE),
     ),
     array(
       'label' => 'Оплата',
@@ -281,4 +281,23 @@
     }))
   });
 
+  function getCityDeliveries(city) {
+    $.post('/admin/default/citydeliveries', {city: city}, function(data) {
+      var result = JSON && JSON.parse(data) || $.parseJSON(data);
+      $('#Order_delivery_id').empty();
+      $.each(result, function(key, value) {
+        $('#Order_delivery_id').append('<option value="' + key
+                + '" price="' + value.price + '" summ="' + vlaue.summ + '">'
+                + value.text + '</option>');
+      });
+    });
+  }
+
+  $('#Order_city').change(function() {
+    getCityDeliveries(this.value);
+  });
+
+  $('#Order_city').on('autocompleteselect', function(event, ui) {
+    getCityDeliveries(ui.item.value);
+  });
 </script>

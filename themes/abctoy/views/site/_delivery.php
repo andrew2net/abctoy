@@ -10,7 +10,7 @@ echo CHtml::activeRadioButtonList($order, 'delivery_id'
     , $delivery, array(
   'labelOptions' => array(
     'style' => 'display: block',
-    'class' => 'cart-radio'
+    'class' => 'cart-radio',
 )));
 ?>
 <div class="bold" style="margin-top: 40px; font-size: 16pt">

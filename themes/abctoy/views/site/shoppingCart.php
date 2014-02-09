@@ -232,9 +232,9 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
           case '0':
             if (discountSumm > discNum)
               $('#discount-text').html('Общая сумма скидки больше скидки по купону. Купон не используется.');
-            else if(cartSumm < 1800){
+            else if (cartSumm < 1800) {
               $('#discount-text').html('Сумма закза должна быть не менее 1800 рублей. Купон не используется.');
-            }else {
+            } else {
               var couponDisc = cartSummNoDisc > discNum ? discNum : cartSummNoDisc;
               discountSumm += couponDisc;
               cartSumm -= couponDisc;
@@ -253,11 +253,25 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
       }
     }
 
+    $('.delivery-data').each(function() {
+      var orderSumm = $(this).attr('summ');
+      if (cartSumm < orderSumm) {
+        var deliveryPrice = parseFloat($(this).attr('price'));
+        $(this).nextAll('.delivery-price').html(deliveryPrice.toFixed(2) + ' руб.');
+      } else {
+        $(this).nextAll('.delivery-price').html('бесплатно');
+      }
+    });
+
     $('#cart-summ').html(cartSumm.formatMoney());
     $('#cart-summ').attr('summ', cartSumm);
     $('#cart-discount').html(discountSumm.formatMoney());
     $('#cart-discount').attr('summ', discountSumm);
-    var priceDelivery = parseFloat($('input:checked + .cart-radio > span').attr('price'));
+
+    var deliveryOrderSumm = $('input:checked + .cart-radio > span').attr('summ');
+    var priceDelivery = 0;
+    if (cartSumm < deliveryOrderSumm)
+      priceDelivery = parseFloat($('input:checked + .cart-radio > span').attr('price'));
     if (!isNaN(priceDelivery)) {
       var price_f = priceDelivery.formatMoney();
       $('#delivery-summ').html(price_f);
