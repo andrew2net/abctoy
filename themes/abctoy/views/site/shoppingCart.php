@@ -258,7 +258,7 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
       if (cartSumm < orderSumm) {
         var deliveryPrice = parseFloat($(this).attr('price'));
         $(this).nextAll('.delivery-price').html(deliveryPrice.toFixed(2) + ' руб.');
-      } else {
+      } else if (orderSumm > 0){
         $(this).nextAll('.delivery-price').html('бесплатно');
       }
     });
