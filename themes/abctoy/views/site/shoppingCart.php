@@ -258,7 +258,7 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
       if (cartSumm < orderSumm) {
         var deliveryPrice = parseFloat($(this).attr('price'));
         $(this).nextAll('.delivery-price').html(deliveryPrice.toFixed(2) + ' руб.');
-      } else if (orderSumm > 0){
+      } else if (orderSumm > 0) {
         $(this).nextAll('.delivery-price').html('бесплатно');
       }
     });
@@ -270,7 +270,7 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
 
     var deliveryOrderSumm = $('input:checked + .cart-radio > span').attr('summ');
     var priceDelivery = 0;
-    if (cartSumm < deliveryOrderSumm)
+    if (deliveryOrderSumm == 0 || cartSumm < deliveryOrderSumm)
       priceDelivery = parseFloat($('input:checked + .cart-radio > span').attr('price'));
     if (!isNaN(priceDelivery)) {
       var price_f = priceDelivery.formatMoney();
