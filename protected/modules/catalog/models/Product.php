@@ -336,7 +336,7 @@ class Product extends CActiveRecord {
         "' OR w_begin_date='0000-00-00') AND (w_end_date>='" . $date .
         "' OR w_end_date='0000-00-00')",
         'order' => 'percent DESC',
-        'group' => 't.id'
+        'group' => 'prod.id, t.id'
       ),
     ));
   }
