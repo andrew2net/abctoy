@@ -70,9 +70,10 @@
         ?>
 
         <?php
+        $options_param = $this->getCityDeliveries($model->city, FALSE);
         echo $form->dropDownListControlGroup($model, 'delivery_id'
             , $model->deliveryOptions, array(
-          'options' => array($this->getCityDeliveries($model->city, FALSE))));
+          'options' => $options_param));
         ?>
 
         <?php
