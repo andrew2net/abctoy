@@ -41,7 +41,7 @@ echo CHtml::hiddenField('url', Yii::app()->request->url);
           <img src="<?php echo $data->small_img; ?>" alt="Изображение">
         </a>
       </div>
-      <div class="item-name"><?php echo mb_strlen($data->name, 'utf-8') > 30 ? mb_substr($data->name, 0, 25, 'utf-8') . '...' : $data->name; ?></div>
+      <div class="item-name"><?php echo mb_strlen($data->name, 'utf-8') > 27 ? mb_substr($data->name, 0, 24, 'utf-8') . '...' : $data->name; ?></div>
       <div class="item-rest <?php echo $remainder_class; ?>"><?php echo $remainder; ?></div>
       <div class="item-disc"><?php echo $old_price; ?></div>
       <div class="cufon item-price"><?php echo $price; ?>.-</div>

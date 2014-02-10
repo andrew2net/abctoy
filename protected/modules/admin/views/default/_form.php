@@ -71,7 +71,8 @@
 
         <?php
         echo $form->dropDownListControlGroup($model, 'delivery_id'
-            , $model->deliveryOptions);
+            , $model->deliveryOptions, array(
+          'options' => array($this->getCityDeliveries($model->city, FALSE))));
         ?>
 
         <?php
@@ -179,11 +180,13 @@
         couponSum = noDiscSum * couponDisc / 100;
         break;
     }
-    var delivery = parseFloat($('#order-delivery-summ').val());
-    if (isNaN(delivery))
-      delivery = 0;
-    sum += delivery;
     sum -= couponSum;
+    var orderSumm = $('#Order_delivery_id option:selected').attr('summ');
+    var delivery = 0;
+    if (orderSumm == 0 || sum < orderSumm)
+      delivery = parseFloat($('#Order_delivery_id option:selected').attr('price'));
+    $('#order-delivery-summ').val(delivery.toFixed(2));
+    sum += delivery;
     $('#order-total').html(sum);
     $('#order-coupon-discount').html(couponSum);
   }
@@ -287,7 +290,7 @@
       $('#Order_delivery_id').empty();
       $.each(result, function(key, value) {
         $('#Order_delivery_id').append('<option value="' + key
-                + '" price="' + value.price + '" summ="' + vlaue.summ + '">'
+                + '" price="' + value.price + '" summ="' + value.summ + '">'
                 + value.text + '</option>');
       });
     });
@@ -299,5 +302,9 @@
 
   $('#Order_city').on('autocompleteselect', function(event, ui) {
     getCityDeliveries(ui.item.value);
+  });
+
+  $('#Order_delivery_id').change(function() {
+    calcSumm();
   });
 </script>

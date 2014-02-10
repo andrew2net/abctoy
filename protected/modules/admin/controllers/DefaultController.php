@@ -35,8 +35,8 @@ class DefaultController extends Controller {
     foreach ($order_product as $key => $value)
       $product[$key] = $value->product;
 
-    // Uncomment the following line if AJAX validation is needed
-    // $this->performAjaxValidation($model);
+// Uncomment the following line if AJAX validation is needed
+// $this->performAjaxValidation($model);
 
     if (isset($_POST['Order'])) {
       $old_status = $model->status_id;
@@ -66,12 +66,8 @@ class DefaultController extends Controller {
             foreach ($order_product as $value) {
               $item = new OrderProduct;
               $item->attributes = $value->attributes;
-//              $disc = $item->product->getActualDiscount();
-//              if ($disc)
               $item->discount = $item->product->price - $item->price;
               $dicount_summ += $item->discount;
-//              else
-//                $item->discount = 0;
               $item->save();
             }
             if ($model->coupon && $model->coupon->type_id == 0 &&
@@ -91,24 +87,6 @@ class DefaultController extends Controller {
               $profile = CustomerProfile::model()->findByPk($model->profile_id);
               $message = new YiiMailMessage;
               $message->view = 'processOrder';
-              $message->setFrom(Yii::app()->params['infoEmail']);
-              $message->setTo(array($profile->email => $profile->fio));
-              $params = array(
-                'profile' => $profile,
-                'order' => $model,
-              );
-              switch ($model->status_id) {
-                case 5:
-                  $message->setSubject("Отмена заказа");
-                  $params['text'] = 'отменен';
-                  $message->setBody($params, 'text/html');
-                  Yii::app()->mail->send($message);
-                  break;
-              }
-            }
-            if ($old_status != $model->status_id) {
-              $profile = CustomerProfile::model()->findByPk($model->profile_id);
-              $message = new YiiMailMessage;
               $message->setFrom(Yii::app()->params['infoEmail']);
               $message->setTo(array($profile->email => $profile->fio));
               $params = array(
@@ -202,23 +180,32 @@ class DefaultController extends Controller {
 
   public function actionCitydeliveries() {
     if (isset($_POST['city'])) {
-      Yii::import('application.modules.delivery.models.CityDelivery');
-      Yii::import('application.modules.delivery.models.Delivery');
-      Yii::import('application.modules.delivery.models.City');
-      $delivery = Delivery::model()->city($_POST['city'])->findAll();
-      if (count($delivery) == 0)
-        $delivery = Delivery::model()->findAllByAttributes(array('name' => 'Другой город'));
-      $result = array();
-      foreach ($delivery as $value) {
-        $result[$value->id] = array(
-          'price' => $value->price,
-          'summ' => $value->summ,
-          'text' => $value->name,
-        );
-      }
-      echo json_encode($result);
+      echo json_encode($this->getCityDeliveries($_POST['city']));
     }
     Yii::app()->end();
+  }
+
+  public function getCityDeliveries($city, $ajax = TRUE) {
+    Yii::import('application.modules.delivery.models.CityDelivery');
+    Yii::import('application.modules.delivery.models.Delivery');
+    Yii::import('application.modules.delivery.models.City');
+    $delivery = Delivery::model()->city($city)->findAll();
+    if (count($delivery) == 0)
+      $delivery = Delivery::model()->findAllByAttributes(array('name' => 'Другой город'));
+    $result = array();
+    foreach ($delivery as $value) {
+      $result[$value->id] = array(
+        'price' => 0,
+        'summ' => 0,
+      );
+      if ($ajax)
+        $result[$value->id]['text'] = $value->name;
+      if (isset($value->cityDeliveries[0])) {
+        $result[$value->id]['price'] = (float) $value->cityDeliveries[0]->price;
+        $result[$value->id]['summ'] = (float) $value->cityDeliveries[0]->summ;
+      }
+    }
+    return $result;
   }
 
 }
