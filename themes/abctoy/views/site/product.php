@@ -15,10 +15,27 @@
     'groups' => $groups,
   ));
   ?>
-  <?php 
+  <?php
   $categories = $product->category;
-  if(isset($categories[0]))
-    
+  if (isset($categories[0])) {
+    $breadcrumbs = array();
+//    $breadcrumbs[] = $product->name;
+    $category = $categories[0];
+    while (!$category->isRoot()) {
+      $breadcrumbs[$category->name] = array('group', 'id' => $category->id);
+      $category = $category->getParent();
+    }
+    $breadcrumbs[$category->name] = array('group', 'id' => $category->id);
+    $breadcrumbs=array_reverse($breadcrumbs);
+    $this->widget('zii.widgets.CBreadcrumbs', array(
+    'links' => $breadcrumbs,
+    'homeLink' => FALSE,
+    'separator' => ' / ',
+    'htmlOptions' => array(
+      'class' => 'cufon green bold breadcrumbs',
+    )
+  ));
+}
   ?>
   <?php
   $date_tomorrow = new DateTime('tomorrow');
