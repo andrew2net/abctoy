@@ -2,7 +2,7 @@
   <div class="table" style="padding-bottom: 10px">
     <div class="table-cell valign-middle" style="width: 20%">
       <a href="/"><img width="173" height="57" alt="ABC toy" src="/themes/abctoy/css/logo_shadow.png"></a>
-      <!--<div><a class="gray" href="#">Отзывы о нас</a></div>-->
+      <div><a class="gray" target="_blank" href="http://market.yandex.ru/shop/208455/reviews">Отзывы о нас</a></div>
     </div>
 
     <div class="table-cell valign-middle" style="width: 20%">

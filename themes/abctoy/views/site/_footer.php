@@ -9,7 +9,10 @@
         <div class="gray">
           2013. Все права защищены.<br>ABC toy - продажа игрушек.<br>Все торговые марки являются<br>собственностью их<br>правообладателей.
         </div>
-        <dev style="margin-top: 4px; display: block">Программирование<br><a style="text-decoration-line: initial; -moz-text-decoration-line: none" href="mailto:andriano@ngs.ru?subject=Разработка сайта">Андрей Кисличенко</a></dev>
+        <a target="_blank" href="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=2508/*http://market.yandex.ru/shop/208455/reviews">
+          <img style="margin-top: 5px" src="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=2505/*http://grade.market.yandex.ru/?id=208455&action=image&size=0" border="0" width="88" height="31" alt="Читайте отзывы покупателей и оценивайте качество магазина на Яндекс.Маркете" />
+        </a>
+        <div style="margin-top: 4px; display: block">Программирование<br><a style="text-decoration-line: initial; -moz-text-decoration-line: none" href="mailto:andriano@ngs.ru?subject=Разработка сайта">Андрей Кисличенко</a></div>
       </div>
 
       <div class="table-cell" style="vertical-align: middle">
