@@ -34,7 +34,7 @@
 </div>
 <div id="callback-overlay" style="position: fixed; left: 0; top: 0; width: 100%; height: 100%; display: none; background: rgba(102,102, 102, 0.4); z-index: 100">
   <div id="callback-box" style="width: 100%; height: 100%; display: none">
-    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto; width: 350px; height: 280px; border: 4px solid #3399cc; border-radius: 5px; background: white; z-index: 102">
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto; width: 350px; height: 290px; border: 4px solid #3399cc; border-radius: 5px; background: white; z-index: 102">
       <div style="margin: 10px 15px; font-size: 12pt">
         <div style="font-size: 14pt; text-align: center; margin-bottom: 10px" class="bold">Заказ звонка</div>
         <div id="callback-form">
@@ -52,7 +52,7 @@
           <div><?php echo CHtml::textArea('callback-note', '', array('class' => 'input-text', 'style' => 'width: 310px')); ?></div>
         </div>
         <div class="blue" style="cursor: pointer; position: absolute; right: 15px; bottom: 15px" id="callback-cancel">Отмена</div>
-        <div class="blue" style="cursor: pointer;margin: 10px 0" id="callback-submit">Заказать звонок</div>
+        <div class="blue" style="cursor: pointer; position: absolute; left: 15px; bottom: 15px" id="callback-submit">Заказать звонок</div>
         <div id="callback-process" class="loading" style="display: none">&nbsp;</div>
         <div id="callback-result" class="red bold" style="display: none; margin-top: 70px; text-align: center"></div>
       </div>
