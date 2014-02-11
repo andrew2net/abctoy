@@ -19,7 +19,7 @@
         <div class="cufon">детских товаров<br>на собственном складе</div>
       </a>
     </div>
-    <div class="table-cell bold" style="width: 125px">
+    <div class="table-cell bold" style="width: 125px; height: 111px">
       <!--<a href="/contact">-->
       <div class="cufon lager" style="padding-bottom: 0.4em">Есть вопросы? Звоните!</div>
       <div class="cufon x-lage" style="padding-bottom: 0.2em">

@@ -81,8 +81,8 @@
       resizable: false,
       width: 350,
       position: {
-        at: 'right-400 top+90',
-        of: '#topmenu'
+        at: 'right-40 top+90',
+        of: '#login-menu'
       },
       dialogClass: "login-dialog",
       create: function(event, ui) {
