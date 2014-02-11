@@ -1034,3 +1034,15 @@ span:hover .item-disc, span:hover .item-price{
   font-weight: bold;
   font-size: 11pt;
 }
+
+.loading{
+  background: url(/images/loading.gif) center no-repeat;
+  height: 125px;
+  width: 125px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}

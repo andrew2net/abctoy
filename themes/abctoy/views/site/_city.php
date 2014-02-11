@@ -23,8 +23,8 @@
   var esc = false;
 
   $('#change-city').click(function() {
-    $('#city, #change-city').hide();//css('display', 'none');
-    $('#input-city').show();//css('display', 'inherit');
+    $('#city, #change-city').hide();
+    $('#input-city').show();
     var input = $('#suggest-city').get(0);
     input.value = $.trim($('#city').html());
     var length = input.value.length;
@@ -63,7 +63,7 @@
     closeEdit()
   }
   function closeEdit() {
-    $('#city, #change-city').show();//css('display', 'block');
-    $('#input-city').hide();//css('display', 'none');
+    $('#city, #change-city').show();
+    $('#input-city').hide();
   }
 </script>

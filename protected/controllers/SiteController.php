@@ -1111,4 +1111,23 @@ class SiteController extends Controller {
     Yii::app()->end();
   }
 
+  public function actionCallback() {
+    if (isset($_POST['phone'])) {
+      $message = new YiiMailMessage('Заказ звонка');
+      $message->view = 'callback';
+      $p = new CHtmlPurifier;
+      $params = array(
+        'phone' => $p->purify($_POST['phone']),
+        'name' => $p->purify($_POST['name']),
+        'note' => $p->purify($_POST['note']),
+      );
+      $message->setBody($params, 'text/html');
+      $message->setFrom(Yii::app()->params['infoEmail']);
+      $message->setTo(array(Yii::app()->params['adminEmail']));
+      Yii::app()->mail->send($message);
+      echo 'ok';
+    }
+    Yii::app()->end();
+  }
+
 }
