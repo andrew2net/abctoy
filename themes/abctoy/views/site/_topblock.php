@@ -79,7 +79,6 @@
   });
 
   $('#callback-submit').click(function() {
-    $('#callback-submit').hide();
     $('#callback-tel, #callback-name').css('border', 'none');
     var phone = $('#callback-tel').val();
     var name = $('#callback-name').val();
@@ -93,6 +92,7 @@
       valid = false;
     }
     if (valid) {
+      $('#callback-submit').hide();
       $('#callback-form').hide();
       $('#callback-process').show();
       var note = $('#callback-note').val();
