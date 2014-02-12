@@ -426,10 +426,12 @@ input[type=checkbox]:checked + label:before, .weekcarousel-prev,
 }
 
 .underline-dashed{
-  text-decoration: underline;
-  text-decoration-style: dashed;
-  -moz-text-decoration-line: underline;
-  -moz-text-decoration-style: dashed;
+  /*  text-decoration: underline;
+    text-decoration-style: dashed;
+    -moz-text-decoration-line: underline;
+    -moz-text-decoration-style: dashed;*/
+  border-bottom: 1px dashed;
+  display: inline;
 }
 
 .breadcrumbs{

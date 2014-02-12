@@ -1,4 +1,4 @@
-<div id="city" class="gray lager underline-dashed">
+<div id="city" class="gray" style="font-size: 14pt; margin-top: 3px">
   <?php
   Yii::import('application.controllers.SiteController');
   Yii::import('application.models.CustomerProfile');
@@ -15,7 +15,7 @@
     'name' => 'input-city',
     'value' => $value,
     'sourceUrl' => '/site/suggestcity',
-    'htmlOptions' => array('class' => 'input-text', 'style' => 'width:170px;margin:3px 0'),
+    'htmlOptions' => array('class' => 'input-text', 'style' => 'width:170px; margin: 10px 0 0'),
   ));
   ?>
 </div>

@@ -19,14 +19,14 @@
         <div class="cufon">детских товаров<br>на собственном складе</div>
       </a>
     </div>
-    <div class="table-cell bold" style="width: 125px">
+    <div class="table-cell bold" style="width: 130px; height: 107px">
       <!--<a href="/contact">-->
       <div class="cufon lager">Есть вопросы? Звоните!</div>
-      <div class="cufon x-lage" style="padding: 5px 0">
+      <div class="cufon x-lage" style="padding: 5px 0 0">
         <span class="red">(383)</span><span class="blue"> 375</span><span>-</span><span class="green">03</span><span>-</span><span class="yellow">22</span>
       </div>
       <div style="text-align: right">
-        <div id="callback-link" class="cufon blue" style="font-size: medium; padding-bottom: 5px; cursor: pointer">Перезвонить Вам?</div>
+        <div id="callback-link" class="blue underline-dashed" style="font-size: medium; cursor: pointer">Перезвонить Вам?</div>
       </div>
       <?php $this->renderPartial('//site/_city'); ?>
     </div>
