@@ -26,7 +26,7 @@
         <span class="red">(383)</span><span class="blue"> 375</span><span>-</span><span class="green">03</span><span>-</span><span class="yellow">22</span>
       </div>
       <div style="text-align: right">
-        <div id="callback-link" class="blue underline-dashed" style="font-size: medium; cursor: pointer">Перезвонить Вам?</div>
+        <div id="callback-link" class="blue underline-dashed" style="font-size: medium; font-weight: normal; cursor: pointer">Перезвонить Вам?</div>
       </div>
       <?php $this->renderPartial('//site/_city'); ?>
     </div>

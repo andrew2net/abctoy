@@ -1,4 +1,4 @@
-<div id="city" class="gray" style="font-size: 14pt; margin-top: 3px">
+<div id="city" class="gray" style="font-size: 14pt; font-weight: normal; margin-top: 3px">
   <?php
   Yii::import('application.controllers.SiteController');
   Yii::import('application.models.CustomerProfile');
@@ -7,7 +7,7 @@
   echo $value;
   ?>
 </div>
-<div id="change-city" class="gray underline-dashed" style="cursor: pointer">я в другом городе</div>
+<div id="change-city" class="gray underline-dashed" style="cursor: pointer; font-weight: normal">я в другом городе</div>
 <div id="input-city" style="display: none; width: 125px">
   <?php
   $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
