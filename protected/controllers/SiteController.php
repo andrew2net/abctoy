@@ -405,7 +405,7 @@ class SiteController extends Controller {
             $tr = $order->dbConnection->beginTransaction();
             try {
               if (count($cart) > 0) {
-                $this->saveOrderProducts($order, $profile, $coupon, $count_products['summ']);
+                $this->saveOrderProducts($order, $profile, $coupon, $count_products);
 
                 foreach ($cart as $item)
                   $item->delete();
@@ -514,11 +514,11 @@ class SiteController extends Controller {
     return $result;
   }
 
-  private function saveOrderProducts($order, $profile, $coupon, $product_summ) {
+  private function saveOrderProducts($order, $profile, $coupon, $count_products) {
     $delivery = CityDelivery::model()->with('city')->findByAttributes(array(
       'delivery_id' => $_POST['Order']['delivery_id'])
         , 'city.name=:city', array(':city' => $profile->city));
-    if ($delivery && ($delivery->summ == 0 || $delivery->summ > $product_summ))
+    if ($delivery && ($delivery->summ == 0 || $delivery->summ > $count_products['summ']))
       $delivery_summ = $delivery->price;
     else
       $delivery_summ = 0;
@@ -534,7 +534,7 @@ class SiteController extends Controller {
     $order->status_id = 0;
     $order->time = date('Y-m-d H:i:s');
 
-    if ($coupon)
+    if ($coupon && $count_products['couponDisc'])
       $order->coupon_id = $coupon->id;
 
     if ($order->save()) {
@@ -557,7 +557,7 @@ class SiteController extends Controller {
           $order_product->save();
         }
       }
-      if ($coupon) {
+      if ($coupon && $count_products['couponDisc']) {
         if ($coupon->used_id == 0) {
           $command = Yii::app()->db->createCommand();
           $command->update('store_coupon', array(
