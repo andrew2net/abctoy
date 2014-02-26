@@ -7,7 +7,7 @@
         array('label' => 'Доставка', 'url' => array('/deliver')),
         array('label' => 'Оплата', 'url' => array('/payment')),
         array('label' => 'Гарантии и обмен', 'url' => array('/guarantee')),
-        array('label' => 'Где лучше покупать игрушки?', 'url' => array('/faq')),
+        array('label' => 'Скидки для детских садов', 'url' => array('/site/page/url/kindergarten')),
         array(
           'label' => $this->cartLabel(),
           'url' => array('/cart'),
