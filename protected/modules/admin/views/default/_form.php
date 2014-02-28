@@ -159,10 +159,10 @@
       var quantity = parseInt($('#' + quantityid).val());
       if (isNaN(quantity))
         quantity = 0;
-      var noDiscPrice = parseFloat($(this).attr('price'));
+      var disc = parseFloat($(this).attr('disc'));
       var s = price * quantity;
-      if (noDiscPrice > price)
-        discount += (noDiscPrice - price) * quantity;
+      if (disc)
+        discount += disc * quantity;
       else
         noDiscSum += s;
       sum += s;
