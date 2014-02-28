@@ -44,19 +44,20 @@ class DefaultController extends Controller {
       $valid = $model->validate();
       $order_product = array();
       $product = array();
-      foreach ($_POST['OrderProduct'] as $key => $value) {
-        $order_product[$key] = new OrderProduct;
-        $order_product[$key]->attributes = $value;
-        $order_product[$key]->order_id = $id;
-        $product[$key] = Product::model()->findByAttributes(array(
-          'article' => $_POST['Product'][$key]['article']));
-        if ($product[$key])
-          $order_product[$key]->product_id = $product[$key]->id;
-        else
-          $product[$key] = new Product;
-        $valid = $order_product[$key]->validate() && $valid;
-        $valid = $product[$key]->validate() && $valid;
-      }
+      if (isset($_POST['OrderProduct']) && is_array($_POST['OrderProduct']))
+        foreach ($_POST['OrderProduct'] as $key => $value) {
+          $order_product[$key] = new OrderProduct;
+          $order_product[$key]->attributes = $value;
+          $order_product[$key]->order_id = $id;
+          $product[$key] = Product::model()->findByAttributes(array(
+            'article' => $_POST['Product'][$key]['article']));
+          if ($product[$key])
+            $order_product[$key]->product_id = $product[$key]->id;
+          else
+            $product[$key] = new Product;
+          $valid = $order_product[$key]->validate() && $valid;
+          $valid = $product[$key]->validate() && $valid;
+        }
       if ($valid) {
         $tr = Yii::app()->db->beginTransaction();
         try {
