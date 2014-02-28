@@ -507,7 +507,7 @@ class SiteController extends Controller {
       $result['summ'] += $quantity * $price;
     }
     if ($coupon && !$coupon->type_id)
-      if ($result['summ'] < 1800)
+      if ($result['summ'] < 1800 || $result['discount'] > $coupon->value)
         $result['couponDisc'] = 0;
       else if ($coupon->value < $result['couponDisc'])
         $result['couponDisc'] = $coupon->value;
