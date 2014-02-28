@@ -34,7 +34,7 @@ class OrderProduct extends CActiveRecord {
       array('quantity', 'numerical', 'integerOnly' => true),
       array('order_id, product_id', 'length', 'max' => 11),
       array('price', 'length', 'max' => 12),
-      array('discount', 'length', 'max' => 3),
+      array('discount', 'length', 'max' => 12),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
       array('order_id, product_id, quantity, price', 'safe', 'on' => 'search'),
