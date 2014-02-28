@@ -223,7 +223,7 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
     var discountType = $('#coupon').attr('type_id');
     if (discountType !== undefined && discountType.length > 0) {
       if (cartSummNoDisc === 0)
-        $('#discount-text').html('Скидка по купону распространяется только товары без скидки.');
+        $('#discount-text').html('Скидка по купону распространяется только на товары без скидки.');
       else {
         var discountText = 'Скидка ';
         var discountDisc = $('#coupon').attr('discount');
