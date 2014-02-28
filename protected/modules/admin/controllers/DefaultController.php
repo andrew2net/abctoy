@@ -161,7 +161,7 @@ class DefaultController extends Controller {
       $discount = $value->getActualDiscount();
       if ($discount) {
         $price = $discount['price'];
-        $disc = ($value->price - $price) * $value->remainder;
+        $disc = ($value->price - $price);
       }
       else {
         $price = $value->price;
