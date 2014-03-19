@@ -50,7 +50,9 @@ $adds = Action::model()->published()->findAll();
           }
           else {
             ?>
+            <?php echo $value->url ? '<a href="' . $value->url . '">' : ''; ?>
             <img height="270" width="950" src="<?php echo $value->img; ?>">
+            <?php echo $value->url ? '</a>' : ''; ?>
           <?php } ?>
         </div>
       </li>

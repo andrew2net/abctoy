@@ -9,6 +9,7 @@
  * @property string $name
  * @property string $img
  * @property boolean $show
+ * @property string $url
  *
  * The followings are the available model relations:
  * @property Product $product
@@ -45,7 +46,7 @@ class Action extends CActiveRecord {
 //      array('type_id', 'required'),
       array('type_id', 'numerical', 'integerOnly' => true),
       array('name', 'length', 'max' => 30),
-      array('img', 'length', 'max' => 255),
+      array('img, url', 'length', 'max' => 255),
       array('show', 'safe'),
       array('img', 'unsafe'),
       // The following rule is used by search().
@@ -76,7 +77,8 @@ class Action extends CActiveRecord {
       'type_id' => 'Вид',
       'name' => 'Наименование',
       'img' => 'Изображение',
-      'show' => 'Показывать'
+      'show' => 'Показывать',
+      'url' => 'Ссылка',
     );
   }
 

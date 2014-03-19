@@ -41,6 +41,11 @@
       , 'maxlength' => 30));
     ?>
   </div>
+  <div id="news-data" style="display: <?php echo !$model->type_id ? 'inherit' : 'none'; ?>">
+    <?php echo $form->textFieldControlGroup($model, 'url', array('span' => 4
+      , 'maxlength' => 255));
+    ?>
+  </div>
   <div id="action-data" style="display: <?php echo $model->type_id ? 'inherit' : 'none'; ?>">
 <?php echo $form->textAreaControlGroup($advert, 'text', array('rows' => 6, 'span' => 5)); ?>
     <div class="inline-blocks">
