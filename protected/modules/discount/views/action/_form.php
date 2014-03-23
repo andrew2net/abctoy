@@ -136,10 +136,12 @@
   $('#Action_type_id').on('change', function() {
     switch ($(this).val()) {
       case "0":
-        $('#action-data').css('display', 'none');
+        $('#action-data').hide();
+        $('#news-data').show();
         break;
       case "1":
-        $('#action-data').css('display', 'inherit');
+        $('#action-data').show();
+        $('#news-data').hide();
         break;
     }
   });
