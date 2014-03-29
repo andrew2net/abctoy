@@ -33,7 +33,6 @@ $(function() {
   };
   var spinnertarget = document.getElementById(JsTreeBehavior.container_ID);
   var spinner = new Spinner(spinnneropts);
-  var select = true;
   $("#" + JsTreeBehavior.container_ID)
           .jstree({
 // the `plugins` array allows you to configure the active plugins on this instance
@@ -57,80 +56,6 @@ $(function() {
     },
     "contextmenu": {'items': {
         "rename": false,
-//        "rename": {
-//          "label": "Переименовать",
-//          "action": function(obj) {
-//            this.rename(obj);
-//          }
-//        },
-//        "update": {
-//          "label": "Изменить",
-//          "action": function(obj) {
-//            id = obj.attr("id").replace("node_", "");
-//            $.ajax({
-//              type: "POST",
-//              url: Yii_js.baseUrl + "/" + JsTreeBehavior.controllerID + "/returnForm",
-//              data: {
-//                'update_id': id,
-//                "YII_CSRF_TOKEN": Yii_js.csrf
-//              },
-//              'beforeSend': function() {
-//                spinner.spin(spinnertarget);
-//              },
-//              'complete': function() {
-//                spinner.stop();
-//              },
-//              success: function(data) {
-//                $.fancybox(data,
-//                        {"transitionIn": "elastic",
-//                          "transitionOut": "elastic",
-//                          "speedIn": 600,
-//                          "speedOut": 200,
-//                          "overlayShow": false,
-//                          "hideOnContentClick": false,
-//                          "afterClose": function() {
-//                            jQuery("#" + JsTreeBehavior.container_ID).jstree("refresh");
-//                          } //afterClose callback
-//                        })//fancybox
-//              } //success
-//            });//ajax
-//          }//action function
-//        }, //update
-//                "properties":{
-//                    "label":"Свойства",
-//                    "action":function (obj) {
-//                        id = obj.attr("id").replace("node_", "")
-//                        $.ajax({
-//                            type:"POST",
-//                            url:Yii_js.baseUrl + "/" + JsTreeBehavior.controllerID + "/returnView",
-//                            data:{
-//                                "id":id,
-//                                "YII_CSRF_TOKEN":Yii_js.csrf
-//                            },
-//                            beforeSend:function () {
-//                                spinner.spin(spinnertarget);
-//                            },
-//                            complete:function () {
-//                                spinner.stop();
-//                            },
-//                            success:function (data) {
-//                                $.fancybox(data,
-//                                    {    "transitionIn":"elastic",
-//                                        "transitionOut":"elastic",
-//                                        "speedIn":600,
-//                                        "speedOut":200,
-//                                        "overlayShow":false,
-//                                        "hideOnContentClick":false,
-//                                        "afterClose":function () {
-//                                        } //onclosed function
-//                                    })//fancybox
-//                            } //function
-//                        });//ajax
-//                    },
-//                    "_class":"class", // class is applied to the item LI node
-//                    "separator_before":false, // Insert a separator before the item
-//                    "separator_after":true    // Insert a separator after the item
-//                }, //properties
         "remove": {
           "label": "Удалить",
           "action": function(obj) {
@@ -173,7 +98,6 @@ $(function() {
           .bind("select_node.jstree", function(event, data) {
 // `data.rslt.obj` is the jquery extended node that was clicked
 // alert(data.rslt.obj.attr("id"));
-    if (select) {
       var id = data.rslt.obj.attr("id").replace("node_", "");
       spinner.spin(spinnertarget);
       $('#category-form').load(Yii_js.baseUrl + "/" + JsTreeBehavior.controllerID + "/returnForm", {
@@ -182,8 +106,6 @@ $(function() {
       }, function() {
         spinner.stop();
       });
-    } else
-      select = true;
   })
 
           .bind("remove.jstree", function(e, data) {
@@ -363,11 +285,11 @@ $(function() {
             jQuery.jstree._reference("#" + JsTreeBehavior.container_ID).create_node(-1, 'last', {attr: {id: 'node_' + id}, data: name});
             $('html, body').animate({scrollTop: $(document).height() - $(window).height()}, 'slow');
           }
-          select = false;
           jQuery.jstree._reference("#" + JsTreeBehavior.container_ID).select_node('#node_' + id, true);
         }
         jQuery.jstree._reference("#" + JsTreeBehavior.container_ID).rename_node('#node_' + id, name);
-        $('#success-note').show();
+//        $('#Category-form').attr('action', Yii_js.baseUrl + "/" + JsTreeBehavior.controllerID + '/updatenode');
+//        $('#success-note').show();
       } else
         $('#error-note').show();
     });
