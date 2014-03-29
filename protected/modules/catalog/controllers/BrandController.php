@@ -66,8 +66,8 @@ class BrandController extends Controller {
           rename(Yii::getPathOfAlias('webroot') . $post_brand['img'], $file_name);
         }
       }
-      if (strlen($model->img) > 0 && file_exists($old_file))
-        unlink($old_file);
+//      if (strlen($model->img) > 0 && file_exists($old_file))
+//        unlink($old_file);
       if (isset($file_name))
         $model->img = '/images/logo/' . basename($file_name);
       else

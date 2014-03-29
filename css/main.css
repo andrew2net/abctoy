@@ -315,3 +315,16 @@ div.search-form
 #order-grid #Order_id{
   width: 2em;
 }
+
+.f-nav{
+  z-index: 200;
+  position: fixed;
+  left: 65px;
+  top: 0;
+  width: 100%;
+}
+
+.f-form{
+  position: fixed;
+  top: 25px;
+}
