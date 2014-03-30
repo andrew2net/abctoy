@@ -847,6 +847,7 @@ span:hover .item-disc, span:hover .item-price{
 
 .nomarker{
   list-style-type: none;
+  margin-top: 10px !important;
 }
 
 .category a, .mainmenuitem a{
@@ -1022,11 +1023,12 @@ span:hover .item-disc, span:hover .item-price{
 
 .category-menu-lev1 > div{
   display:table-cell; 
-  vertical-align: middle;
+  vertical-align: bottom;
 }
 
 .category > a img{
-  vertical-align: middle;
+  position: relative;
+  top: 5px;
   max-width: 34px;
   max-height: 34px;
 }
