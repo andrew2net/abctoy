@@ -5,10 +5,11 @@
 <div style="border: 1px dashed #666666; border-radius: 3px; min-height: 50px; margin-bottom: 20px">
   <div style="margin-top: 10px">
     <?php
-    if ($group->level > 1){
+    if ($group->level > 1) {
       $root = $group->ancestors($group->level)->findAll();
       $menu = $root[0];
-    }else 
+    }
+    else
       $menu = $group;
     $categories = $menu->descendants(2)->findAll(array('order' => 'lft'));
     $level = 0;
@@ -16,7 +17,7 @@
       if ($category->level == $level)
         echo CHtml::closeTag('li');
       else if ($category->level > $level)
-        echo CHtml::openTag('ul');
+        echo CHtml::openTag('ul', array('style' => 'margin-right:8px'));
       else {
         echo CHtml::closeTag('li');
 
@@ -25,21 +26,35 @@
           echo CHtml::closeTag('li');
         }
       }
-      
+
       $class = 'category';
       if (($category->level - 1) == 1)
         $class .= ' nomarker';
       else
         $class .= ' subcategory';
-      
+
       if ($category->id == $group->id)
         $class .= ' current-category';
-      
+
       echo CHtml::openTag('li', array('class' => $class));
       echo CHtml::openTag('a', array('href' => $this->createUrl('group', array(
           'id' => $category->id
       ))));
-      echo CHtml::encode($category->getAttribute('name'));
+      if (($category->level - 1) == 1 && $category->url) {
+        echo CHtml::openTag('div', array('class' => 'category-menu-lev1'));
+        echo CHtml::openTag('div');
+        echo CHtml::openTag('span');
+        echo CHtml::encode($category->getAttribute('name'));
+        echo CHtml::closeTag('span');
+        echo CHtml::closeTag('div');
+        echo CHtml::openTag('div');
+        echo CHtml::tag('img', array('src' => $category->url, 'alt' => $category->name, 'width'=>34));
+        echo CHtml::closeTag('div');
+        echo CHtml::closeTag('div');
+      }
+      else 
+        echo CHtml::encode($category->getAttribute('name'));
+      
       echo CHtml::closeTag('a');
 
       $level = $category->level;

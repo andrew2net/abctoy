@@ -1,7 +1,7 @@
 <?php
 /* @var $product Product */
 ?>
-<div class="inline-blocks" style="margin: 20px 0">
+<div class="inline-blocks" style="margin-bottom: 20px">
   <div <?php echo (isset($group) ? 'style="width: 100%"' : ''); ?>>
     <div class="inline-blocks <?php echo (isset($group) ? 'right' : ''); ?>">
       <div class="icon-recom"></div>

@@ -75,7 +75,7 @@
               </div>
             </div>
           </div>
-          <div style="margin-top: 20px">
+          <div style="margin: 20px 0">
             <?php
             foreach ($discount_products as $discount_product)
               $this->renderPartial('_item', array('data' => $discount_product));
