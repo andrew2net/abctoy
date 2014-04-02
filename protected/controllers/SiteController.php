@@ -373,7 +373,7 @@ class SiteController extends Controller {
     elseif (array_search($quantity[0]->quantity, $tovara) !== FALSE)
       $tovarSuffix = ' товара';
 
-    return 'В корзине ' . $quantity[0]->quantity . $tovarSuffix;
+    return 'В корзине <span style="color:#FF0000; font-weight:bold">' . $quantity[0]->quantity . $tovarSuffix . '</span>';
   }
 
   public function actionCart() {

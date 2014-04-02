@@ -2,6 +2,7 @@
   <div class="container">
     <?php
     $this->widget('zii.widgets.CMenu', array(
+      'encodeLabel'=>FALSE,
       'items' => array(
         array('label' => 'О компании', 'url' => array('/about')),
         array('label' => 'Доставка', 'url' => array('/deliver')),
