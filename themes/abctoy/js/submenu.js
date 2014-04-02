@@ -58,7 +58,7 @@ $(document).ready(function() {
     modal: true,
     draggable: false,
     resizable: false,
-    width: 400,
+    width: 410,
     dialogClass: "add-prodact-alert",
     show: {
       effect: "blind",
