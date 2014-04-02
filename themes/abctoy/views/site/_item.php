@@ -32,14 +32,14 @@ echo CHtml::hiddenField('url', Yii::app()->request->url);
 ?>
 <div class="helper"></div>
 <div class="item" title="<?php echo$data->name; ?>">
-  <span class="item-link" href="<?php echo $this->createUrl('product', $href_params); ?>">
+  <a class="item-link" href="<?php echo $this->createUrl('product', $href_params); ?>">
     <div class="<?php echo $item; ?>">
       <div class="<?php echo empty($percent) ? '' : 'discount-label'; ?>"><?php echo $percent; ?></div>
       <!--<div class="<?php // echo $glass;  ?>"></div>-->
       <div class="item-img">
-        <a class="fancybox" href="<?php echo $data->img; ?>">
+        <!--<a class="fancybox" href="<?php echo $data->img; ?>">-->
           <img src="<?php echo $data->small_img; ?>" alt="Изображение">
-        </a>
+        <!--</a>-->
       </div>
       <div class="item-name"><?php echo mb_strlen($data->name, 'utf-8') > 27 ? mb_substr($data->name, 0, 24, 'utf-8') . '...' : $data->name; ?></div>
       <div class="item-rest <?php echo $remainder_class; ?>"><?php echo $remainder; ?></div>
@@ -51,5 +51,5 @@ echo CHtml::hiddenField('url', Yii::app()->request->url);
         <div class="right"></div>
       </div>
     </div>
-  </span>
+  </a>
 </div>

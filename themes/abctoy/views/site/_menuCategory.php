@@ -16,7 +16,7 @@
     if ($discount_products) {
       echo CHtml::tag('a', array(
         'href' => $this->createUrl('discount', array('id' => $menu->id)),
-        'style' => 'padding-left:1.5em; text-decoration:none',
+        'style' => 'padding-left:1.5em',
         'class' => 'red',
           ), 'Товары со скидкой');
 //    echo CHtml::tag('div', array('class'=>'icon-dicount', 'style'=>'display:inline-block;background-size:34px 34px'), '&nbsp;');
