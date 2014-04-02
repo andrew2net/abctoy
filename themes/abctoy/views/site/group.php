@@ -80,7 +80,7 @@
             foreach ($discount_products as $discount_product)
               $this->renderPartial('_item', array('data' => $discount_product));
             ?>
-            <!--<div style="text-align: right; line-height: 3"><a class="red" href="#">Все товары со скидкой</a></div>-->
+            <div style="text-align: right; line-height: 3"><a class="red" href="<?php echo $this->createUrl('discount', array('id'=>$group->id)); ?>">Все товары со скидкой</a></div>
           </div>
           <?php
         }

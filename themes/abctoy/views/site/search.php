@@ -3,9 +3,11 @@
 /* @var $groups[] Category */
 /* @var $search Search */
 /* @var $brand Brand */
+/* @var $group Category */
 ?>
 <?php
-$title = (isset($brand) ? ' - Бренд: ' . $brand->name : ' - Поиск: ' . $search->text);
+$title = (isset($brand) ? ' - Бренд: ' . $brand->name : (isset($isSearch) ? ' - Поиск: ' . $search->text :
+            ' - Товары со скидкой' . (isset($group) ? ': '.$group->name : '')));
 $this->pageTitle = Yii::app()->name . $title;
 ?>
 <?php $this->renderPartial('_topmenu'); ?>
@@ -29,8 +31,10 @@ $this->pageTitle = Yii::app()->name . $title;
     }
     else {
       $notfind = 'По вашему запросу товар не найден';
+      if (isset($isSearch)){
       ?>
       <span class="cufon green bold" style="font-size: 18pt">Вы искали: </span>
+      <?php } ?>
       <span class="cufon" style="font-size: 18pt"><?php echo $search->text; ?></span>
     <?php } ?>
   </div>

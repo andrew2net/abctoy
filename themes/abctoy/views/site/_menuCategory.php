@@ -11,6 +11,16 @@
     }
     else
       $menu = $group;
+
+    $discount_products = Product::model()->subCategory($menu->id)->availableOnly()->discount()->count();
+    if ($discount_products) {
+      echo CHtml::tag('a', array(
+        'href' => $this->createUrl('discount', array('id' => $menu->id)),
+        'style' => 'padding-left:1.5em; text-decoration:none',
+        'class' => 'red',
+          ), 'Товары со скидкой');
+//    echo CHtml::tag('div', array('class'=>'icon-dicount', 'style'=>'display:inline-block;background-size:34px 34px'), '&nbsp;');
+    }
     $categories = $menu->descendants(2)->findAll(array('order' => 'lft'));
     $level = 0;
     foreach ($categories as $category) {
@@ -48,13 +58,13 @@
         echo CHtml::closeTag('span');
         echo CHtml::closeTag('div');
         echo CHtml::openTag('div');
-        echo CHtml::tag('img', array('src' => $category->url, 'alt' => $category->name, 'width'=>34));
+        echo CHtml::tag('img', array('src' => $category->url, 'alt' => $category->name, 'width' => 34));
         echo CHtml::closeTag('div');
         echo CHtml::closeTag('div');
       }
-      else 
+      else
         echo CHtml::encode($category->getAttribute('name'));
-      
+
       echo CHtml::closeTag('a');
 
       $level = $category->level;

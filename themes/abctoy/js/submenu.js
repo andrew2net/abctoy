@@ -11,16 +11,6 @@ Number.prototype.formatMoney = function(c, d, t) {
 
 
 $(document).ready(function() {
-  $('.mainmenulink').mouseenter(function() {
-      $('.submenu').hide();
-    var id = '#' + $(this).attr('submenu');
-    $(id).show();
-  });
-
-  $('.mainmenuarea').mouseleave(function() {
-    $('.submenu').hide();
-    menu = '';
-  });
 
   $('#aSubmit').click(function() {
     $('#giftSelect').submit();
@@ -49,10 +39,6 @@ $(document).ready(function() {
       $('#shoppingCart').html(data);
       $("#add-product-dialog").dialog("open");
     });
-  });
-
-  $('#buy-one-click').click(function() {
-    $('form').submit();
   });
 
   $('.submit').click(function() {

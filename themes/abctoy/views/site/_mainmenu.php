@@ -13,7 +13,7 @@
     </div>
     <div style="height: 25px; margin-top: 10px">
       <div style="float: right">
-        <?php echo CHtml::beginForm('/search', 'get'); ?>
+        <?php echo CHtml::beginForm('/search', 'get', array('id'=>'search-form')); ?>
         <?php
         echo CHtml::activeTextField($search, 'text', array(
           'style' => 'border-radius: 4px 0 0 4px; border: none; width: 10em; height: 23px; padding-left: 10px; float: left; background:whitesmoke; box-shadow: 0 0 1px inset',
@@ -32,3 +32,10 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $('.icon-search').click(function (event){
+    event.preventDefault();
+    if($('#Search_text').val())
+      $('#search-form').submit();
+  });
+</script>

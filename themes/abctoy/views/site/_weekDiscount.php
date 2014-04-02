@@ -17,7 +17,7 @@ if (count($end_dates)) {
   <div class="inline-blocks" style="margin: 20px 0">
     <div class="icon-dicount"></div>
     <div class="cufon red bold" style="font-size: 20pt; position: relative; padding: 0 10px">Скидка недели</div>
-    <div style="float: right; font-size: 12pt; position: relative; top: 20px; width: 205px">
+    <div style="float: right; font-size: 12pt; position: relative; top: 20px; width: 210px">
       <span class="cufon red bold">Осталось: </span><span class="clock red bold" style="width: 40px" date="<?php echo $end_date; ?>"></span>
     </div>
   </div>
@@ -34,5 +34,5 @@ if (count($end_dates)) {
       <a class="weekcarousel-next" href="#"></a>
     </div>
   </div>
-  <!--<div style="text-align: right; line-height: 3"><a class="red" href="#">Все товары со скидкой</a></div>-->
+  <div style="text-align: right; line-height: 3"><a class="red" href="/discount">Все товары со скидкой</a></div>
 <?php } ?>

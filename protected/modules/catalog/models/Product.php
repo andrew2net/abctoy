@@ -242,8 +242,12 @@ class Product extends CActiveRecord {
             ->where("product_id={$this->id}")->text;
 
     $discount_category = Yii::app()->db->createCommand()
-            ->select('discount_id')->from('store_discount_category')
-            ->where("category_id in ({$categories})")->text;
+            ->select('d.id')
+            ->from('store_discount_category dc')
+            ->join('store_discount d', 'd.id = dc.discount_id')
+            ->join('store_category c', 'c.id = dc.category_id')
+            ->join('store_category s', 's.lft >= c.lft AND s.rgt <= c.rgt AND s.root=c.root')
+            ->where("s.id in ({$categories})")->text;
 
     $discount_id = Yii::app()->db->createCommand()
             ->select('discount_id')->from('store_discount_product')
@@ -252,8 +256,8 @@ class Product extends CActiveRecord {
 
     $percenr = Yii::app()->db->createCommand()
         ->select('MAX(percent) discount')->from('store_discount')
-        ->where("id in ({$discount_id}) AND (begin_date<=:date OR begin_date='0000-00-00')" .
-            " AND (end_date>=:date OR end_date='0000-00-00')"
+        ->where("(id in ({$discount_id}) OR product_id=0) AND (begin_date<=:date OR begin_date='0000-00-00')" .
+            " AND (end_date>=:date OR end_date='0000-00-00') AND actual=1"
             , array(':date' => date('Y-m-d')))
         ->queryRow();
 
@@ -265,7 +269,6 @@ class Product extends CActiveRecord {
   }
 
   public function scopes() {
-    $date = date('Y-m-d');
     return array_merge(parent::scopes(), array(
       'top' => array(
         'with' => array(
@@ -275,70 +278,120 @@ class Product extends CActiveRecord {
         'condition' => "show_me=1",
       ),
       'availableOnly' => array('condition' => "remainder>0 AND remainder IS NOT NULL",),
-      'discountOrder' => array(
-        'with' => array(
-          'category' => array(
-            'select' => FALSE,
-            'with' => array(
-              'discount' => array(
-                'alias' => 'c',
-                'select' => FALSE,
-                'on' => "((c.begin_date<=:date OR c.begin_date='0000-00-00')" .
-                " AND (c.end_date>=:date OR c.end_date='0000-00-00'))",
-              )
-            )
-          ),
-          'discount' => array(
-            'select' => FALSE,
-            'alias' => 'd',
-            'on' => "((d.begin_date<=:date OR d.begin_date='0000-00-00')" .
-            " AND (d.end_date>=:date OR d.end_date='0000-00-00'))",
-          )
-        ),
-        'together' => TRUE,
-        'select' => array(
-          't.*',
-          'MAX(IFNULL(d.percent, c.percent)) AS percent',
-          '(1-MAX(IFNULL(d.percent, IFNULL(c.percent,0)))/100)*t.price AS dprice',
-        ),
-        'condition' => "show_me=1",
-        'params' => array(':date' => date('Y-m-d')),
-        'order' => 'percent DESC',
-        'group' => 't.id'
-      ),
-      'week' => array(
-        'with' => array(
-          'discount' => array(
-            'select' => FALSE,
-            'alias' => 'prod'
-          ),
-          'category' => array(
-            'select' => FALSE,
-            'with' => array(
-              'discount' => array(
-                'select' => FALSE,
-                'alias' => 'cat',
-              ),
-            ),
-          ),
-        ),
-        'together' => TRUE,
-        'select' => array(
-          't.*',
-          'IFNULL(prod.begin_date, cat.begin_date) AS w_begin_date',
-          'IFNULL(prod.end_date, cat.end_date) AS w_end_date',
-          'IFNULL(prod.type_id, cat.type_id) AS w_type',
-          'IFNULL(prod.actual, cat.actual) AS w_actual',
-          'MAX(IFNULL(prod.percent, cat.percent)) AS percent',
-        ),
-        'condition' => 't.show_me=1',
-        'having' => "w_type=0 AND w_actual=1 AND (w_begin_date<='" . $date .
-        "' OR w_begin_date='0000-00-00') AND (w_end_date>='" . $date .
-        "' OR w_end_date='0000-00-00')",
-        'order' => 'percent DESC',
-        'group' => 'prod.id, t.id'
-      ),
     ));
+  }
+
+  public function discount() {
+    $discount_all = Discount::model()
+        ->count("actual=1 AND type_id IN (0,1) AND product_id=0 AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')"
+        , array(':date' => date('Y-m-d')));
+
+    $discount_product = Yii::app()->db->createCommand()
+        ->select('p.product_id')
+        ->from('store_discount_product p')
+        ->join('store_discount d', 'p.discount_id=d.id')
+        ->where("actual=1 AND type_id IN (0,1) AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')");
+
+    $discount_category = Yii::app()->db->createCommand()
+        ->select('s.id')
+        ->from('store_discount_category dc')
+        ->join('store_discount d', 'd.id = dc.discount_id')
+        ->join('store_category c', 'c.id = dc.category_id')
+        ->join('store_category s', 's.lft >= c.lft AND s.rgt <= c.rgt AND s.root=c.root')
+        ->where("actual=1 AND type_id IN (0,1) AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')");
+
+    $criteria = new CDbCriteria;
+    $criteria->condition = "$discount_all>0 OR category.id IN ($discount_category->text) OR t.id IN ($discount_product->text)";
+    $criteria->params = array(':date' => date('Y-m-d'));
+    $criteria->with = array('category');
+    $criteria->together = TRUE;
+
+    $this->getDbCriteria()->mergeWith($criteria);
+    return $this;
+  }
+
+  public function week() {
+
+    $discount_category = Yii::app()->db->createCommand()
+        ->select('d.percent, d.begin_date, d.end_date, d.type_id, d.actual, s.id')
+        ->from('store_discount_category dc')
+        ->join('store_discount d', 'd.id = dc.discount_id')
+        ->join('store_category c', 'c.id = dc.category_id')
+        ->join('store_category s', 's.lft >= c.lft AND s.rgt <= c.rgt AND s.root=c.root')
+        ->where("actual=1 AND type_id IN (0,1) AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')");
+
+    $date = date('Y-m-d');
+    $this->getDbCriteria()->mergeWith(array(
+      'with' => array(
+        'discount' => array(
+          'select' => FALSE,
+          'alias' => 'prod',
+          'on' => "prod.actual=1 AND (prod.begin_date<=:date OR prod.begin_date='0000-00-00')" .
+          " AND (prod.end_date>=:date OR prod.end_date='0000-00-00') AND prod.type_id=0",
+        ),
+        'category' => array(
+          'select' => FALSE,
+          'join' => "LEFT JOIN ($discount_category->text) cat ON category.id=cat.id",
+        ),
+      ),
+      'together' => TRUE,
+      'select' => array(
+        't.*',
+        'IFNULL(prod.begin_date, cat.begin_date) AS w_begin_date',
+        'IFNULL(prod.end_date, cat.end_date) AS w_end_date',
+        'IFNULL(prod.type_id, cat.type_id) AS w_type',
+        'IFNULL(prod.actual, cat.actual) AS w_actual',
+        'MAX(IFNULL(prod.percent, cat.percent)) AS percent',
+      ),
+      'condition' => "t.show_me=1",
+      'having' => "w_type=0 AND w_actual=1 AND (w_begin_date<='" . $date .
+      "' OR w_begin_date='0000-00-00') AND (w_end_date>='" . $date .
+      "' OR w_end_date='0000-00-00')",
+      'order' => 'percent DESC',
+      'group' => 'prod.id, t.id',
+      'params' => array(':date' => $date),
+    ));
+    return $this;
+  }
+
+  public function discountOrder() {
+    $discount_all = Yii::app()->db->createCommand()
+            ->select("a.percent")
+            ->from('store_discount a')
+            ->where("actual=1 AND type_id IN (0,1) AND product_id=0 AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')")->text;
+    $discount_category = Yii::app()->db->createCommand()
+            ->select('d.percent, s.id')
+            ->from('store_discount_category dc')
+            ->join('store_discount d', 'd.id = dc.discount_id')
+            ->join('store_category c', 'c.id = dc.category_id')
+            ->join('store_category s', 's.lft >= c.lft AND s.rgt <= c.rgt AND s.root=c.root')
+            ->where("actual=1 AND type_id IN (0,1) AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')")->text;
+    $this->getDbCriteria()->mergeWith(array(
+      'with' => array(
+        'category' => array(
+          'select' => FALSE,
+          'join' => "LEFT JOIN ($discount_category) c ON category.id=c.id OR c.id='a'"
+        ),
+        'discount' => array(
+          'select' => FALSE,
+          'alias' => 'd',
+          'on' => "actual=1 AND (d.begin_date<=:date OR d.begin_date='0000-00-00')" .
+          " AND (d.end_date>=:date OR d.end_date='0000-00-00')",
+        )
+      ),
+      'join' => "LEFT JOIN ($discount_all) a ON a.percent>0",
+      'together' => TRUE,
+      'select' => array(
+        't.*',
+        'MAX(IFNULL(d.percent, IFNULL(c.percent, IFNULL(a.percent, 0)))) AS percent',
+        '(1-MAX(IFNULL(d.percent, IFNULL(c.percent, IFNULL(a.percent, 0))))/100)*t.price AS dprice',
+      ),
+      'condition' => "show_me=1",
+      'params' => array(':date' => date('Y-m-d')),
+      'order' => 'percent DESC',
+      'group' => 't.id'
+    ));
+    return $this;
   }
 
   public function brandFilter($id) {
