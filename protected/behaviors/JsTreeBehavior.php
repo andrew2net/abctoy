@@ -173,6 +173,7 @@ class JsTreeBehavior extends CBehavior {
   private function saveNode($post_node, Category &$model) {
 
     $model->name = $post_node['name'];
+    $model->seo = $post_node['seo'];
     $old_file = Yii::getPathOfAlias('webroot') . $model->url;
     if ($post_node['url'] != $model->url) {
       if (strlen($post_node['url']) > 0) {
