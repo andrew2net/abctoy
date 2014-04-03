@@ -46,6 +46,7 @@ $(document).ready(function() {
   });
 
   $(document).on('click', '.item-link', function(event) {
+    event.preventDefault();
     $('#item-submit').attr('action', $(this).attr('href'));
     $('#item-submit').submit();
   });
