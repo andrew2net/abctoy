@@ -221,6 +221,7 @@ class ProductController extends Controller {
         "\xe2\x82\x09" => "-",
         "\xe2\x82\x11" => "-",
         "\xe2\x82\x12" => "-",
+        "\xe2\x80\xA6" => "...",
       );
 
       foreach ($_POST['data'] as $value) {
