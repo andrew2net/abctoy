@@ -27,7 +27,7 @@
         <?php echo CHtml::beginForm('/search', 'get'); ?>
         <?php
         echo CHtml::activeTextField($search, 'text', array(
-          'style' => 'border-radius: 4px 0 0 4px; border: none; width: 10em; height: 23px; padding-left: 10px; float: left',
+          'style' => 'border-radius: 4px 0 0 4px; border: none; width: 145px; height: 23px; padding-left: 10px; float: left',
           'placeholder' => 'Поиск'
         ));
         ?>
