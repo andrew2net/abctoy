@@ -238,7 +238,7 @@ class ProductController extends Controller {
             $brand->name = $brand_name;
             $brand->save();
           }
-          $group_name = strtr($data[7], $quotes);
+          $group_name = mb_substr(strtr($data[7], $quotes), 0, 30, 'utf-8');
           $group = Category::model()->findByAttributes(array(
             'name' => $group_name), 'level=1');
           if (is_null($group)) {
@@ -247,7 +247,7 @@ class ProductController extends Controller {
             $group->saveNode(FALSE);
           }
 
-          $category_name = strtr($data[6], $quotes);
+          $category_name = mb_substr(strtr($data[6], $quotes), 0, 30, 'utf-8');
           $category = Category::model()->findByAttributes(array(
             'name' => $category_name), 'level=2');
           if (is_null($category)) {
@@ -255,7 +255,7 @@ class ProductController extends Controller {
             $category->name = $category_name;
             $category->appendTo($group, FALSE);
           }
-          $subcategory_name = strtr($data[5], $quotes);
+          $subcategory_name = mb_substr(strtr($data[5], $quotes), 0, 30, 'utf-8');
           if ($data[2] == 'Т3453') {
             $d = $data[2];
           }
