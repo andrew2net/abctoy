@@ -244,7 +244,7 @@ class ProductController extends Controller {
           if (is_null($group)) {
             $group = new Category;
             $group->name = $group_name;
-            $group->saveNode();
+            $group->saveNode(FALSE);
           }
 
           $category_name = strtr($data[6], $quotes);
@@ -253,7 +253,7 @@ class ProductController extends Controller {
           if (is_null($category)) {
             $category = new Category;
             $category->name = $category_name;
-            $category->appendTo($group);
+            $category->appendTo($group, FALSE);
           }
           $subcategory_name = strtr($data[5], $quotes);
           if ($data[2] == 'Т3453') {
@@ -264,7 +264,7 @@ class ProductController extends Controller {
           if (is_null($subcategory)) {
             $subcategory = new Category;
             $subcategory->name = $subcategory_name;
-            $subcategory->appendTo($category);
+            $subcategory->appendTo($category, FALSE);
           }
           $name = strtr($data[0], $quotes);
           $age = (string) $data[10];
