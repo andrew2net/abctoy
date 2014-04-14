@@ -56,17 +56,18 @@ body
   text-decoration: underline;
 }
 
-#mainmenu ul
-{
-  background: #3399cc;
+.mainmenuitem{
+  display: table-cell;
+  text-align: center;
+  width: 10%;
+  /*margin: 10px;*/
+}
+.mainmenuitem > div{
+  width: 110px;
+  margin: 0 auto;
 }
 
-#mainmenu{
-  background: #66ccff;
-  height: 2.8em;
-}
-
-#mainmenu ul, #topmenu ul
+#topmenu ul
 {
   padding:5px 0px 5px;
   margin:0px;
@@ -74,13 +75,13 @@ body
   position: relative;
 }
 
-#mainmenu ul li, #topmenu ul li
+#topmenu ul li
 {
   display: inline;
   overflow: visible;
 }
 
-#mainmenu ul li a, #topmenu ul li a
+#topmenu ul li a
 {
   color:#ffffff;
   background-color:transparent;
@@ -88,44 +89,6 @@ body
   text-decoration:none;
   padding: 9px;
   line-height: 2;
-}
-
-#mainmenu ul li a:hover, #mainmenu ul li.active a
-{
-  color: #6399cd;
-  background-color: white;
-}
-
-.submenu{
-  position: absolute;
-  display: none;
-  top: -3px;
-  box-shadow: 1px 2px 4px;
-  background: white;
-  z-index: 10;
-}
-.submenu > div{
-  padding: 10px;
-  border-right: 1px solid #DDD;
-  width: 169px;
-  min-height: 300px;
-  vertical-align: top;
-}
-.submenu > div > div {
-  margin-bottom: 0.6em;
-}
-
-.submenu .menu-category, .submenu .menu-subcategory{
-  text-decoration: none;
-  color: #666666;
-  /*line-height: 2;*/
-}
-.submenu .menu-category:hover, .submenu .menu-subcategory:hover{
-  text-decoration: underline;
-}
-.submenu .menu-category{
-  font-size: 10pt;
-  font-weight: bold;
 }
 
 div.flash-error, div.flash-notice, div.flash-success
@@ -437,7 +400,7 @@ input[type=checkbox]:checked + label:before, .weekcarousel-prev,
 .breadcrumbs{
   color: #99cc33;
   font-size: 16pt; 
-  margin: 20px 0; 
+  margin: 10px 0 20px; 
 }
 .breadcrumbs a{
   text-decoration: none;
@@ -493,7 +456,7 @@ blue-light{
 .item a{
   text-decoration: none;
 }
-.item > span > div{
+.item > a > div{
   width: 165px;
   height: 270px;
   border-radius: 5px;
@@ -506,10 +469,10 @@ blue-light{
 .item-link{
   cursor: pointer;
 }
-span:hover > .red-item{
+a:hover > .red-item{
   border: 3px solid #cc3333;
 }
-span:hover > .green-item{
+a:hover > .green-item{
   border: 3px solid #99cc33;
 }
 .item div img{
@@ -867,11 +830,11 @@ select{
   height: 60px;
   z-index: 1;
 }
-span:hover .red-glass, span:hover .green-glass, span:hover .green-item-bt,
-span:hover .red-item-bt{
+a:hover .red-glass, a:hover .green-glass, a:hover .green-item-bt,
+a:hover .red-item-bt{
   display: inherit;
 }
-span:hover .item-disc, span:hover .item-price{
+a:hover .item-disc, a:hover .item-price{
   display: none;
 }
 
@@ -884,12 +847,13 @@ span:hover .item-disc, span:hover .item-price{
 
 .nomarker{
   list-style-type: none;
+  margin-top: 15px !important;
 }
 
-.category a{
+.category a, .mainmenuitem a{
   text-decoration: none;
 }
-.category a:hover{
+.category a:hover, .mainmenuitem a:hover{
   text-decoration: underline;
 }
 .category{
@@ -1047,4 +1011,33 @@ span:hover .item-disc, span:hover .item-price{
   left: 0;
   right: 0;
   margin: auto;
+}
+
+.category-menu-lev1{
+  display: table;
+}
+
+.category-menu-lev1 > div > span{
+  margin-right: 5px;
+}
+
+.category-menu-lev1 > div{
+  display:table-cell; 
+  vertical-align: bottom;
+}
+
+.category > a img{
+  position: relative;
+  top: 5px;
+  max-width: 34px;
+  max-height: 34px;
+}
+
+a.red{
+  text-decoration: none;
+}
+a.red:hover{
+  color: #cc3333;
+  text-decoration-line: underline;
+  -moz-text-decoration-line: underline;
 }

@@ -20,7 +20,7 @@
   <h3><?php echo Yii::t('global', 'Update') ?> <?php echo Yii::t('global', $modelClassName) ?></h3>
 <?php endif; ?>
 
-<!--<p> <h2><?php // echo $model->name;  ?></h2><p>-->
+<!--<p> <h2><?php // echo $model->name;   ?></h2><p>-->
 
 <?php
 $val_error_msg = Yii::t('global', "Error. $modelClassName was not saved.");
@@ -47,7 +47,7 @@ $val_success_message = ($model->isNewRecord) ?
       (!isset($_POST['create_root']) ? CController::createUrl($this->id . '/createnode') : CController::createUrl($this->id . '/createRoot')) :
       CController::createUrl($this->id . '/updatenode');
 
-  $form = $this->beginWidget('CActiveForm', array(
+  $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'id' => $formId,
     //  'htmlOptions' => array('enctype' => 'multipart/form-data'),
     'action' => $actionUrl,
@@ -87,11 +87,11 @@ $val_success_message = ($model->isNewRecord) ?
     </div>
 
     <div class="control-group">
-      <!--            <?php // echo $form->labelEx($model, 'url', array('class' => 'control-label'));     ?>
+      <!--            <?php // echo $form->labelEx($model, 'url', array('class' => 'control-label'));      ?>
                   <div class="controls">
       <?php //  $url=(!$model->isNewRecord)?$model->url:''   ?>
       <?php // echo $form->textField($model, 'url', array('value' => $url, 'class' => 'span4', 'size' => 60, 'maxlength' => 255));  ?>
-                      <p class="help-block"><?php // echo $form->error($model, 'url');    ?></p>
+                      <p class="help-block"><?php // echo $form->error($model, 'url');     ?></p>
                   </div>-->
       <input id="Category_url" name="Category[url]" type="text" value="<?php echo $model->url ?>" style="display: none">
 
@@ -109,6 +109,9 @@ $val_success_message = ($model->isNewRecord) ?
         'id' => 'del_img'
       ));
       ?>
+    </div>
+    <div>
+      <?php echo $form->textAreaControlGroup($model, 'seo', array('span' => 4, 'rows'=>8)); ?>
     </div>
 
     <input type="hidden" name="YII_CSRF_TOKEN"

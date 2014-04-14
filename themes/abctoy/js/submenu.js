@@ -11,16 +11,6 @@ Number.prototype.formatMoney = function(c, d, t) {
 
 
 $(document).ready(function() {
-  $('.mainmenulink').mouseenter(function() {
-      $('.submenu').hide();
-    var id = '#' + $(this).attr('submenu');
-    $(id).show();
-  });
-
-  $('.mainmenuarea').mouseleave(function() {
-    $('.submenu').hide();
-    menu = '';
-  });
 
   $('#aSubmit').click(function() {
     $('#giftSelect').submit();
@@ -51,15 +41,12 @@ $(document).ready(function() {
     });
   });
 
-  $('#buy-one-click').click(function() {
-    $('form').submit();
-  });
-
   $('.submit').click(function() {
     $('form').submit();
   });
 
   $(document).on('click', '.item-link', function(event) {
+    event.preventDefault();
     $('#item-submit').attr('action', $(this).attr('href'));
     $('#item-submit').submit();
   });
@@ -72,7 +59,7 @@ $(document).ready(function() {
     modal: true,
     draggable: false,
     resizable: false,
-    width: 400,
+    width: 410,
     dialogClass: "add-prodact-alert",
     show: {
       effect: "blind",

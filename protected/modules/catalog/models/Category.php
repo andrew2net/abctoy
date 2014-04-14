@@ -11,6 +11,7 @@
  * @property integer $rgt
  * @property integer $level
  * @property integer $root
+ * @property string $seo
  */
 class Category extends CActiveRecord {
 
@@ -33,7 +34,7 @@ class Category extends CActiveRecord {
       array('name', 'length', 'max' => 30),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
-      array('name, url', 'safe'),
+      array('name, url, seo', 'safe'),
     );
   }
 
@@ -60,7 +61,8 @@ class Category extends CActiveRecord {
     return array(
       'name' => 'Наименование',
       'url' => 'Url',
-      'level' => ''
+      'level' => '',
+      'seo' => 'SEO текст'
     );
   }
 

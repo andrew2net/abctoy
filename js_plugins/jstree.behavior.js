@@ -268,10 +268,11 @@ $(function() {
     var action = $('#Category-form').attr('action');
     var name = $('#Category_name').val();
     var url = $('#Category_url').val();
+    var seo = $('#Category_seo').val();
     var id = $('input[name="update_id"]').val();
     var parent_id = $('input[name="parent_id"]').val();
     $.post(action, {
-      Category: {name: name, url: url},
+      Category: {name: name, url: url, seo: seo},
       update_id: id,
       parent_id: parent_id
     }, function(data) {
