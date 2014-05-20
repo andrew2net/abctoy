@@ -402,8 +402,8 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
     if (quantity < 0) {
       quantity = 0;
       this.value = quantity;
-    } else if (quantity > 9) {
-      quantity = 9;
+    } else if (quantity > 99) {
+      quantity = 99;
     }
     calcSumm();
     $.post('/changeCart', {

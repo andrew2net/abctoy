@@ -1,7 +1,7 @@
 <?php
 /* @var $product Product */
 /* @var $productForm ProductForm */
-/* @var $groups[] Category */
+/* @var $groups Category[] */
 /* @var $search Search */
 ?>
 <?php $this->pageTitle = Yii::app()->name . ' - ' . $product->name; ?>
