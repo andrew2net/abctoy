@@ -12,7 +12,9 @@
         <a target="_blank" href="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=2508/*http://market.yandex.ru/shop/208455/reviews">
           <img style="margin-top: 5px" src="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=2505/*http://grade.market.yandex.ru/?id=208455&action=image&size=0" border="0" width="88" height="31" alt="Читайте отзывы покупателей и оценивайте качество магазина на Яндекс.Маркете" />
         </a>
-        <div style="margin-top: 4px; display: block">Разработка сайта<br><a style="text-decoration-line: initial; -moz-text-decoration-line: none" href="mailto:andriano@ngs.ru?subject=Разработка сайта">andriano@ngs.ru</a></div>
+        <div style="margin-top: 4px; display: block">Разработка сайта<br>
+          <a class="devem" style="text-decoration-line: initial; -moz-text-decoration-line: none" href="#">Andriano</a>
+        </div>
       </div>
 
       <div class="table-cell" style="vertical-align: middle">
@@ -174,5 +176,17 @@
           break;
       }
     });
+  });
+
+  $('.devem').click(function (event) {
+    var l = $(this);
+    if (l.attr('href') !== '#')
+      return;
+    event.preventDefault();
+    var em = 'andriano';
+    em += String.fromCharCode(64);
+    em += 'ngs.ru';
+    l.attr('href', 'mailto:' + em + '?subject=Разработка сайта');
+    l.html(em);
   });
 </script>
