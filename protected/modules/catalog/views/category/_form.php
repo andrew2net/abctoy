@@ -64,6 +64,7 @@ $val_success_message = ($model->isNewRecord) ?
       'afterValidate' => 'js:function(form,data,hasError){$.js_afterValidate(form,data,hasError);  }',
     ),
   ));
+/* @var $form TbActiveForm */
   ?>
 
   <?php
@@ -85,6 +86,8 @@ $val_success_message = ($model->isNewRecord) ?
         <p class="help-block"><?php echo $form->error($model, 'name'); ?></p>
       </div>
     </div>
+    
+    <?php echo $form->checkBoxControlGroup($model, 'active'); ?>
 
     <div class="control-group">
       <!--            <?php // echo $form->labelEx($model, 'url', array('class' => 'control-label'));      ?>

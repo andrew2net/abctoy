@@ -100,7 +100,7 @@
           $pagination['pageSize'] = Yii::app()->request->getQuery('size', 12);
           $sizes = array(12, 24, 36);
         }
-        $data = Product::model()->searchCategory($group->id);
+        $data = Product::model()->availableOnly()->searchCategory($group->id);
         $data->setPagination($pagination);
         if ($data->getItemCount() > 0) {
           $widget = $this->widget('ListView', array(

@@ -51,8 +51,7 @@ class JsTreeBehavior extends CBehavior {
     if ($renamed_cat->saveNode()) {
       echo json_encode(array('success' => true));
       exit;
-    }
-    else {
+    } else {
       echo json_encode(array('success' => false));
       exit;
     }
@@ -67,8 +66,7 @@ class JsTreeBehavior extends CBehavior {
     if ($deleted_cat->deleteNode()) {
       echo json_encode(array('success' => true));
       exit;
-    }
-    else {
+    } else {
       echo json_encode(array('success' => false));
       exit;
     }
@@ -88,11 +86,10 @@ class JsTreeBehavior extends CBehavior {
           'id' => $new_root->primaryKey)
         );
         exit;
-      }
-      else {
+      } else {
         echo json_encode(array('success' => false,
           'message' => 'Error. Root ' . $this->modelClassName . ' was not created.'
-            )
+          )
         );
         exit;
       }
@@ -113,11 +110,10 @@ class JsTreeBehavior extends CBehavior {
           'id' => $model->primaryKey)
         );
         exit;
-      }
-      else {
+      } else {
         echo json_encode(array('success' => false,
           'message' => 'Error. ' . $this->modelClassName . ' was not created.'
-            )
+          )
         );
         exit;
       }
@@ -132,7 +128,7 @@ class JsTreeBehavior extends CBehavior {
     $model = $this->loadModel($_POST['id']);
     $this->owner->renderPartial($this->view_alias_path, array(
       'model' => $model,
-        ), false, true);
+      ), false, true);
   }
 
   /**
@@ -152,7 +148,7 @@ class JsTreeBehavior extends CBehavior {
       'model' => $model,
       'parent_id' => !empty($_POST['parent_id']) ? $_POST['parent_id'] : '',
       'modelClassName' => $this->modelClassName
-        ), false, true);
+      ), false, true);
   }
 
   /**
@@ -164,15 +160,34 @@ class JsTreeBehavior extends CBehavior {
 //      $model->attributes = $_POST[$this->modelClassName];
       if ($this->saveNode($_POST[$this->modelClassName], $model)) {
         echo json_encode(array('success' => true));
-      }
-      else
+      } else
         echo json_encode(array('success' => false));
     }
   }
 
   private function saveNode($post_node, Category &$model) {
 
+    /* @var $model NestedSetBehavior */
     $model->name = $post_node['name'];
+    if ($model->active != $post_node['active']) {
+      $model->active = $post_node['active'];
+      $sub_categories = $model->descendants()->findAll();
+      foreach ($sub_categories as $sub_category) {
+        /* @var $sub_category Category */
+        /* @var $sub_category NestedSetBehavior */
+        $sub_category->active = $post_node['active'];
+        $sub_category->saveNode(FALSE);
+      }
+      if ($post_node['active']) {
+        $super_categories = $model->ancestors()->findAll();
+        foreach ($super_categories as $super_category){
+        /* @var $super_category Category */
+        /* @var $super_category NestedSetBehavior */
+          $super_category->active = $post_node['active'];
+          $super_category->saveNode(FALSE);
+        }
+      }
+    }
     $model->seo = $post_node['seo'];
     $old_file = Yii::getPathOfAlias('webroot') . $model->url;
     if ($post_node['url'] != $model->url) {
@@ -192,8 +207,7 @@ class JsTreeBehavior extends CBehavior {
         $model->url = '/images/category/' . basename($file_name);
       else
         $model->url = '';
-    }
-    else
+    } else
       $model->attributes = $post_node;
     return $model->saveNode(FALSE);
   }
@@ -266,7 +280,7 @@ class JsTreeBehavior extends CBehavior {
         if ($copied_node->appendTo($new_parent)) {
           echo json_encode(array('success' => true,
             'id' => $copied_node->primaryKey
-              )
+            )
           );
           exit;
         }
@@ -279,8 +293,7 @@ class JsTreeBehavior extends CBehavior {
 
         if ($moved_node->moveAsRoot()) {
           echo json_encode(array('success' => true));
-        }
-        else {
+        } else {
           echo json_encode(array('success' => false));
         }
       } //else if moved/copied node is Root
@@ -379,4 +392,3 @@ class JsTreeBehavior extends CBehavior {
   }
 
 }
-

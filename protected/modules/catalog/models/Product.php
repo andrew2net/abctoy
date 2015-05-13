@@ -203,8 +203,8 @@ class Product extends CActiveRecord {
         $class .= "jstree-checked";
 
       $tree .= CHtml::openTag('li', array(
-            'id' => 'node_' . $category->primaryKey,
-            "class" => $class,
+          'id' => 'node_' . $category->primaryKey,
+          "class" => $class,
 //        'rel' => $category->getAttribute('name')
       ));
       $tree .= CHtml::openTag('a', array('href' => '#'));
@@ -238,28 +238,28 @@ class Product extends CActiveRecord {
 
   public function getActualDiscount() {
     $categories = Yii::app()->db->createCommand()
-            ->select('category_id')->from('store_product_category')
-            ->where("product_id={$this->id}")->text;
+        ->select('category_id')->from('store_product_category')
+        ->where("product_id={$this->id}")->text;
 
     $discount_category = Yii::app()->db->createCommand()
-            ->select('d.id')
-            ->from('store_discount_category dc')
-            ->join('store_discount d', 'd.id = dc.discount_id')
-            ->join('store_category c', 'c.id = dc.category_id')
-            ->join('store_category s', 's.lft >= c.lft AND s.rgt <= c.rgt AND s.root=c.root')
-            ->where("s.id in ({$categories})")->text;
+        ->select('d.id')
+        ->from('store_discount_category dc')
+        ->join('store_discount d', 'd.id = dc.discount_id')
+        ->join('store_category c', 'c.id = dc.category_id')
+        ->join('store_category s', 's.lft >= c.lft AND s.rgt <= c.rgt AND s.root=c.root')
+        ->where("s.id in ({$categories})")->text;
 
     $discount_id = Yii::app()->db->createCommand()
-            ->select('discount_id')->from('store_discount_product')
-            ->where("product_id={$this->id}")
-            ->union($discount_category)->text;
+        ->select('discount_id')->from('store_discount_product')
+        ->where("product_id={$this->id}")
+        ->union($discount_category)->text;
 
     $percenr = Yii::app()->db->createCommand()
-        ->select('MAX(percent) discount')->from('store_discount')
-        ->where("(id in ({$discount_id}) OR product_id=0) AND (begin_date<=:date OR begin_date='0000-00-00')" .
-            " AND (end_date>=:date OR end_date='0000-00-00') AND actual=1"
-            , array(':date' => date('Y-m-d')))
-        ->queryRow();
+      ->select('MAX(percent) discount')->from('store_discount')
+      ->where("(id in ({$discount_id}) OR product_id=0) AND (begin_date<=:date OR begin_date='0000-00-00')" .
+        " AND (end_date>=:date OR end_date='0000-00-00') AND actual=1"
+        , array(':date' => date('Y-m-d')))
+      ->queryRow();
 
     if (!is_null($percenr['discount'])) {
       $new_price = round($this->price * (1 - $percenr['discount'] / 100));
@@ -277,28 +277,43 @@ class Product extends CActiveRecord {
         ),
         'condition' => "show_me=1",
       ),
-      'availableOnly' => array('condition' => "remainder>0 AND remainder IS NOT NULL",),
+      'availableOnly' => array(
+        'with' => array('category'=>array('alias' => 'category')),
+        'condition' => "remainder>0 AND remainder IS NOT NULL AND category.active=1",
+        ),
     ));
   }
 
+//  public function availableOnly() {
+//    $active_categories = Category::model()->findAll(array(
+//      'criteria' => array(
+//        'with' => array(),
+//        'condition' => 'active=1',
+//        )));
+//    $this->dbCriteria->mergeWith(array(
+//      'condition' => "remainder>0 AND remainder IS NOT NULL",
+//    ));
+//    return $this;
+//  }
+
   public function discount() {
     $discount_all = Discount::model()
-        ->count("actual=1 AND type_id IN (0,1) AND product_id=0 AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')"
-        , array(':date' => date('Y-m-d')));
+      ->count("actual=1 AND type_id IN (0,1) AND product_id=0 AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')"
+      , array(':date' => date('Y-m-d')));
 
     $discount_product = Yii::app()->db->createCommand()
-        ->select('p.product_id')
-        ->from('store_discount_product p')
-        ->join('store_discount d', 'p.discount_id=d.id')
-        ->where("actual=1 AND type_id IN (0,1) AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')");
+      ->select('p.product_id')
+      ->from('store_discount_product p')
+      ->join('store_discount d', 'p.discount_id=d.id')
+      ->where("actual=1 AND type_id IN (0,1) AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')");
 
     $discount_category = Yii::app()->db->createCommand()
-        ->select('s.id')
-        ->from('store_discount_category dc')
-        ->join('store_discount d', 'd.id = dc.discount_id')
-        ->join('store_category c', 'c.id = dc.category_id')
-        ->join('store_category s', 's.lft >= c.lft AND s.rgt <= c.rgt AND s.root=c.root')
-        ->where("actual=1 AND type_id IN (0,1) AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')");
+      ->select('s.id')
+      ->from('store_discount_category dc')
+      ->join('store_discount d', 'd.id = dc.discount_id')
+      ->join('store_category c', 'c.id = dc.category_id')
+      ->join('store_category s', 's.lft >= c.lft AND s.rgt <= c.rgt AND s.root=c.root')
+      ->where("actual=1 AND type_id IN (0,1) AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')");
 
     $criteria = new CDbCriteria;
     $criteria->condition = "$discount_all>0 OR category.id IN ($discount_category->text) OR t.id IN ($discount_product->text)";
@@ -313,12 +328,12 @@ class Product extends CActiveRecord {
   public function week() {
 
     $discount_category = Yii::app()->db->createCommand()
-        ->select('d.percent, d.begin_date, d.end_date, d.type_id, d.actual, s.id')
-        ->from('store_discount_category dc')
-        ->join('store_discount d', 'd.id = dc.discount_id')
-        ->join('store_category c', 'c.id = dc.category_id')
-        ->join('store_category s', 's.lft >= c.lft AND s.rgt <= c.rgt AND s.root=c.root')
-        ->where("actual=1 AND type_id IN (0,1) AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')");
+      ->select('d.percent, d.begin_date, d.end_date, d.type_id, d.actual, s.id')
+      ->from('store_discount_category dc')
+      ->join('store_discount d', 'd.id = dc.discount_id')
+      ->join('store_category c', 'c.id = dc.category_id')
+      ->join('store_category s', 's.lft >= c.lft AND s.rgt <= c.rgt AND s.root=c.root')
+      ->where("actual=1 AND type_id IN (0,1) AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')");
 
     $date = date('Y-m-d');
     $this->getDbCriteria()->mergeWith(array(
@@ -356,16 +371,16 @@ class Product extends CActiveRecord {
 
   public function discountOrder() {
     $discount_all = Yii::app()->db->createCommand()
-            ->select("a.percent")
-            ->from('store_discount a')
-            ->where("actual=1 AND type_id IN (0,1) AND product_id=0 AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')")->text;
+        ->select("a.percent")
+        ->from('store_discount a')
+        ->where("actual=1 AND type_id IN (0,1) AND product_id=0 AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')")->text;
     $discount_category = Yii::app()->db->createCommand()
-            ->select('d.percent, s.id')
-            ->from('store_discount_category dc')
-            ->join('store_discount d', 'd.id = dc.discount_id')
-            ->join('store_category c', 'c.id = dc.category_id')
-            ->join('store_category s', 's.lft >= c.lft AND s.rgt <= c.rgt AND s.root=c.root')
-            ->where("actual=1 AND type_id IN (0,1) AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')")->text;
+        ->select('d.percent, s.id')
+        ->from('store_discount_category dc')
+        ->join('store_discount d', 'd.id = dc.discount_id')
+        ->join('store_category c', 'c.id = dc.category_id')
+        ->join('store_category s', 's.lft >= c.lft AND s.rgt <= c.rgt AND s.root=c.root')
+        ->where("actual=1 AND type_id IN (0,1) AND (begin_date<=:date OR begin_date='0000-00-00') AND (end_date>=:date OR end_date='0000-00-00')")->text;
     $this->getDbCriteria()->mergeWith(array(
       'with' => array(
         'category' => array(
@@ -442,15 +457,15 @@ class Product extends CActiveRecord {
       $cat .= ',' . $value->id;
 
     $this->getDbCriteria()->mergeWith(
-        array(
-          'with' => array(
-            'category' => array(
-              'select' => FALSE,
-            ),
+      array(
+        'with' => array(
+          'category' => array(
+            'select' => FALSE,
           ),
-          'together' => TRUE,
-          'condition' => "category.id IN ({$cat})",
-        )
+        ),
+        'together' => TRUE,
+        'condition' => "category.id IN ({$cat})",
+      )
     );
     return $this;
   }
@@ -458,33 +473,33 @@ class Product extends CActiveRecord {
   public function searchByName($text) {
     $text = strtr($text, array('%' => '\%', '_' => '\_'));
     $this->getDbCriteria()->mergeWith(
-        array(
-          'condition' => "t.name LIKE :text OR t.article=:art",
-          'params' => array(
-            ':text' => '%' . $text . '%',
-            ':art' => $text,
-          ),
-        )
+      array(
+        'condition' => "t.name LIKE :text OR t.article=:art",
+        'params' => array(
+          ':text' => '%' . $text . '%',
+          ':art' => $text,
+        ),
+      )
     );
     return $this;
   }
 
   public function gender($id) {
     $this->getDbCriteria()->mergeWith(
-        array(
-          'condition' => "t.gender_id=:id OR t.gender_id=0",
-          'params' => array(':id' => $id),
-        )
+      array(
+        'condition' => "t.gender_id=:id OR t.gender_id=0",
+        'params' => array(':id' => $id),
+      )
     );
     return $this;
   }
 
   public function age($min, $max) {
     $this->getDbCriteria()->mergeWith(
-        array(
-          'condition' => "t.age<=:age_max AND t.age_to>=:age_min",
-          'params' => array(':age_min' => $min, ':age_max' => $max),
-        )
+      array(
+        'condition' => "t.age<=:age_max AND t.age_to>=:age_min",
+        'params' => array(':age_min' => $min, ':age_max' => $max),
+      )
     );
     return $this;
   }
@@ -492,9 +507,9 @@ class Product extends CActiveRecord {
   public function price($min, $max) {
     $this->discountOrder();
     $this->getDbCriteria()->mergeWith(
-        array(
-          'having' => "dprice BETWEEN :min AND :max OR dprice>=:min AND :max=5000",
-          'params' => array(':min' => $min, ':max' => $max),
+      array(
+        'having' => "dprice BETWEEN :min AND :max OR dprice>=:min AND :max=5000",
+        'params' => array(':min' => $min, ':max' => $max),
     ));
     return $this;
   }

@@ -12,6 +12,7 @@
  * @property integer $level
  * @property integer $root
  * @property string $seo
+ * @property boolean $active 
  */
 class Category extends CActiveRecord {
 
@@ -30,6 +31,7 @@ class Category extends CActiveRecord {
     // will receive user inputs.
     return array(
       array('name', 'required'),
+      array('active', 'boolean'),
 //      array('left_key, right_key, level', 'numerical', 'integerOnly' => true),
       array('name', 'length', 'max' => 30),
       // The following rule is used by search().
@@ -62,7 +64,8 @@ class Category extends CActiveRecord {
       'name' => 'Наименование',
       'url' => 'Url',
       'level' => '',
-      'seo' => 'SEO текст'
+      'seo' => 'SEO текст',
+      'active' => 'Показывать',
     );
   }
 

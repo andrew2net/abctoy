@@ -34,7 +34,7 @@ class SiteController extends Controller {
       'model' => $model,
       'search' => $searc,
       'groups' => $groups,
-        )
+      )
     );
   }
 
@@ -55,7 +55,7 @@ class SiteController extends Controller {
 
     $searc = new Search;
     $giftSelection = new GiftSelection;
-    $groups = Category::model()->roots()->findAll();
+    $groups = Category::model()->roots()->findAllByAttributes(array('active' => true));
 
     $product = Product::model();
 
@@ -74,8 +74,15 @@ class SiteController extends Controller {
     if ($error = Yii::app()->errorHandler->error) {
       if (Yii::app()->request->isAjaxRequest)
         echo $error['message'];
-      else
-        $this->render('error', $error);
+      else {
+        $searc = new Search;
+        $groups = Category::model()->roots()->findAllByAttributes(array('active' => true));
+        $this->render('error', array(
+          'error' => $error,
+          'search' => $searc,
+          'groups' => $groups,
+        ));
+      }
     }
   }
 
@@ -138,7 +145,7 @@ class SiteController extends Controller {
     Yii::import('application.modules.catalog.models.Category');
     Yii::import('application.modules.discount.models.Discount');
 
-    $groups = Category::model()->roots()->findAll();
+    $groups = Category::model()->roots()->findAllByAttributes(array('active' => true));
     $group = Category::model()->findByPk($id);
     $searc = new Search;
     $giftSelection = new GiftSelection;
@@ -162,8 +169,11 @@ class SiteController extends Controller {
     Yii::import('application.modules.catalog.models.Brand');
     Yii::import('application.modules.catalog.models.Category');
 
-    $product = Product::model()->with('brand')->findByPk($id);
-    $groups = Category::model()->roots()->findAll();
+    $product = Product::model()->availableOnly()->with('brand')->findByPk($id);
+    if (!$product) {
+      throw new CHttpException(404, 'Товар отсутствует');
+    }
+    $groups = Category::model()->roots()->findAllByAttributes(array('active' => true));
     $search = new Search;
     $productForm = new ProductForm;
 
@@ -195,7 +205,7 @@ class SiteController extends Controller {
 
     $search = new Search;
     $giftSelection = new GiftSelection;
-    $groups = Category::model()->roots()->findAll();
+    $groups = Category::model()->roots()->findAllByAttributes(array('active' => true));
     $product = Product::model();
 
     if (isset($_GET['GiftSelection'])) {
@@ -204,7 +214,7 @@ class SiteController extends Controller {
     }
 
     $product_data = new CActiveDataProvider($product
-        , array('pagination' => array('pageSize' => 20),
+      , array('pagination' => array('pageSize' => 20),
     ));
 
     $this->render('sort', array(
@@ -222,7 +232,7 @@ class SiteController extends Controller {
 
     $search = new Search;
     $giftSelection = new GiftSelection;
-    $groups = Category::model()->roots()->findAll();
+    $groups = Category::model()->roots()->findAllByAttributes(array('active' => true));
     $product = Product::model();
 
     if (isset($_GET['Search'])) {
@@ -232,7 +242,7 @@ class SiteController extends Controller {
 
     $product->discountOrder();
     $product_data = new CActiveDataProvider('Product'
-        , array('criteria' => $product->getDbCriteria(),
+      , array('criteria' => $product->getDbCriteria(),
       'pagination' => array('pageSize' => 20),
     ));
 
@@ -257,11 +267,11 @@ class SiteController extends Controller {
       throw new CHttpException(404, "Страница " . Yii::app()->request->url . " не найдена");
 
     $giftSelection = new GiftSelection;
-    $groups = Category::model()->roots()->findAll();
+    $groups = Category::model()->roots()->findAllByAttributes(array('active' => true));
     $product = Product::model();
     $product->brandFilter($id)->discountOrder();
     $product_data = new CActiveDataProvider('Product'
-        , array('criteria' => $product->getDbCriteria(),
+      , array('criteria' => $product->getDbCriteria(),
       'pagination' => array('pageSize' => 20),
     ));
 
@@ -292,7 +302,7 @@ class SiteController extends Controller {
     }
 
     $product_data = new CActiveDataProvider('Product'
-        , array('criteria' => $criteria,
+      , array('criteria' => $criteria,
       'pagination' => array('pageSize' => 20),
     ));
     $this->render('search', array_merge(array(
@@ -300,7 +310,7 @@ class SiteController extends Controller {
       'giftSelection' => $giftSelection,
       'groups' => $groups,
       'product' => $product_data,
-            ), $params)
+        ), $params)
     );
   }
 
@@ -387,14 +397,14 @@ class SiteController extends Controller {
 
     $profile = $this->getProfile();
     $cart = Cart::model()->shoppingCart($this->getSession())
-            ->with('product.brand')->findAll();
+        ->with('product.brand')->findAll();
 
     $coupon_data = array('code' => '', 'type' => '', 'value' => '');
     if (isset($_POST['coupon'])) {
       $coupon = Coupon::model()->findByAttributes(array(
         'code' => $_POST['coupon'])
-          , "used_id<>2 AND (date_limit>=:date OR date_limit IS NULL OR date_limit='0000-00-00')"
-          , array(':date' => date('Y-m-d')));
+        , "used_id<>2 AND (date_limit>=:date OR date_limit IS NULL OR date_limit='0000-00-00')"
+        , array(':date' => date('Y-m-d')));
       if ($coupon)
         $coupon_data = array(
           'code' => $coupon->code,
@@ -453,8 +463,7 @@ class SiteController extends Controller {
             }
           }
         }
-      }
-      else
+      } else
         $has_err = 'prof';
     }
 
@@ -524,8 +533,7 @@ class SiteController extends Controller {
       if (is_array($discount)) {
         $price = $discount['price'];
         $result['discount'] += ($product->price - $price) * $quantity;
-      }
-      else {
+      } else {
         $price = $product->price;
         $result['noDiscount'] += $product->price * $quantity;
         if ($coupon) {
@@ -548,7 +556,7 @@ class SiteController extends Controller {
   private function saveOrderProducts($order, $profile, $coupon, $count_products) {
     $delivery = CityDelivery::model()->with('city')->findByAttributes(array(
       'delivery_id' => $_POST['Order']['delivery_id'])
-        , 'city.name=:city', array(':city' => $profile->city));
+      , 'city.name=:city', array(':city' => $profile->city));
     if ($delivery && ($delivery->summ == 0 || $delivery->summ > $count_products['summ']))
       $delivery_summ = $delivery->price;
     else
@@ -580,8 +588,7 @@ class SiteController extends Controller {
           if (is_array($discount)) {
             $order_product->price = $discount['price'];
             $order_product->discount = $product->price - $discount['price'];
-          }
-          else {
+          } else {
             $order_product->price = $product->price;
             $order_product->discount = 0;
           }
@@ -594,7 +601,7 @@ class SiteController extends Controller {
           $command->update('store_coupon', array(
             'used_id' => 2,
             'time_used' => date('Y-m-d H:i:s'),
-              ), 'id=:id', array(':id' => $coupon->id));
+            ), 'id=:id', array(':id' => $coupon->id));
         }
       }
     }
@@ -689,8 +696,7 @@ class SiteController extends Controller {
         $this->registerUser($profile);
         echo json_encode(array('result' => true));
       }
-    }
-    else
+    } else
       echo json_encode(array('result' => false, 'msg' => 'Адрес задан неверно'));
     Yii::app()->end();
   }
@@ -707,14 +713,12 @@ class SiteController extends Controller {
         if (is_null($user)) { //new email
           Yii::app()->user->update(array('email' => $_POST['email']));
           echo 'ok';
-        }
-        else if ($user->id != Yii::app()->user->id)  //there is user with same email
+        } else if ($user->id != Yii::app()->user->id)  //there is user with same email
           echo '';
         else                //signed up
           echo 'ok';
       }
-    }
-    else
+    } else
       echo 'ok';
     Yii::app()->end();
   }
@@ -723,7 +727,7 @@ class SiteController extends Controller {
     $loginForm = new LoginForm;
 
     if ((isset($_POST['email']) || isset($_POST['login'])) && isset($_POST['passw']) ||
-        isset($_POST['LoginForm'])) {
+      isset($_POST['LoginForm'])) {
       if (isset($_POST['email']))
         $user = User::model()->findByAttributes(array('email' => $_POST['email']));
       else if (isset($_POST['login'])) {
@@ -768,11 +772,9 @@ class SiteController extends Controller {
               }
             }
             echo 'ok';
-          }
-          elseif (isset($_POST['login'])) {
+          } elseif (isset($_POST['login'])) {
             echo json_encode(array('result' => TRUE, 'cart' => $this->cartLabel()));
-          }
-          else
+          } else
             $this->redirect('profile');
           Yii::app()->end();
         }
@@ -781,8 +783,7 @@ class SiteController extends Controller {
       if (isset($_POST['login'])) { //if login was from main page
         echo json_encode(array('result' => FALSE));
         Yii::app()->end();
-      }
-      else if (isset($_POST['email'])) { //if login from shopping cart
+      } else if (isset($_POST['email'])) { //if login from shopping cart
         echo '';
         Yii::app()->end();
       }
@@ -807,7 +808,7 @@ class SiteController extends Controller {
     echo $this->renderPartial('_delivery', array(
       'order' => $order,
       'delivery' => $delivery,
-        ), TRUE);
+      ), TRUE);
     Yii::app()->end();
   }
 
@@ -835,10 +836,10 @@ class SiteController extends Controller {
 
     $city = strtr($term, array('%' => '\%', '_' => '\_'));
     $suggest_cities = Yii::app()->db->createCommand()
-        ->select('name_ru')->from('net_city')
-        ->where('name_ru LIKE :data', array(':data' => '%' . $term . '%'))->limit(20)
-        ->group('name_ru')
-        ->queryAll();
+      ->select('name_ru')->from('net_city')
+      ->where('name_ru LIKE :data', array(':data' => '%' . $term . '%'))->limit(20)
+      ->group('name_ru')
+      ->queryAll();
     if (is_array($suggest_cities))
       $suggest = array_map('formatArray', $suggest_cities);
     else
@@ -858,7 +859,7 @@ class SiteController extends Controller {
         $item->delete();
       }
       $cart = Cart::model()->shoppingCart($this->getSession())
-              ->with('product.brand')->findAll();
+          ->with('product.brand')->findAll();
       echo $this->renderPartial('_cartItems', array('cart' => $cart), TRUE);
     }
     Yii::app()->end();
@@ -873,7 +874,7 @@ class SiteController extends Controller {
       Yii::import('application.modules.discount.models.Coupon');
       $coupon = Coupon::model()->findByAttributes(array(
         'code' => $_GET['coupon']), "used_id<>2 AND (date_limit>=:date OR date_limit IS NULL OR date_limit='0000-00-00')"
-          , array(':date' => date('Y-m-d')));
+        , array(':date' => date('Y-m-d')));
       if (is_null($coupon))
         $data = array('type' => 3, 'discount' => 0);
       else
@@ -904,7 +905,7 @@ class SiteController extends Controller {
       $this->redirect('/login');
 
     $profile = CustomerProfile::model()->findByAttributes(
-        array('user_id' => Yii::app()->user->id));
+      array('user_id' => Yii::app()->user->id));
     if (is_null($profile)) {
       $profile = new CustomerProfile;
       if (!Yii::app()->user->isGuest) {
@@ -988,7 +989,7 @@ class SiteController extends Controller {
         'user_id' => Yii::app()->user->id
       ));
       $child = Child::model()->findByPk($_POST['id'], 'profile_id=:id'
-          , array(':id' => $profile->id));
+        , array(':id' => $profile->id));
       if (is_null($child))
         $child = new Child;
       $child->profile_id = $profile->id;
@@ -1002,8 +1003,7 @@ class SiteController extends Controller {
           'result' => TRUE,
           'html' => $this->renderPartial('_childUpdate', array('child' => $child), true)
         ));
-      }
-      else {
+      } else {
         $child->refresh();
         if ($_POST['id'] == 0)
           $output = $this->renderPartial('_childAdd', array('child' => $child), TRUE);
@@ -1021,10 +1021,10 @@ class SiteController extends Controller {
   public function actionDelChild() {
     if (isset($_POST['id'])) {
       $child = Child::model()->with('profile')->findByPk($_POST['id']
-          , array(
+        , array(
         'condition' => 'profile.user_id=:uid',
         'params' => array(':uid' => Yii::app()->user->id)
-          )
+        )
       );
       echo ($child && $child->delete());
     }
@@ -1053,7 +1053,7 @@ class SiteController extends Controller {
             'result' => 'exist',
             'html' => $this->renderPartial('_popupEmailExist', array(
               'email' => $_POST['PopupForm']['email'],
-                ), TRUE),
+              ), TRUE),
           ));
           Yii::app()->end();
         }
@@ -1123,8 +1123,7 @@ class SiteController extends Controller {
         'result' => 'error',
         'html' => $this->renderPartial('_popupForm', $par, TRUE)));
       Yii::app()->end();
-    }
-    else
+    } else
       $children[] = new Child('popup');
 
     $this->renderPartial('_popupWindow', array(
