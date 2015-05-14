@@ -462,8 +462,12 @@ class NestedSetBehavior extends CActiveRecordBehavior
 
 		return true;
 	}
+    
+    public function moveRoot(){
+      
+    }
 
-	/**
+    /**
 	 * Determines if node is descendant of subject node.
 	 * @param CActiveRecord $subj the subject node.
 	 * @return boolean whether the node is descendant of subject node.
