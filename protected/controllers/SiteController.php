@@ -75,6 +75,7 @@ class SiteController extends Controller {
       if (Yii::app()->request->isAjaxRequest)
         echo $error['message'];
       else {
+        Yii::import('application.modules.catalog.models.Category');
         $searc = new Search;
         $groups = Category::model()->roots()->findAllByAttributes(array('active' => true));
         $this->render('error', array(
