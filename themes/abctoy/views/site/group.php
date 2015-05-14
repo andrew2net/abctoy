@@ -117,7 +117,7 @@
         }
         else {
           ?>
-          <div class="cufon blue bold" style="font-size: 26pt; text-align: center;margin-top: 40px">Товар отсутствуе</div>
+          <div class="cufon blue bold" style="font-size: 26pt; text-align: center;margin-top: 40px">Товар отсутствует</div>
           <?php
         }
       }

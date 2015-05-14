@@ -145,13 +145,13 @@ $this->pageTitle = Yii::app()->name . ' - Корзина';
       </div>
       <div style="font-size: 10pt">
         <div class="cufon bold gray"><span class="red">*</span> Поля обязательные для заполнения</div>
-        <div class="cufon bold gray"><span class="red">**</span> Удобное время для того, чтобы <br>мы Вам перезвонили для уточнения <br>данные о доставке</div>
+        <div class="cufon bold gray"><span class="red">**</span> Удобное время для того, чтобы <br>мы Вам перезвонили для уточнения <br>данных о доставке</div>
       </div>
     </div>
     <div style="vertical-align: top; width: 290px">
       <div class="cufon bold gray">Информация о доставке</div>
       <div style="font-size: 10pt; width: 195px; margin-top: 10px; border: 1px dashed #DDD">
-        <div style="padding: 10px">Введите Ваш город, для что бы узнать стоимость доставки.</div>
+        <div style="padding: 10px">Введите Ваш город для того, чтобы узнать стоимость доставки.</div>
         <div style="padding: 0 10px 10px">Если вашего города нет в базе, стоимость доставки сообщит менеджер во время звонка.
           Минимальную сумму доставки и подробности о БЕСПЛАТНОЙ ДОСТАВКЕ, можно узнать в разделе <a href="/deliver">ДОСТАВКА</a></div>
       </div>
