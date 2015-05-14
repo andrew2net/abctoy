@@ -180,9 +180,9 @@ class JsTreeBehavior extends CBehavior {
       }
       if ($post_node['active']) {
         $super_categories = $model->ancestors()->findAll();
-        foreach ($super_categories as $super_category){
-        /* @var $super_category Category */
-        /* @var $super_category NestedSetBehavior */
+        foreach ($super_categories as $super_category) {
+          /* @var $super_category Category */
+          /* @var $super_category NestedSetBehavior */
           $super_category->active = $post_node['active'];
           $super_category->saveNode(FALSE);
         }
@@ -298,7 +298,12 @@ class JsTreeBehavior extends CBehavior {
         }
       } //else if moved/copied node is Root
       else {
-        echo json_encode(array('success' => false, 'message' => 'Node is already a Root.Roots are ordered by primary key.'));
+        if ($moved_node->moveRoot($previous_node_id, $next_node_id)) {
+          echo json_encode(array('success' => true));
+        } else {
+          echo json_encode(array('success' => false));
+        }
+//        echo json_encode(array('success' => false, 'message' => 'Node is already a Root.Roots are ordered by primary key.'));
       }
     }
   }

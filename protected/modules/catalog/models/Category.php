@@ -15,6 +15,8 @@
  * @property boolean $active 
  */
 class Category extends CActiveRecord {
+  
+  public $max_id;
 
   /**
    * @return string the associated database table name
