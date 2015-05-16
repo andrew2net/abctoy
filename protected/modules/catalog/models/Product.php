@@ -136,7 +136,7 @@ class Product extends CActiveRecord {
     $criteria->compare('price', $this->price);
     $criteria->compare('show_me', $this->show_me);
     $criteria->with = array('brand');
-    $criteria->compare('brand_id', $this->brand_id, TRUE);
+    $criteria->compare('brand_id', $this->brand_id, FALSE);
     $criteria->compare('gender_id', $this->gender_id, TRUE);
 
     return $criteria;
