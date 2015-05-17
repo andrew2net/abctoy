@@ -238,7 +238,7 @@ class SiteController extends Controller {
 
     if (isset($_GET['Search'])) {
       $search->text = $_GET['Search']['text'];
-      $product->searchByName($_GET['Search']['text']);
+      $product->availableOnly()->searchByName($_GET['Search']['text']);
     }
 
     $product->discountOrder();
