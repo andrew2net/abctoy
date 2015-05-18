@@ -25,7 +25,7 @@ class Coupon extends CActiveRecord {
   private $types = array(0 => 'Сумма', 1 => 'Процент');
   private $used = array(0 => 'Неиспользован', 1 => 'Многоразовый'
     , 2 => 'Использован');
-  private $used_old;
+  private $used_old, $date_limit_old;
 
   const DAYS_BEFORE_REUSE_CODE = 180;
   const CODE_LEGTH = 6;
@@ -207,19 +207,20 @@ class Coupon extends CActiveRecord {
 
   public function afterFind() {
     $this->used_old = $this->used_id;
-    $date = Yii::app()->dateFormatter->formatDateTime($this->time_issue);
+    $this->date_limit_old = $this->date_limit;
+    $date = Yii::app()->dateFormatter->format('dd.MM.yyyy HH:mm:ss', $this->time_issue);
     $this->time_issue = $date;
 
     if ($this->time_used == '0000-00-00 00:00:00')
       $date = '';
     else
-      $date = Yii::app()->dateFormatter->formatDateTime($this->time_used);
+      $date = Yii::app()->dateFormatter->format('dd.MM.yyyy HH:mm:ss',$this->time_used);
     $this->time_used = $date;
 
     if ($this->date_limit == '0000-00-00')
       $date = '';
     else
-      $date = Yii::app()->dateFormatter->formatDateTime($this->date_limit, 'medium', NULL);
+      $date = Yii::app()->dateFormatter->format('dd.MM.yyyy', $this->date_limit, 'medium', NULL);
     $this->date_limit = $date;
 
     parent::afterFind();
@@ -261,8 +262,9 @@ class Coupon extends CActiveRecord {
   public function updateByPk($pk, $attributes, $condition = '', $params = array()) {
     if (!$this->isNotUsed) {
       if ($this->used_old == 1 && $this->used_id == 2 ||
-          $this->used_old == 2 && $this->used_id == 1) {
-        $attributes = array('used_id' => $this->used_id);
+          $this->used_old == 2 && $this->used_id == 1 ||
+          $this->date_limit_old <> $this->date_limit) {
+        $attributes = array('used_id' => $this->used_id, 'date_limit' => $this->date_limit);
       }
       else
         return FALSE;
