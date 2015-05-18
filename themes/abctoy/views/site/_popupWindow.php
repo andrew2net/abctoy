@@ -9,7 +9,7 @@
     <div style="width: 365px; text-align: center; margin: 0 10px">
       <div class="cufon bold" style="font-size: 18pt">Укажите возраст вашего</div>
       <div class="cufon bold" style="font-size: 18pt; margin-top: 10px">ребенка и получите скидку</div>
-      <div class="cufon red bold" style="font-size: 140pt; height: 144px">400</div>
+      <div class="cufon red bold" style="font-size: 140pt; height: 144px">150</div>
       <div class="cufon red bold" style="font-size: 72pt">рублей</div>
       <div class="cufon bold" style="font-size: 18pt; margin: 10px 0">на первую покупку</div>
       <div class="cufon gray">Так же мы будем рекомендовать только те игрушки которые будут интересны вашему ребенку.</div>

@@ -1090,7 +1090,7 @@ class SiteController extends Controller {
           $coupon = new Coupon;
           $coupon->generateCode();
           $coupon->type_id = 0;
-          $coupon->value = 400;
+          $coupon->value = 150;
           $coupon->used_id = 0;
           $coupon->date_limit = date('d.m.Y', strtotime('+3 days'));
           if ($coupon->save()) {
