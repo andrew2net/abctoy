@@ -45,7 +45,7 @@
         ?>
       </div>
     </div>
-    <div style="top: -10px; position: relative; height: 150px; vertical-align: inherit">
+    <div style="top: -10px; position: relative; height: 150px; vertical-align: bottom">
       <?php
       echo $form->label($giftSelection, 'ageFrom', array(
         'class' => 'bold',
@@ -74,11 +74,11 @@
            ));
            ?>
       </div>
-      <?php echo $form->checkBox($giftSelection, 'availableOnly'); ?>
+      <?php // echo $form->checkBox($giftSelection, 'availableOnly'); ?>
       <?php
-      echo $form->label($giftSelection, 'availableOnly', array(
-        'style' => 'line-height: 9'
-      ));
+//      echo $form->label($giftSelection, 'availableOnly', array(
+//        'style' => 'line-height: 9'
+//      ));
       ?>
     </div>
     <div style="margin: 20px 0 0 50px; position: absolute; height: 150px; vertical-align: inherit">
