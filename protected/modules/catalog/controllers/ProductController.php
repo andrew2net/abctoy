@@ -336,7 +336,7 @@ class ProductController extends Controller {
             'article' => $data[2]));
           if (!is_null($product)) {
             $product->remainder = $data[1];
-//            $product->price = $data[3];
+            $product->price = $data[3];
             $product->save(FALSE);
           }
         }
