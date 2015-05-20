@@ -272,7 +272,7 @@ class SiteController extends Controller {
     $product = Product::model();
     $product->brandFilter($id)->discountOrder();
     $product_data = new CActiveDataProvider('Product'
-      , array('criteria' => $product->getDbCriteria(),
+      , array('criteria' => $product->availableOnly()->getDbCriteria(),
       'pagination' => array('pageSize' => 20),
     ));
 
