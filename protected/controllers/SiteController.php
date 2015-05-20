@@ -170,7 +170,7 @@ class SiteController extends Controller {
     Yii::import('application.modules.catalog.models.Brand');
     Yii::import('application.modules.catalog.models.Category');
 
-    $product = Product::model()->with(array('brand', 'category'))->findByPk($id, 'category.active=1');
+    $product = Product::model()->with(array('brand', 'category'))->findByPk($id, 'category.active=1 AND remainder IS NOT NULL AND remainder>0');
     if (!$product) {
       throw new CHttpException(404, 'Товар отсутствует');
     }
