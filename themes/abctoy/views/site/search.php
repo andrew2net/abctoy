@@ -23,7 +23,7 @@ $this->pageTitle = Yii::app()->name . $title;
   <div style="margin: 20px 0">
     <?php
     if (isset($brand)) {
-      $notfind = 'Товар отсутствуе';
+      $notfind = 'Товар отсутствует';
       ?>
       <span class="cufon green bold" style="font-size: 18pt">Бренд: </span>
       <span class="cufon" style="font-size: 18pt"><?php echo $brand->name; ?></span>
