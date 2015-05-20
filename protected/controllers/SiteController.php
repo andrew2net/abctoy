@@ -215,7 +215,11 @@ class SiteController extends Controller {
     }
 
     $product_data = new CActiveDataProvider($product
-      , array('pagination' => array('pageSize' => 20),
+      , array(
+        'pagination' => array('pageSize' => 20),
+        'criteria' => array(
+          'scopes' => array('availableOnly'),
+          ),
     ));
 
     $this->render('sort', array(
