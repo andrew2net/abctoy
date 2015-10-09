@@ -309,7 +309,7 @@ class ProductController extends Controller {
             $product->attributes = $productData;
             $product->save(FALSE);
           }
-          ProductCategory::model()->deleteAllByAttributes(array('product_id' => $product->id))
+          ProductCategory::model()->deleteAllByAttributes(array('product_id' => $product->id));
           $product_category = ProductCategory::model()->findByAttributes(array(
             'product_id' => $product->id, 'category_id' => $subcategory->id));
           if (is_null($product_category)) {
