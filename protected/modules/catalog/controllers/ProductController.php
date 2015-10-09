@@ -244,6 +244,8 @@ class ProductController extends Controller {
 
       foreach ($_POST['data'] as $value) {
         $data = str_getcsv($value, ';');
+        $name = strtr($data[0], $quotes);
+        if (strlenn($name) == 0) continue;
         $count = count($data);
         if ($count != 13 && ($count < 3 || $count > 12)) {
           echo mb_substr($data[0], 0, 50, 'utf-8');
@@ -285,7 +287,7 @@ class ProductController extends Controller {
             $subcategory->name = $subcategory_name;
             $subcategory->appendTo($category, FALSE);
           }
-          $name = strtr($data[0], $quotes);
+          
           $age = (string) $data[10];
           $ages = split(' ', $age);
           $productData = array(
@@ -307,6 +309,7 @@ class ProductController extends Controller {
             $product->attributes = $productData;
             $product->save(FALSE);
           }
+          ProductCategory::model()->deleteAllByAttributes('product_id' => $product->id)
           $product_category = ProductCategory::model()->findByAttributes(array(
             'product_id' => $product->id, 'category_id' => $subcategory->id));
           if (is_null($product_category)) {
