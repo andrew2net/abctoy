@@ -268,7 +268,7 @@ class ProductController extends Controller {
 
           $category_name = mb_substr(strtr($data[6], $quotes), 0, 30, 'utf-8');
           $category = Category::model()->findByAttributes(array(
-            'name' => $category_name), 'level=2');
+            'name' => $category_name), "level=2 AND lft>=$group->lft AND rgt<=$group->rgt");
           if (is_null($category)) {
             $category = new Category;
             $category->name = $category_name;
@@ -279,7 +279,7 @@ class ProductController extends Controller {
             $d = $data[2];
           }
           $subcategory = Category::model()->findByAttributes(array(
-            'name' => $subcategory_name), 'level = 3');
+            'name' => $subcategory_name), "level = 3 AND lft>=$category->lft AND rgt<=$category->rgt");
           if (is_null($subcategory)) {
             $subcategory = new Category;
             $subcategory->name = $subcategory_name;
