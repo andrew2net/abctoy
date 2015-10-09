@@ -245,7 +245,7 @@ class ProductController extends Controller {
       foreach ($_POST['data'] as $value) {
         $data = str_getcsv($value, ';');
         $name = strtr($data[0], $quotes);
-        if (strlenn($name) == 0) continue;
+        if (strlen($name) == 0) continue;
         $count = count($data);
         if ($count != 13 && ($count < 3 || $count > 12)) {
           echo mb_substr($data[0], 0, 50, 'utf-8');
