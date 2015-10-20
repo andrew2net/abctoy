@@ -187,7 +187,8 @@
     //if (orderSumm == 0 || sum < orderSumm)
     //  delivery = parseFloat($('#Order_delivery_id option:selected').attr('price'));
     var delivery = parseFloat($('#order-delivery-summ').val()); //delivery.toFixed(2));
-    if (iaNaN(delivery)) delivery = 0;
+    if (delivery !== delivery)
+      delivery = 0;
     sum += delivery;
     $('#order-total').html(sum);
     $('#order-coupon-discount').html(couponSum);
