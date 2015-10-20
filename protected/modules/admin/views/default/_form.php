@@ -183,10 +183,10 @@
     }
     sum -= couponSum;
     var orderSumm = $('#Order_delivery_id option:selected').attr('summ');
-    var delivery = 0;
-    if (orderSumm == 0 || sum < orderSumm)
-      delivery = parseFloat($('#Order_delivery_id option:selected').attr('price'));
-    $('#order-delivery-summ').val(delivery.toFixed(2));
+    //var delivery = 0;
+    //if (orderSumm == 0 || sum < orderSumm)
+    //  delivery = parseFloat($('#Order_delivery_id option:selected').attr('price'));
+    var delivery = $('#order-delivery-summ').val(); //delivery.toFixed(2));
     sum += delivery;
     $('#order-total').html(sum);
     $('#order-coupon-discount').html(couponSum);
