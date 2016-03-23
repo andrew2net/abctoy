@@ -82,7 +82,7 @@ $this->pageTitle = Yii::app()->name . ' - Оплата заказа';
     echo CHtml::hiddenField('MNT_TRANSACTION_ID', $order->id);
     echo CHtml::hiddenField('MNT_CURRENCY_CODE', 'RUB');
     echo CHtml::hiddenField('MNT_AMOUNT', $paysumm);
-    echo CHtml::hiddenField('paymentSystem.unitId', '499669');
+    echo CHtml::hiddenField('paymentSystem.unitId', 'card');
 //    echo CHtml::hiddenField('MNT_TEST_MODE', '1');
     echo CHtml::hiddenField('MNT_SUCCESS_URL'
         , Yii::app()->createAbsoluteUrl('pay/success'));
