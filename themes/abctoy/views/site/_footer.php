@@ -103,11 +103,11 @@
         $.cookie('popup', '0', {expires: 2592000, path: '/'});
       case '0':
         loadPopup();
-        $('#popup-window').dialog('open');
+//        $('#popup-window').dialog('open');
         break;
       case '1':
         loadPopup();
-        showBottomBar();
+//        showBottomBar();
     }
   });
 
